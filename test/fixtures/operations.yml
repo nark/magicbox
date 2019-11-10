@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  command: MyString
+  delay: 1
+  retries: 1
+  device_id: 1
+  description: MyString
+  condition_id: 1
+
+two:
+  command: MyString
+  delay: 1
+  retries: 1
+  device_id: 1
+  description: MyString
+  condition_id: 1

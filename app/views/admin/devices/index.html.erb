@@ -1,0 +1,42 @@
+<h1>
+	Devices
+	<div class="float-right">
+		<%= link_to "New", new_admin_device_path, class: "btn btn-info" %>
+	</div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+	<thead>
+		<th width="50px">#</th>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Data type</th>
+		<th width="80px">State</th>
+		<th>Ref.</th>
+		<th width="90px">PIN type</th>
+		<th width="80px">PIN nb</th>
+		<th width="115px"></th>
+	</thead>
+	<% @devices.each do |d| %>
+		<tr>
+			<td><small>#<%= d.id %></small></td>
+			<td><strong><%= link_to d.name, [:admin, d] %></strong></td>
+			<td><%= d.device_type.titleize %></td>
+			<td><small><%= d.data_types_string %></small></td>
+			<td>
+				<% if !d.foo? %>
+					<span class="badge badge-pill badge-<%= d.state_color %>"><%= d.device_state.titleize %></span>
+				<% end %>
+			</td>
+			<td><i><%= d.product_reference %></i></td>
+			<td class="text-center"><span class="badge badge-pill badge-<%= d.pin_color %>"><%= d.pin_type.titleize %></span></td>
+			<td class="text-center"><%= d.pin_number %></td>
+			<td>
+				<%= link_to "Stop", stop_admin_device_path(d), method: :post, class: "btn btn-sm btn-outline-danger" %>
+				<%= link_to "Start", start_admin_device_path(d), method: :post, class: "btn btn-sm btn-outline-info" %>
+			</td>
+		</tr>
+	<% end %>
+</table>

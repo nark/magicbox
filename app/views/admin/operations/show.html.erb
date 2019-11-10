@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Command:</strong>
+  <%= @operation.command %>
+</p>
+
+<p>
+  <strong>Delay:</strong>
+  <%= @operation.delay %>
+</p>
+
+<p>
+  <strong>Retries:</strong>
+  <%= @operation.retries %>
+</p>
+
+<p>
+  <strong>Device:</strong>
+  <%= @operation.device_id %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @operation.description %>
+</p>
+
+<p>
+  <strong>Condition:</strong>
+  <%= @operation.condition_id %>
+</p>
+
+<%= link_to 'Edit', edit_operation_path(@operation) %> |
+<%= link_to 'Back', operations_path %>

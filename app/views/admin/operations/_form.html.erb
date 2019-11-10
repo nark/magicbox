@@ -1,0 +1,47 @@
+<%= form_with(model: operation, local: true) do |form| %>
+  <% if operation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(operation.errors.count, "error") %> prohibited this operation from being saved:</h2>
+
+      <ul>
+      <% operation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :command %>
+    <%= form.text_field :command %>
+  </div>
+
+  <div class="field">
+    <%= form.label :delay %>
+    <%= form.number_field :delay %>
+  </div>
+
+  <div class="field">
+    <%= form.label :retries %>
+    <%= form.number_field :retries %>
+  </div>
+
+  <div class="field">
+    <%= form.label :device_id %>
+    <%= form.number_field :device_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :condition_id %>
+    <%= form.number_field :condition_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

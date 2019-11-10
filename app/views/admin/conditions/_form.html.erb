@@ -1,0 +1,47 @@
+<%= form_with(model: condition, local: true) do |form| %>
+  <% if condition.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(condition.errors.count, "error") %> prohibited this condition from being saved:</h2>
+
+      <ul>
+      <% condition.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :data_type_id %>
+    <%= form.number_field :data_type_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :predicate %>
+    <%= form.number_field :predicate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :target_value %>
+    <%= form.number_field :target_value %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.time_select :start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_time %>
+    <%= form.time_select :end_time %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

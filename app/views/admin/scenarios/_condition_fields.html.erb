@@ -1,0 +1,15 @@
+<div class="form-inline pb-2">
+	<%= f.text_field :name, placeholder: "Name", class: "form-control mr-2" %>
+	<%= f.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", f.object.data_type_id), {}, class: "form-control mr-2" %>
+	<%= f.select :predicate, options_for_select([[">=", 0], ["<=", 1]], f.object.predicate), {}, class: "form-control mr-2" %>
+	<%= f.number_field :target_value, placeholder: "Target value", class: "form-control mr-2" %>
+	<%= f.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
+</div>
+
+<h5>Operations</h5>
+
+<%= f.fields_for :operations do |ff| %>
+	<%= render "operation_fields", :f => ff %>
+<% end %>
+<%= f.link_to_add 'Add operation', :operations, class: "btn btn-sm btn-success mt-2" %>
+<hr>

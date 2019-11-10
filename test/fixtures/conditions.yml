@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  data_type_id: 1
+  predicate: 1
+  target_value: 1
+  start_time: 2018-12-21 16:21:30
+  end_time: 2018-12-21 16:21:30
+
+two:
+  name: MyString
+  data_type_id: 1
+  predicate: 1
+  target_value: 1
+  start_time: 2018-12-21 16:21:30
+  end_time: 2018-12-21 16:21:30

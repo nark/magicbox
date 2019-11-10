@@ -1,0 +1,38 @@
+<h1>
+  Scenarios
+  <div class="float-right">
+    <%= link_to "New", new_admin_scenario_path, class: "btn btn-info" %>
+  </div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th width="80px"></th>
+      <th>Name</th>
+      <th>Subject</th>
+      <th>Description</th>
+      <th width="52px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @scenarios.each do |scenario| %>
+      <tr>
+        <td style="vertical-align: middle;">
+          <% if scenario.enabled %>
+            <span class="badge badge-pill badge-success">enabled</span>
+          <% end %>
+        </td>
+        <td style="vertical-align: middle;"><%= link_to scenario.name, admin_scenario_path(scenario) %></td>
+        <td style="vertical-align: middle;"><%= scenario.subject.name %></td>
+        <td style="vertical-align: middle;"><%= scenario.description %></td>
+        <td>
+          <%= link_to "Edit", edit_admin_scenario_path(scenario), class: "btn btn-sm btn-success btn-outline-success" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

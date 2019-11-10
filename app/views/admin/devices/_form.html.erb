@@ -1,0 +1,77 @@
+<%= form_for [:admin, @device], :html => {:role => "form"} do |f| %>
+	<h1>
+		<% if @device.new_record? %>
+			New device
+		<% else %>
+			Edit device
+		<% end %>
+
+		<div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <%= f.submit "Save", :class => "btn btn-primary" %>
+    </div>
+	</h1>
+
+	<div class="row">
+		<div class="col-6">
+			<div class="form-group">
+				<%= f.label :name %>
+				<%= f.text_field :name, :class => "form-control" %>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="form-group">
+				<%= f.label :description %>
+				<%= f.text_area :description, :class => "form-control" %>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row">
+		<div class="col-6">
+			<div class="form-group">
+				<%= f.label :device_type %>
+				<%= f.select :device_type, options_for_select(Device.device_types.keys.to_a.map{ |t| [t(t), t] }, f.object.device_type), {}, {:class => "form-control" } %>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="form-group">
+				<%= f.label :device_state %>
+				<%= f.select :device_state, options_for_select(Device.device_states.keys.to_a.map{ |t| [t(t), t] }, f.object.device_state), {}, {:class => "form-control" } %>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="form-group">
+				<%= f.label :product_reference %>
+				<%= f.text_field :product_reference, :class => "form-control" %>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row">
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :pin_type %>
+				<%= f.select :pin_type, options_for_select(Device.pin_types.keys.to_a.map{ |t| [t(t), t] }, f.object.pin_type), {}, {:class => "form-control" } %>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :pin_number %>
+				<%= f.text_field :pin_number, :class => "form-control" %>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :default_duration %>
+				<%= f.text_field :default_duration, :class => "form-control" %>
+			</div>
+		</div>
+	</div>
+<% end %>

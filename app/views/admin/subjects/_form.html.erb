@@ -1,0 +1,31 @@
+<%= form_with(model: [:admin, subject], local: true) do |form| %>
+  <h1>
+    <% if subject.new_record? %>
+      New subject
+    <% else %>
+      Edit subject
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <% if subject.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(subject.errors.count, "error") %> prohibited this subject from being saved:</h2>
+
+      <ul>
+      <% subject.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group col-4">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+<% end %>

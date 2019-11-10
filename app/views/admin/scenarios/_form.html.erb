@@ -1,0 +1,92 @@
+<%= nested_form_for [:admin, scenario] do |form| %>
+  <h1>
+    <% if scenario.new_record? %>
+      New scenario
+    <% else %>
+      Edit scenario
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <br>
+
+  <% if scenario.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(scenario.errors.count, "error") %> prohibited this scenario from being saved:</h2>
+
+      <ul>
+      <% scenario.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-2">
+      <div class="form-group">
+        <br>
+        <%= form.check_box :enabled %> enabled
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <%= form.label :subject_id %>
+        <%= form.select :subject_id, options_from_collection_for_select(Subject.all, "id", "name", form.object.subject_id), {}, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control col-6" %>
+  </div>
+
+  <h3>Crons</h3>
+  <br>
+  <div class="form-group">
+    <%= form.fields_for :crons do |ff| %>
+      <div class="form-inline pb-2">
+        <%= ff.select :command, options_for_select(["start", "stop"], ff.object.command), {}, class: "form-control mr-2" %>
+        <%= ff.select :device_id, options_from_collection_for_select(Device.where.not(device_state: :foo), "id", "name", ff.object.device_id), {}, class: "form-control mr-2" %>
+
+        <label>Every:&nbsp;</label>
+        <%= ff.text_field :time_value, value: ff.object.time_value, class: "form-control mr-2", style: "width: 100px", placeholder: "*" %>
+        <%= ff.select :period, options_for_select(Cron.periods.map { |e| [e.first.titleize, e.first] }, ff.object.period), {}, class: "form-control mr-2" %>
+
+        <label>For:&nbsp;</label>
+        <%= ff.text_field :duration, value: ff.object.duration, class: "form-control mr-2", style: "width: 100px", placeholder: "*" %> sec.&nbsp;
+
+        <span>Between:&nbsp;</span>
+        <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "8:00 am", class: "form-control mr-2" %>
+
+        <span>And:&nbsp;</span>
+        <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2" %>
+
+        <%= ff.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
+      </div>
+    <% end %>
+    <%= form.link_to_add 'Add cron', :crons, class: "btn btn-sm btn-success" %>
+  </div>
+
+<!--  <hr>
+
+   <h3>Conditions</h3>
+  <br>
+  <div class="form-group">
+    <%= form.fields_for :conditions do |ff| %>
+      <%= render "condition_fields", :f => ff %>
+    <% end %>
+    <%= form.link_to_add 'Add condition', :conditions, class: "btn btn-sm btn-success" %>
+  </div> -->
+<% end %>

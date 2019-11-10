@@ -1,0 +1,28 @@
+<h1>
+  Subjects
+  <div class="float-right">
+    <%= link_to "New", new_admin_subject_path, class: "btn btn-info" %>
+  </div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subjects.each do |subject| %>
+      <tr>
+        <td><%= subject.name %></td>
+        <td><%= link_to 'Show', admin_subject_path(subject) %></td>
+        <td><%= link_to 'Edit', edit_admin_subject_path(subject) %></td>
+        <td><%= link_to 'Destroy', admin_subject_path(subject), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

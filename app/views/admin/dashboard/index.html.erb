@@ -1,0 +1,147 @@
+<h1>Dashboard</h1>
+
+<br>
+
+<div class="row">
+	<div class="col-lg-2">
+		<% Device.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
+	    <div class="card mb-3">
+			  <div class="card-body">
+			    <h5 class="card-title">
+			    	<%= link_to device.name, [:admin, device], style: "text-decoration: none; color: #666" %>
+			    	<div class="float-right">
+			    		<span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
+			    	</div>
+			    </h5>
+			  </div>
+			</div>
+	  <% end %>
+	</div>
+
+	<div class="col-lg-7">
+		<div class="row ">
+			<div class="col-lg-12 mb-3">
+		    <div class="card">
+				  <div class="card-body">
+				    <h5 class="card-title"><%= link_to "Temperature", [:admin, @device], style: "text-decoration: none; color: #666" %>
+				    	<div class="float-right">
+				    		<h3 class="text-center font-weight-light text-warning" >
+									<%= @temperatures_values.first[1] %>°C
+								</h3>
+				    	</div>
+				    </h5>
+				  </div>
+				  <div class="card-body">
+						<%= area_chart [ { name: "Temperature", data: @temperatures_values, color: "coral" } ],
+							library: {
+						    elements: {
+					        point: {
+					          radius: 0
+					        }
+						    }
+						  } 
+						%>
+					</div>
+				</div>
+		  </div>
+
+		  <div class="col-lg-12 mb-3">
+		    <div class="card">
+				  <div class="card-body">
+				    <h5 class="card-title"><%= link_to "Humidity", [:admin, @device], style: "text-decoration: none; color: #666" %>
+				    	<div class="float-right">
+				    		<h3 class="text-center font-weight-light text-info">
+									<%= @humiditys_values.first[1] %>%		
+								</h3>
+				    	</div>
+				    </h5>
+				  </div>
+
+				  <div class="card-body">
+				  	<%= area_chart [
+							{ name: "Humidity", data: @humiditys_values, color: "lightblue" }
+						],
+							library: {
+						    elements: {
+					        point: {
+					          radius: 0
+					        }
+						    }
+						  } %>
+					</div>
+				</div>
+		  </div>
+
+		  <div class="col-lg-12 mb-3">
+		    <div class="card">
+				  <div class="card-body">
+				    <h5 class="card-title"><%= link_to "Soil moisture", [:admin, @device], style: "text-decoration: none; color: #666" %>
+				    	<div class="float-right">
+				    		<h3 class="text-center font-weight-light text-success">
+									<%= @soil_moistures_values.first[1] %>%		
+								</h3>
+				    	</div>
+				    </h5>
+				  </div>
+
+				  <div class="card-body">
+				  	<%= area_chart [
+							{ name: "Soil moisture", data: @soil_moistures_values, color: "burlywood" }
+						],
+							library: {
+						    elements: {
+					        point: {
+					          radius: 0
+					        }
+						    }
+						  } %>
+					</div>
+				</div>
+		  </div>
+
+		  <div class="col-lg-12 mb-3">
+		    <div class="card">
+				  <div class="card-body">
+				    <h5 class="card-title"><%= link_to "Water level", [:admin, @device], style: "text-decoration: none; color: #666" %>
+				    	<div class="float-right">
+				    		<h3 class="text-center font-weight-light text-success">
+									<%= @water_levels_values.first[1] %>%		
+								</h3>
+				    	</div>
+				    </h5>
+				  </div>
+
+				  <div class="card-body">
+				  	<%= area_chart [
+							{ name: "Water level", data: @water_levels_values, color: "skyblue" }
+						],
+							library: {
+						    elements: {
+					        point: {
+					          radius: 0
+					        }
+						    }
+						  } %>
+					</div>
+				</div>
+		  </div>
+		</div>
+	</div>
+
+	<div class="col-lg-3">
+		<div class="card">
+		  <ul class="list-group list-group-flush">
+		    <% Event.order(created_at: :desc).limit(20).each do |event| %>
+		    	<li class="list-group-item">
+		    		<span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
+		    		&nbsp;
+		    		<small><%= event.message %></small>
+		    		<div class="float-right">
+		    			<small class="text-muted"><%= fdatetime event.created_at %></small>
+		    		</div>
+		    	</li>
+		    <% end %>
+		  </ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  device_type: 1
+  name: MyString
+  product_reference: MyString
+  description: MyText
+
+two:
+  device_type: 1
+  name: MyString
+  product_reference: MyString
+  description: MyText
