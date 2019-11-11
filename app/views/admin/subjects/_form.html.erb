@@ -8,9 +8,12 @@
 
     <div class="actions float-right">
       <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <%= link_to 'Destroy', admin_subject_path(subject), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
       <%= form.submit "Save", :class => "btn btn-primary" %>
     </div>
   </h1>
+
+  <hr>
 
   <% if subject.errors.any? %>
     <div id="error_explanation">
@@ -24,8 +27,26 @@
     </div>
   <% end %>
 
-  <div class="form-group col-4">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control" %>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <%= form.label "Room" %>
+        <%= form.select :room_id, options_from_collection_for_select(Room.all, "id", "name"), {}, :class => "form-control" %>
+      </div>
+    </div>
+    <div class="col-6">
+
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
   </div>
 <% end %>

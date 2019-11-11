@@ -87,6 +87,6 @@ private
 
   # Only allow a trusted parameter "white list" through.
   def device_params
-    params.require(:device).permit(:device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date)
+    params.require(:device).permit(:room_id, :device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date)
   end
 end

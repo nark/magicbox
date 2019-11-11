@@ -1,8 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light mb-4">
   <div class="container-fluid">
 <!--     <button type="button" id="sidebarCollapse" class="btn btn-light">
         <%= fa_icon "align-left" %>
     </button> -->
+
+    <% if user_signed_in? %>
+      <%= link_to new_admin_room_path do %>
+        <%= fa_icon "plus" %>
+        Room
+      <% end %>
+    <% end %>
+
     <button class="btn btn-light d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <%= fa_icon "list" %>
     </button>

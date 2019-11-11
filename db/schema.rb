@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_10_225817) do
+ActiveRecord::Schema.define(version: 2019_11_11_122631) do
 
   create_table "conditions", force: :cascade do |t|
     t.string "name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2019_11_10_225817) do
     t.integer "pin_type", default: 0
     t.datetime "last_start_date"
     t.integer "default_duration", default: 1000
+    t.integer "room_id"
   end
 
   create_table "devices_data_types", force: :cascade do |t|
@@ -85,6 +86,15 @@ ActiveRecord::Schema.define(version: 2019_11_10_225817) do
     t.integer "condition_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "room_scenarios", force: :cascade do |t|
+    t.integer "room_id"
+    t.integer "scenario_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_room_scenarios_on_room_id"
+    t.index ["scenario_id"], name: "index_room_scenarios_on_scenario_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -134,6 +144,7 @@ ActiveRecord::Schema.define(version: 2019_11_10_225817) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "room_id"
   end
 
   create_table "users", force: :cascade do |t|

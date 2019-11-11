@@ -14,6 +14,7 @@
       <th>Name</th>
       <th>Subject</th>
       <th>Description</th>
+      <th>In use by</th>
       <th width="52px"></th>
     </tr>
   </thead>
@@ -29,6 +30,7 @@
         <td style="vertical-align: middle;"><%= link_to scenario.name, admin_scenario_path(scenario) %></td>
         <td style="vertical-align: middle;"><%= scenario.subject.name %></td>
         <td style="vertical-align: middle;"><%= scenario.description %></td>
+        <td style="vertical-align: middle;"><%= scenario.rooms.pluck(:name).join %></td>
         <td>
           <%= link_to "Edit", edit_admin_scenario_path(scenario), class: "btn btn-sm btn-success btn-outline-success" %>
         </td>

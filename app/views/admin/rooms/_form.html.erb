@@ -1,0 +1,52 @@
+<%= form_with(model: [:admin, room], local: true) do |form| %>
+  <h1>
+    <%= room.new_record? ? "New Room" : "Editing Room" %>
+    <div class="float-right">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if room.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
+
+      <ul>
+      <% room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control col-3" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :room_type %>
+    <%= form.select :room_type, options_for_select(Room.room_types.keys.map { |e| [e.titleize, e] }, form.object.room_type), {}, class: "form-control col-3" %>
+  </div>
+
+  <hr> 
+
+  <div class="form-group form-inline">
+    <%= form.label :length, class: "mr-2" %>
+    <%= form.number_field :length, class: "form-control mr-2" %>
+
+    <%= form.label :width, class: "mr-2" %>
+    <%= form.number_field :width, class: "form-control mr-2" %>
+
+    <%= form.label :height, class: "mr-2" %>
+    <%= form.number_field :height, class: "form-control mr-2" %>
+  </div>
+
+  <hr> 
+
+  <div class="form-group">
+    <%= form.label "Scenario" %>
+    <%= form.select :scenario_id, options_from_collection_for_select(Scenario.all, "id", "name", @room.scenario ? room.scenario.id : Scenario.first.id), {}, class: "form-control col-3" %>
+  </div>
+<% end %>

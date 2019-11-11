@@ -12,6 +12,22 @@
     </div>
 	</h1>
 
+	<hr>
+
+	<div class="row">
+		<div class="col-6">
+			<div class="form-group">
+				<%= f.label "Room" %>
+				<%= f.select :room_id, options_from_collection_for_select(Room.all, "id", "name"), {}, :class => "form-control" %>
+			</div>
+		</div>
+		<div class="col-6">
+
+		</div>
+	</div>
+
+	<hr>
+
 	<div class="row">
 		<div class="col-6">
 			<div class="form-group">
@@ -27,7 +43,7 @@
 		</div>
 	</div>
 
-	<br>
+	<hr>
 
 	<div class="row">
 		<div class="col-6">

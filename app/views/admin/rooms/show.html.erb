@@ -1,0 +1,53 @@
+<h1>
+  <%= @room.name %>
+  <div class="pull-right">
+    <%= link_to 'Edit', edit_admin_room_path(@room), class: "btn btn-success" %>
+  </div>
+</h1>
+
+<hr> 
+
+<div class="row">
+  <div class="col-4">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <span><b>Name</b></span>
+        <span class="pull-right"><%= @room.name %></span>
+      </li>
+      <li class="list-group-item">
+        <span><b>Type</b></span>
+        <span class="pull-right"><%= @room.room_type.titleize %></span>
+      </li>
+      <li class="list-group-item">
+        <span><b>Scenario</b></span>
+        <span class="pull-right"><%= @room.scenario.name %></span>
+      </li>
+    </ul>
+  </div>
+  <div class="col-4">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <span><b>Length</b></span>
+        <span class="pull-right"><%= @room.length %></span>
+      </li>
+      <li class="list-group-item">
+        <span><b>Width</b></span>
+        <span class="pull-right"><%= @room.width %></span>
+      </li>
+      <li class="list-group-item">
+        <span><b>Height</b></span>
+        <span class="pull-right"><%= @room.height %></span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<br>
+
+<h3>Subjects</h3>
+<%= render partial: "admin/subjects/subjects", locals: {subjects: @room.subjects} %>
+
+<br>
+
+<h3>Devices</h3>
+<%= render partial: "admin/devices/devices", locals: {devices: @room.devices} %>

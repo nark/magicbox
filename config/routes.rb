@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :rooms
   resources :events
   
   # Devise setup
@@ -18,6 +17,8 @@ Rails.application.routes.draw do
   # Admin namespace
   namespace :admin do
   	get "/dashboard" => "dashboard#index"
+
+    resources :rooms
 
   	resources :devices  do
       post :start, on: :member

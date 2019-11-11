@@ -1,0 +1,21 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Room</th>
+      <th width="70px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% subjects.each do |subject| %>
+      <tr>
+        <td><b><%= link_to subject.name, admin_subject_path(subject) %></b></td>
+        <td><%= link_to subject.room.name, admin_room_path(subject.room) %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_subject_path(subject), class: "btn btn-sm btn-outline-success" %>          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

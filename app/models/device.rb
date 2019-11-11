@@ -21,6 +21,8 @@ class Device < ApplicationRecord
     :analog 		=> 1
   }
 
+  belongs_to :room
+
   has_many :devices_data_types
   has_many :data_types, through: :devices_data_types, source: :data_type
   has_many :crons

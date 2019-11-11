@@ -1,5 +1,6 @@
 class Scenario < ApplicationRecord
-	before_update :enable_scenarios
+	has_many :room_scenarios
+	has_many :rooms, through: :room_scenarios
 
 	belongs_to :subject
 
@@ -10,22 +11,14 @@ class Scenario < ApplicationRecord
 	accepts_nested_attributes_for :crons, allow_destroy: true, reject_if: :all_blank
 	accepts_nested_attributes_for :conditions, allow_destroy: true, reject_if: :all_blank
 
-
-	def enable_scenarios
-		if enabled_changed?
-			Scenario.where.not(id: self.id).each do |scenario|
-				scenario.enabled = false
-				scenario.save
-			end
-		end
-	end
-
 	def self.run
 		logger.info "\n########################\n"
 		logger.info "\n# Run scenarios\n"
 
-		Scenario.where(enabled: true).each do |scenario|
-			logger.info "\n -> #{scenario.name} [#{scenario.crons.count} crons]\n"
+		Room.each do |room|
+			scenario = room.scenario
+
+			logger.info "\n -> #{room.name} : #{scenario.name} [#{scenario.crons.count} crons]\n"
 
 			scenario.crons.each do |cron|
 				#logger.info "\ncron #{cron}\n"
