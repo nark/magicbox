@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_213226) do
+ActiveRecord::Schema.define(version: 2019_11_10_225817) do
 
   create_table "conditions", force: :cascade do |t|
     t.string "name"
@@ -83,6 +83,16 @@ ActiveRecord::Schema.define(version: 2019_01_16_213226) do
     t.integer "device_id"
     t.string "description"
     t.integer "condition_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.integer "room_type"
+    t.integer "length"
+    t.integer "width"
+    t.integer "height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

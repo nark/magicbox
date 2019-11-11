@@ -1,0 +1,46 @@
+<nav id="sidebar">
+  <div class="sidebar-header">
+      <h3><%= link_to "Magicbox", root_path %></h3>
+      <strong>MB</strong>
+  </div>
+
+  <ul class="list-unstyled components">
+  	<li class="active">
+      <%= link_to admin_dashboard_path do %>
+      	<%= fa_icon "line-chart" %>
+      	Dashboard
+      <% end %>
+    </li>
+    <li>
+      <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <%= fa_icon "home" %>
+        Rooms
+      </a>
+      <ul class="collapse list-unstyled" id="roomsSubmenu">
+      	<% Room.all.each do |room| %>
+      		<li>
+             <%= link_to room.name, room %>
+          </li>
+      	<% end %>
+      </ul>
+    </li>
+    <li>
+      <%= link_to admin_devices_path do %>
+      	<%= fa_icon "sitemap" %>
+      	Devices
+      <% end %>
+    </li>
+    <li>
+      <%= link_to admin_subjects_path do %>
+      	<%= fa_icon "leaf" %>
+      	Subjects
+      <% end %>
+    </li>
+    <li>
+      <%= link_to admin_scenarios_path do %>
+      	<%= fa_icon "clock-o" %>
+      	Scenarios
+      <% end %>
+    </li>
+  </ul>
+</nav>
