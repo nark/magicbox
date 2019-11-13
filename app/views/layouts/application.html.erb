@@ -10,14 +10,13 @@
   </head>
 
   <body>
-
-<div class="wrapper">
+    <% if user_signed_in? %>
+      <div class="wrapper">
         <!-- Sidebar  -->
         <%= render 'layouts/sidebar' %>
 
         <!-- Page Content  -->
         <div id="content">
-
             <%= render 'layouts/nav' %>
 
             <div class="container-fluid">
@@ -25,6 +24,10 @@
               <%= yield %> 
             </div>
         </div>
-    </div>   
+      </div>  
+    <% else %>   
+      <h1 class="text-center mt-5 ">MagicBox</h1>
+      <%= yield %> 
+    <% end %> 
   </body>
 </html>

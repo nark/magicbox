@@ -1,5 +1,6 @@
 class UpdateCrons < ActiveRecord::Migration[5.2]
   def change
-  	change_column :crons, :period, :integer
+  	remove_column :crons, :period
+  	add_column :crons, :period, :integer, default: 0
   end
 end

@@ -2,7 +2,7 @@ class Scenario < ApplicationRecord
 	has_many :room_scenarios
 	has_many :rooms, through: :room_scenarios
 
-	belongs_to :subject
+	#belongs_to :subject
 
 	has_many :crons
 	has_many :conditions
@@ -15,13 +15,13 @@ class Scenario < ApplicationRecord
 		logger.info "\n########################\n"
 		logger.info "\n# Run scenarios\n"
 
-		Room.each do |room|
+		Room.all.each do |room|
 			scenario = room.scenario
 
 			logger.info "\n -> #{room.name} : #{scenario.name} [#{scenario.crons.count} crons]\n"
 
 			scenario.crons.each do |cron|
-				#logger.info "\ncron #{cron}\n"
+				logger.info "\ncron #{cron}\n"
 
 				now = Time.now
 

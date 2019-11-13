@@ -1,5 +1,6 @@
 class Admin::DevicesController < ApplicationController
 	before_action :authenticate_user!
+  before_action :set_room, only: [:new, :show, :edit, :update, :destroy]
   before_action :set_device, only: [:show, :edit, :update, :destroy, :start, :stop]
 
 	def index
@@ -44,7 +45,7 @@ class Admin::DevicesController < ApplicationController
     @device = Device.new(device_params)
 
     if @device.save
-      redirect_to admin_device_path(@device), notice: 'Device created with success.'
+      redirect_to admin_room_device_path(@device.room, @device), notice: 'Device created with success.'
     else
       render :new
     end
@@ -54,7 +55,7 @@ class Admin::DevicesController < ApplicationController
   # PATCH/PUT /devices/1
   def update
     if @device.update(device_params)
-      redirect_to admin_device_path(@device), notice: 'Device updated with success.'
+      redirect_to admin_room_device_path(@device.room, @device), notice: 'Device updated with success.'
     else
       render :edit
     end
@@ -80,7 +81,10 @@ class Admin::DevicesController < ApplicationController
 
 
 private
-  # Use callbacks to share common setup or constraints between actions.
+  def set_room
+    @room = Room.find(params[:room_id])
+  end
+
   def set_device
     @device = Device.find(params[:id])
   end

@@ -5,5 +5,5 @@
   <%= @subject.name %>
 </p>
 
-<%= link_to 'Edit', edit_admin_subject_path(@subject) %> |
-<%= link_to 'Back', admin_subjects_path %>
+<%= link_to 'Edit', edit_admin_room_subject_path(@subject.room, @subject) %> |
+<%= link_to 'Back', admin_room_path(@subject.room) %>

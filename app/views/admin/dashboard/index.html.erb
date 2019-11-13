@@ -8,7 +8,7 @@
 	    <div class="card mb-3">
 			  <div class="card-body">
 			    <h5 class="card-title">
-			    	<%= link_to device.name, [:admin, device], style: "text-decoration: none; color: #666" %>
+			    	<%= link_to device.name, [:admin, device.room, device], style: "text-decoration: none; color: #666" %>
 			    	<div class="float-right">
 			    		<span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
 			    	</div>
@@ -26,7 +26,7 @@
 				    <h5 class="card-title"><%= link_to "Temperature", [:admin, @device], style: "text-decoration: none; color: #666" %>
 				    	<div class="float-right">
 				    		<h3 class="text-center font-weight-light text-warning" >
-									<%= @temperatures_values.first[1] %>°C
+									<%= @temperatures_values.first[1] if @temperatures_values.count > 0 %>°C
 								</h3>
 				    	</div>
 				    </h5>
@@ -51,7 +51,7 @@
 				    <h5 class="card-title"><%= link_to "Humidity", [:admin, @device], style: "text-decoration: none; color: #666" %>
 				    	<div class="float-right">
 				    		<h3 class="text-center font-weight-light text-info">
-									<%= @humiditys_values.first[1] %>%		
+									<%= @humiditys_values.first[1] if @humiditys_values.count > 0 %>%		
 								</h3>
 				    	</div>
 				    </h5>
@@ -78,7 +78,7 @@
 				    <h5 class="card-title"><%= link_to "Soil moisture", [:admin, @device], style: "text-decoration: none; color: #666" %>
 				    	<div class="float-right">
 				    		<h3 class="text-center font-weight-light text-success">
-									<%= @soil_moistures_values.first[1] %>%		
+									<%= @soil_moistures_values.first[1] if @soil_moistures_values.count > 0  %>%		
 								</h3>
 				    	</div>
 				    </h5>
@@ -105,7 +105,7 @@
 				    <h5 class="card-title"><%= link_to "Water level", [:admin, @device], style: "text-decoration: none; color: #666" %>
 				    	<div class="float-right">
 				    		<h3 class="text-center font-weight-light text-success">
-									<%= @water_levels_values.first[1] %>%		
+									<%= @water_levels_values.first[1] if @water_levels_values.count > 0 %>%		
 								</h3>
 				    	</div>
 				    </h5>

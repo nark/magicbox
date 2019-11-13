@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_11_11_122631) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "conditions", force: :cascade do |t|
     t.string "name"
     t.integer "data_type_id"
@@ -28,12 +31,12 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.integer "scenario_id"
     t.integer "device_id"
     t.string "command"
-    t.integer "period"
-    t.time "start_time"
     t.integer "delay"
     t.integer "repeats"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "period", default: 0
+    t.time "start_time"
     t.time "end_time"
     t.integer "cron_type", default: 0
     t.datetime "last_exec_time"
@@ -89,8 +92,8 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
   end
 
   create_table "room_scenarios", force: :cascade do |t|
-    t.integer "room_id"
-    t.integer "scenario_id"
+    t.bigint "room_id"
+    t.bigint "scenario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["room_id"], name: "index_room_scenarios_on_room_id"
@@ -125,21 +128,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.boolean "enabled", default: false
   end
 
-  create_table "sensor_datatypes", force: :cascade do |t|
-    t.integer "data_type_id"
-    t.integer "sensor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "sensors", force: :cascade do |t|
-    t.string "name"
-    t.string "product_reference"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "subjects", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -161,4 +149,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "room_scenarios", "rooms"
+  add_foreign_key "room_scenarios", "scenarios"
 end

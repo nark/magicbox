@@ -2,10 +2,10 @@
 	<%= @device.name %>
 		
 	<div class="float-right">
-		<%= link_to "Stop", stop_admin_device_path(@device), method: :post, class: "btn btn-danger" %>
-		<%= link_to "Start", start_admin_device_path(@device), method: :post, class: "btn btn-info" %>
-		<%= link_to "Edit", edit_admin_device_path(@device), class: "btn btn btn-success" %>
-		<%= link_to "Delete", admin_device_path(@device), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-danger" %>
+		<%= link_to "Stop", stop_admin_room_device_path(@device.room, @device), method: :post, class: "btn btn-danger" %>
+		<%= link_to "Start", start_admin_room_device_path(@device.room, @device), method: :post, class: "btn btn-info" %>
+		<%= link_to "Edit", edit_admin_room_device_path(@device.room, @device), class: "btn btn btn-success" %>
+		<%= link_to "Delete", admin_room_device_path(@device.room, @device), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-danger" %>
 	</div>
 </h1>
 

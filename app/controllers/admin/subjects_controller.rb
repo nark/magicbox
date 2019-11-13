@@ -1,4 +1,5 @@
 class Admin::SubjectsController < ApplicationController
+  before_action :set_room, only: [:new, :show, :edit, :update, :destroy]
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
 
   # GET /subjects
@@ -28,7 +29,7 @@ class Admin::SubjectsController < ApplicationController
 
     respond_to do |format|
       if @subject.save
-        format.html { redirect_to admin_subject_path(@subject), notice: 'Subject was successfully created.' }
+        format.html { redirect_to admin_room_subject_path(@subject.room, @subject), notice: 'Subject was successfully created.' }
         format.json { render :show, status: :created, location: @subject }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class Admin::SubjectsController < ApplicationController
   def update
     respond_to do |format|
       if @subject.update(subject_params)
-        format.html { redirect_to admin_subject_path(@subject), notice: 'Subject was successfully updated.' }
+        format.html { redirect_to admin_room_subject_path(@subject.room, @subject), notice: 'Subject was successfully updated.' }
         format.json { render :show, status: :ok, location: @subject }
       else
         format.html { render :edit }
@@ -62,7 +63,11 @@ class Admin::SubjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_room
+      @room = Room.find(params[:room_id])
+    end
+
+
     def set_subject
       @subject = Subject.find(params[:id])
     end

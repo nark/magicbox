@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, subject], local: true) do |form| %>
+<%= form_with(model: [:admin, room, subject], local: true) do |form| %>
   <h1>
     <% if subject.new_record? %>
       New subject
@@ -8,7 +8,9 @@
 
     <div class="actions float-right">
       <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
-      <%= link_to 'Destroy', admin_subject_path(subject), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% unless subject.new_record? %>
+        <%= link_to 'Destroy', admin_room_subject_path(subject.room, subject), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
       <%= form.submit "Save", :class => "btn btn-primary" %>
     </div>
   </h1>
@@ -28,13 +30,13 @@
   <% end %>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <div class="form-group">
         <%= form.label "Room" %>
-        <%= form.select :room_id, options_from_collection_for_select(Room.all, "id", "name"), {}, :class => "form-control" %>
+        <%= form.select :room_id, options_from_collection_for_select(Room.all, "id", "name", room.id), {}, :class => "form-control" %>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
 
     </div>
   </div>
@@ -42,7 +44,7 @@
   <hr>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <div class="form-group">
         <%= form.label :name %>
         <%= form.text_field :name, class: "form-control" %>

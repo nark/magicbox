@@ -1,6 +1,6 @@
-<%= form_for [:admin, @device], :html => {:role => "form"} do |f| %>
+<%= form_for [:admin, room, device], :html => {:role => "form"} do |f| %>
 	<h1>
-		<% if @device.new_record? %>
+		<% if device.new_record? %>
 			New device
 		<% else %>
 			Edit device
@@ -18,7 +18,7 @@
 		<div class="col-6">
 			<div class="form-group">
 				<%= f.label "Room" %>
-				<%= f.select :room_id, options_from_collection_for_select(Room.all, "id", "name"), {}, :class => "form-control" %>
+				<%= f.select :room_id, options_from_collection_for_select(Room.all, "id", "name", room.id), {}, :class => "form-control" %>
 			</div>
 		</div>
 		<div class="col-6">

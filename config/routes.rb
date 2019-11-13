@@ -18,14 +18,18 @@ Rails.application.routes.draw do
   namespace :admin do
   	get "/dashboard" => "dashboard#index"
 
-    resources :rooms
+    resources :devices, only: [:index]
+    resources :subjects, only: [:index]
+    
+    resources :rooms do
+      resources :devices  do
+        post :start, on: :member
+        post :stop,  on: :member
+      end
 
-  	resources :devices  do
-      post :start, on: :member
-      post :stop,  on: :member
+      resources :subjects
     end
-
-    resources :subjects
+  
     resources :scenarios
     resources :conditions
     resources :operations

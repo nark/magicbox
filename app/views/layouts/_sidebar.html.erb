@@ -19,7 +19,9 @@
       <ul class="collapse list-unstyled" id="roomsSubmenu">
       	<% Room.all.each do |room| %>
       		<li>
-             <%= link_to room.name, [:admin, room] %>
+             <%= link_to [:admin, room] do %>
+              <small><%= fa_icon "home" %></small> <%= room.name %>
+             <% end %>
           </li>
       	<% end %>
       </ul>
