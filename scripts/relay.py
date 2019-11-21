@@ -33,4 +33,6 @@ except:
 
 finally:
   print("clean up") 
+  #GPIO.cleanup()
   #GPIO.cleanup() # cleanup all GPIO 
+

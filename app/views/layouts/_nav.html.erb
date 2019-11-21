@@ -1,30 +1,36 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light mb-4">
   <div class="container-fluid">
-<!--     <button type="button" id="sidebarCollapse" class="btn btn-light">
-        <%= fa_icon "align-left" %>
-    </button> -->
-
     <% if user_signed_in? %>
-      <%= link_to new_admin_room_path do %>
-        <%= fa_icon "plus" %>
-        Room
-      <% end %>
+      <ol class="breadcrumb p-0 m-0 bg-transparent">
+        <%= render_breadcrumbs tag: :li, separator: "<span class='mx-2'>#{icon( "fas","angle-right")}</span>" %>
+      </ol>
     <% end %>
 
     <button class="btn btn-light d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <%= fa_icon "list" %>
+        <%= icon "fas", "list" %>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <%= link_to "API", "/apidoc", class: "nav-link" %>
-        </li>
-        <li class="nav-item">
-          <% if user_signed_in? %>
-            <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
-              <%= fa_icon "sign-out" %>
-              Disconnect
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to new_admin_grow_path, class: "nav-link" do %>
+              <%= icon "fas", "plus" %>
+              Grow
             <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to new_admin_room_path, class: "nav-link" do %>
+              <%= icon "fas", "plus" %>
+              Room
+            <% end %>
+          </li>
+        <% end %>
+
+        <li class="nav-item">
+          <%= link_to "/apidoc", class: "nav-link" do %>
+            <%= icon "fas", "database" %>
+            API
           <% end %>
         </li>
       </ul>

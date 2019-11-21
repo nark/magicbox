@@ -1,10 +1,13 @@
-class Admin::ScenariosController < ApplicationController
+class Admin::ScenariosController < Admin::AdminController
+  before_action :authenticate_user!
   before_action :set_scenario, only: [:show, :edit, :update, :destroy]
 
   # GET /scenarios
   # GET /scenarios.json
   def index
     @scenarios = Scenario.all
+
+    add_breadcrumb "Scenarios"
   end
 
   # GET /scenarios/1

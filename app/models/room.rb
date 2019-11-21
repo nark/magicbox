@@ -2,8 +2,9 @@ class Room < ApplicationRecord
 	attr_accessor :scenario_id
 
 	has_many :subjects
-	has_many :devices
-
+	has_many :devices, dependent: :delete_all
+	has_many :events, dependent: :delete_all
+	
 	has_one :room_scenario
 	has_one :scenario, through: :room_scenario
 

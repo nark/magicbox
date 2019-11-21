@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, room], local: true) do |form| %>
+<%= form_with(model: [:admin, room], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
   <h1>
     <%= room.new_record? ? "New Room" : "Editing Room" %>
     <div class="float-right">

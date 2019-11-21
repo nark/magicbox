@@ -1,4 +1,5 @@
-class Admin::RoomsController < ApplicationController
+class Admin::RoomsController < Admin::AdminController
+  before_action :authenticate_user!
   before_action :set_room, only: [:show, :edit, :update, :destroy]
 
   # GET /rooms
@@ -10,6 +11,7 @@ class Admin::RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    add_breadcrumb @room.name, [:admin, @room]
   end
 
   # GET /rooms/new

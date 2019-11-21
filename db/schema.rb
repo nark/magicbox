@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_11_122631) do
+ActiveRecord::Schema.define(version: 2019_11_20_153603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.datetime "last_start_date"
     t.integer "default_duration", default: 1000
     t.integer "room_id"
+    t.boolean "use_duration", default: false
   end
 
   create_table "devices_data_types", force: :cascade do |t|
@@ -76,6 +77,32 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.integer "event_type"
     t.text "message"
     t.json "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "room_id"
+    t.integer "device_id"
+  end
+
+  create_table "grows", force: :cascade do |t|
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "substrate"
+    t.integer "flowering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "grow_status", default: 0
+    t.integer "number_of_subjects", default: 4
+  end
+
+  create_table "observations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "grow_id"
+    t.integer "room_id"
+    t.integer "subject_id"
+    t.text "body"
+    t.float "water"
+    t.float "nutrients"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -117,6 +144,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "device_id"
+    t.string "html_color"
+    t.string "category_name", default: "default"
   end
 
   create_table "scenarios", force: :cascade do |t|
@@ -133,6 +163,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "room_id"
+    t.integer "grow_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -144,6 +175,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_122631) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "authentication_token", limit: 30
+    t.string "username"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

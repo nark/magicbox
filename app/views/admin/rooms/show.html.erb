@@ -1,12 +1,10 @@
 <h1>
-  <%= @room.name %>
-  <div class="pull-right">
-    <%= link_to new_admin_room_subject_path(@room), class: "btn btn-info" do %>
-      <%= fa_icon "plus" %>
-      Subject
-    <% end %>
+  <%= @room.name %> <span class="text-muted" style="font-size: 14px">
+    [<%= @room.room_type.titleize %>] (<%= @room.length %> x <%= @room.width %> x <%= @room.height %>)
+  </span>
+  <div class="float-right">
     <%= link_to new_admin_room_device_path(@room), class: "btn btn-info" do %>
-      <%= fa_icon "plus" %>
+      <%= icon "fas", "plus" %>
       Device
     <% end %>
     <%= link_to 'Edit', edit_admin_room_path(@room), class: "btn btn-success" %>
@@ -15,96 +13,47 @@
 
 <hr> 
 
-<div class="row">
-  <div class="col-4">
-    <h4>Info</h4>
-    <ul class="list-group mb-3">
-      <li class="list-group-item">
-        <span><b>Name</b></span>
-        <span class="pull-right"><%= @room.name %></span>
-      </li>
-      <li class="list-group-item">
-        <span><b>Type</b></span>
-        <span class="pull-right"><%= @room.room_type.titleize %></span>
-      </li>
-      <li class="list-group-item">
-        <span><b>Scenario</b></span>
-        <span class="pull-right"><%= @room.scenario.name %></span>
-      </li>
-    </ul>
-
-    <ul class="list-group">
-      <li class="list-group-item">
-        <span><b>Length</b></span>
-        <span class="pull-right"><%= @room.length %></span>
-      </li>
-      <li class="list-group-item">
-        <span><b>Width</b></span>
-        <span class="pull-right"><%= @room.width %></span>
-      </li>
-      <li class="list-group-item">
-        <span><b>Height</b></span>
-        <span class="pull-right"><%= @room.height %></span>
-      </li>
-    </ul>
-  </div>
-  <div class="col-8">
-    <h4>Subjects</h4>
-    <div class="row">
-      <% @room.subjects.each do |subject| %>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title"><%= link_to subject.name, [:admin, subject.room, subject] %>
-              <div class="pull-right">
-                <small><small class="text-muted">Subject</small></small>
-              </div>
-            </h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <%= link_to 'Edit', edit_admin_room_subject_path(subject.room, subject), class: "btn btn-outline-success pull-right" %>
-          </div>
-        </div>
-      </div>
+<h4>
+  Devices
+  <div class="float-right">
+    <%= link_to admin_room_devices_path(@room), class: "text-muted mr-2", style: "font-size: 11px;" do %>
+      <%= icon "fas", "eye" %> All devices
     <% end %>
-    </div>
+    <%= link_to admin_room_events_path(@room), class: "text-muted", style: "font-size: 11px;" do %>
+      <%= icon "fas", "eye" %> All events
+    <% end %>
+  </div>
+</h4>
+
+<div class="row">
+  <div class="col-sm-12 col-lg-9">
+    <%= render partial: "admin/rooms/room_devices", locals: {room: @room} %>
+  </div>
+
+  <div class="col-sm-12 col-md-8 col-lg-3">
+    <%= render partial: "admin/events/events", locals: {room: @room} %>
   </div>
 </div>
 
-<br>
+<br> 
 
-<h4>Devices</h4>
+<h4>
+  Subjects
+</h4>
+
+<%= render partial: "admin/subjects/subjects_charts", locals: { subjects: @room.subjects } %>
 
 <div class="row">
-  <% @room.devices.each do |device| %>
-    <div class="col-3">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title"><%= link_to device.name, [:admin, device.room, device] %>
-            <div class="pull-right">
-              <% if !device.foo? %>
-                <span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
-              <% end %>
-            </div>
-          </h5>
-          <p class="card-text">
-            <h3 class="font-weight-light text-info" >
-              <% if device.foo? %>
-                <% sample = device.data_types.first.samples.last %>
-                <% if sample %>
-                  <%= sample.value %> <%= sample.unit == "percent" ? "%" : "°C"  %>
-                <% end %>
-              <% end %>
-            </h3>
-          </p>
-          <div class="pull-right">
-            <% if !device.foo? %>
-              <%= link_to "Stop", stop_admin_room_device_path(device.room, device), method: :post, class: "btn btn-outline-danger" %>
-              <%= link_to "Start", start_admin_room_device_path(device.room, device), method: :post, class: "btn btn-outline-info" %>
-            <% end %>
-            <%= link_to "Edit", edit_admin_room_device_path(device.room, device), class: "btn btn-outline-success" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "admin/subjects/subjects", locals: { subjects: @room.subjects } %>
 </div>
+
+<% if @room.scenario %>
+  <br> 
+
+  <h4><%= @room.scenario.name %></h4>
+
+  <%= render partial: "admin/scenarios/scenario", locals: {scenario: @room.scenario} %>
+
+  <br>
+<% end %>
+

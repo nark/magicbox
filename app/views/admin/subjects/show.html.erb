@@ -1,9 +1,61 @@
-<p id="notice"><%= notice %></p>
+<h1>
+	<%= @subject.name %>
+	
+	<div class="float-right">
+		<%= link_to 'Back', admin_room_path(@subject.room), class: "btn btn-light border" %>
+		<%= link_to 'Edit', edit_admin_grow_subject_path(@subject.grow, @subject), class: "btn btn-success" %>	
+		<%= link_to icon( "fas", "plus")+" "+icon( "fas", "comment-dots"), new_admin_grow_subject_observation_path(@subject.grow, @subject), class: "btn btn-outline-primary" %>	
+	</div>
+</h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @subject.name %>
-</p>
+<hr>
 
-<%= link_to 'Edit', edit_admin_room_subject_path(@subject.room, @subject) %> |
-<%= link_to 'Back', admin_room_path(@subject.room) %>
+<%= render partial: "admin/subjects/subjects_charts", locals: { subjects: [@subject] } %>
+
+<hr>
+
+<div class="row">
+	<div class="col-9">
+		<h4>Observations</h4>
+		<% @subject.observations.order(created_at: :desc).each do |observation| %>
+			<div class="card mb-4">
+				<div class="card-header">
+					@<%= observation.user.username %>
+					<div class="float-right">
+						<%= time_ago_in_words observation.created_at %>
+						<% if observation.user.id == current_user.id %>
+							<%= link_to edit_admin_grow_subject_observation_path(@subject.grow, @subject), class: "btn text-success" do %>
+					    	<%= icon("fas", "edit") %>
+					    <% end %>
+						<% end %>
+					</div>
+				</div>
+			  <div class="card-body">
+			    <p class="card-text"><%= observation.body %></p>
+			  </div>
+			  <div class="card-footer">
+			  	<div class="row">
+		        <div class="col-6 text-center">
+		          <small class="text-info"><%= observation.water %> L</small>
+		        </div>
+		        <div class="col-6 text-center">
+		          <small class="text-success"><%= observation.nutrients %> mL/LL</small>
+		        </div>
+		      </div>
+			  </div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-3">
+		<h4>QR Code</h4>
+		<%= image_tag @subject.generate_qr(5), class: "img-fluid" %>
+		<hr>
+		<h4>In room</h4>
+		<div class="list-group">
+			<%= link_to [:admin, @subject.room], class: "list-group-item" do %>
+				<%= icon "fas", "home" %> &nbsp;
+				<%= @subject.room.name %>
+			<% end %>
+		</div>
+	</div>
+</div>

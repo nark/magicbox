@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  belongs_to :room
+  belongs_to :device
+  
 	enum event_type: {
     :action		=> 0,
     :alert 		=> 1,

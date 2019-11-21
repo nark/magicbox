@@ -3,145 +3,172 @@
 <br>
 
 <div class="row">
-	<div class="col-lg-2">
-		<% Device.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
-	    <div class="card mb-3">
-			  <div class="card-body">
-			    <h5 class="card-title">
-			    	<%= link_to device.name, [:admin, device.room, device], style: "text-decoration: none; color: #666" %>
-			    	<div class="float-right">
-			    		<span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
-			    	</div>
-			    </h5>
-			  </div>
-			</div>
-	  <% end %>
-	</div>
-
-	<div class="col-lg-7">
-		<div class="row ">
-			<div class="col-lg-12 mb-3">
-		    <div class="card">
-				  <div class="card-body">
-				    <h5 class="card-title"><%= link_to "Temperature", [:admin, @device], style: "text-decoration: none; color: #666" %>
-				    	<div class="float-right">
-				    		<h3 class="text-center font-weight-light text-warning" >
-									<%= @temperatures_values.first[1] if @temperatures_values.count > 0 %>°C
-								</h3>
-				    	</div>
-				    </h5>
-				  </div>
-				  <div class="card-body">
-						<%= area_chart [ { name: "Temperature", data: @temperatures_values, color: "coral" } ],
-							library: {
-						    elements: {
-					        point: {
-					          radius: 0
-					        }
-						    }
-						  } 
-						%>
-					</div>
-				</div>
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+		  <div class="card-header">
+		    Weather
+	  		<div class="float-right">
+	  			<small class="text-muted">Paris/France</small>
+	  		</div>
 		  </div>
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<%= icon "fas", "sun", class: "fa-2x text-warning" %>
+		    	<div class="float-right">
+		    		<h3 class="font-weight-light text-warning">
+		    			<%= weather_temp %>
+		    		</h3>
+		    	</div>
+		    </li>
 
-		  <div class="col-lg-12 mb-3">
-		    <div class="card">
-				  <div class="card-body">
-				    <h5 class="card-title"><%= link_to "Humidity", [:admin, @device], style: "text-decoration: none; color: #666" %>
-				    	<div class="float-right">
-				    		<h3 class="text-center font-weight-light text-info">
-									<%= @humiditys_values.first[1] if @humiditys_values.count > 0 %>%		
-								</h3>
-				    	</div>
-				    </h5>
-				  </div>
-
-				  <div class="card-body">
-				  	<%= area_chart [
-							{ name: "Humidity", data: @humiditys_values, color: "lightblue" }
-						],
-							library: {
-						    elements: {
-					        point: {
-					          radius: 0
-					        }
-						    }
-						  } %>
-					</div>
-				</div>
-		  </div>
-
-		  <div class="col-lg-12 mb-3">
-		    <div class="card">
-				  <div class="card-body">
-				    <h5 class="card-title"><%= link_to "Soil moisture", [:admin, @device], style: "text-decoration: none; color: #666" %>
-				    	<div class="float-right">
-				    		<h3 class="text-center font-weight-light text-success">
-									<%= @soil_moistures_values.first[1] if @soil_moistures_values.count > 0  %>%		
-								</h3>
-				    	</div>
-				    </h5>
-				  </div>
-
-				  <div class="card-body">
-				  	<%= area_chart [
-							{ name: "Soil moisture", data: @soil_moistures_values, color: "burlywood" }
-						],
-							library: {
-						    elements: {
-					        point: {
-					          radius: 0
-					        }
-						    }
-						  } %>
-					</div>
-				</div>
-		  </div>
-
-		  <div class="col-lg-12 mb-3">
-		    <div class="card">
-				  <div class="card-body">
-				    <h5 class="card-title"><%= link_to "Water level", [:admin, @device], style: "text-decoration: none; color: #666" %>
-				    	<div class="float-right">
-				    		<h3 class="text-center font-weight-light text-success">
-									<%= @water_levels_values.first[1] if @water_levels_values.count > 0 %>%		
-								</h3>
-				    	</div>
-				    </h5>
-				  </div>
-
-				  <div class="card-body">
-				  	<%= area_chart [
-							{ name: "Water level", data: @water_levels_values, color: "skyblue" }
-						],
-							library: {
-						    elements: {
-					        point: {
-					          radius: 0
-					        }
-						    }
-						  } %>
-					</div>
-				</div>
-		  </div>
+		    <li class="list-group-item">
+		    	<%= icon "fas", "cloud-rain", class: "fa-2x text-info" %>
+		    	<div class="float-right">
+		    		<h3 class="font-weight-light text-info ">
+		    			<%= weather_humidity %>
+		    		</h3>
+		    	</div>
+		    </li>
+		  </ul>
 		</div>
 	</div>
 
-	<div class="col-lg-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
 		<div class="card">
+			<div class="card-header">
+		    CPU
+		  </div>
+
 		  <ul class="list-group list-group-flush">
-		    <% Event.order(created_at: :desc).limit(20).each do |event| %>
-		    	<li class="list-group-item">
-		    		<span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
-		    		&nbsp;
-		    		<small><%= event.message %></small>
-		    		<div class="float-right">
-		    			<small class="text-muted"><%= fdatetime event.created_at %></small>
-		    		</div>
-		    	</li>
-		    <% end %>
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Usage
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= cpu_usage %>%
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Temp
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= cpu_temp %>°C
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Voltage
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= voltage %>V
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+
+
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+			<div class="card-header">
+		    Memory
+		  </div>
+
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Used
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= used_memory %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Free 
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= free_memory %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+			<div class="card-header">
+		    System
+		  </div>
+
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Version
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= system_info %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Uptime 
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= uptime_info %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
 		  </ul>
 		</div>
 	</div>
 </div>
+
+
+<h2>Grows</h2>
+<% Grow.all.each do |grow| %>
+	<div class="row">
+		<div class="col">
+			<div class="mb-1 text-muted">
+				<%= link_to icon("fas", "eye"), [:admin, grow], class: "btn btn-sm" %>
+		  	<span class="text-muted"><%= grow.description %></span>
+		    <span class="badge badge-primary"><%= grow.grow_status %></span>
+		    <span class="badge badge-pill badge-info"><%= grow.substrate %></span>
+		    <span class="badge badge-pill badge-secondary"><%= grow.flowering %></span>
+		     - from <b><%= fdate(grow.start_date) %></b> to <b><%= fdate(grow.end_date) %></b>
+			</div>
+			<%= render partial: "admin/grows/weeks", locals: { grow: grow } %>
+		</div>
+	</div>
+<% end %>
+
+<br>
+
+<% Room.all.each do |room| %>
+	<h2><%= room.name %></h2>
+	<div class="row">
+		<div class="col-sm-12 col-lg-9">
+			<%= render partial: "admin/rooms/room_devices", locals: {room: room} %>
+		</div>
+
+		<div class="col-sm-12 col-md-8 col-lg-3">
+			<%= render partial: "admin/events/events", locals: {room: room} %>
+		</div>
+	</div>
+<% end %>

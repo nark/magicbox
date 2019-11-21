@@ -1,0 +1,28 @@
+<div class="row">
+  <% grow.nb_weeks.times do |i| %>
+    <div class="col-sm-4 col-md-3 col-lg-1 px-0 mb-2">
+      <div class="card">
+        <div class="card-body border-secondary text-light bg-<%= grow.bg_color_for_week(i) %>">
+          <b>W<%= i+1 %></b>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+<!-- <div class="table-responsive">
+  <table class="table">
+    <tbody>
+      <tr style="height: 100px">
+        <% grow.nb_weeks.times do |i| %>
+          <td class="border-secondary align-middle text-center text-light bg-<%= grow.bg_color_for_week(i) %>">
+            <b>Week <%= i+1 %></b>
+            <% if grow.bg_color_for_week(i) == "primary" %>
+              <br>(now)
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

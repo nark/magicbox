@@ -1,0 +1,56 @@
+<div class="row mb-4">
+  <div class="col-6">
+    <h6>Watering of subjects</h6>
+    <%= line_chart Observation.joins(:subject).where(subject_id: subjects).group('subjects.id').group_by_day('observations.created_at').sum(:water).transform_keys { |e| ["#{Subject.find(e[0]).name_with_grow}", e[1]] },
+      adapter: "highcharts",
+      color: "lightblue",
+      library: {
+        chart: {
+          type: "spline",
+          zoomType: 'x', 
+          panning: true, 
+          panKey: 'shift'
+        },
+        yAxis: {
+          visible: false
+        },
+        xAxis: {
+          visible: true
+        },
+        plotOptions: {
+          spline: {
+            marker: {
+              enabled: false
+            }
+          }
+        } 
+      } %>
+  </div>
+  <div class="col-6">
+    <h6>Nutrients of subjects</h6>
+    <%= line_chart Observation.joins(:subject).where(subject_id: subjects).group('subjects.id').group_by_day('observations.created_at').sum(:nutrients).transform_keys { |e| ["#{Subject.find(e[0]).name_with_grow}", e[1]] },
+      adapter: "highcharts",
+      color: "lightblue",
+      library: {
+        chart: {
+          type: "spline",
+          zoomType: 'x', 
+          panning: true, 
+          panKey: 'shift'
+        },
+        yAxis: {
+          visible: false
+        },
+        xAxis: {
+          visible: true
+        },
+        plotOptions: {
+          spline: {
+            marker: {
+              enabled: false
+            }
+          }
+        } 
+      } %>
+  </div>
+</div>

@@ -13,38 +13,4 @@
 
 <hr>
 
-<div class="row">
-	<% Device.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
-		<% crons = @scenario.crons.where(device_id: device.id) %>
-
-		<div class="col-6 ">
-			<div class="card mb-3">
-				<div class="card-header">
-			    <b><%= device.name %></b>
-
-			    <div class="float-right">
-			    	<span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
-			    </div>
-			  </div>
-
-  			<ul class="list-group list-group-flush">
-  				<% if crons.count > 0 %>
-  					<% crons.order(start_time: :asc).each do |cron| %>
-							<li class="list-group-item">
-								<b><%= cron.device.name %></b> should <b><%= cron.command %></b> every 
-							<b><%= cron.any_time? ? "time" : "#{cron.time_value} #{cron.period}" %></b> 
-							<% if cron.start_time and cron.end_time %>
-								between <b><%= ftime cron.start_time %></b> and <b><%= ftime cron.end_time %></b>
-							<% end %>
-							</li>
-						<% end %>
-  				<% else %>
-  					<li class="list-group-item text-center text-muted">
-  						<i>No cron yet</i>
-  					</li>
-  				<% end %>
-				</ul>
-			</div>
-		</div>
-	<% end %>
-</div>
+<%= render partial: "admin/scenarios/scenario", locals: {scenario: @scenario} %>

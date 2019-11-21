@@ -1,4 +1,4 @@
-<%= nested_form_for [:admin, scenario] do |form| %>
+<%= nested_form_for [:admin, scenario], class: "col-md-12 col-lg-8 mx-auto" do |form| %>
   <h1>
     <% if scenario.new_record? %>
       New scenario
@@ -46,41 +46,43 @@
     <%= form.text_area :description, class: "form-control col-6" %>
   </div>
 
+  <hr>
+
   <h3>Crons</h3>
-  <br>
   <div class="form-group">
     <%= form.fields_for :crons do |ff| %>
-      <div class="form-inline pb-2">
-        <%= ff.select :command, options_for_select(["start", "stop"], ff.object.command), {}, class: "form-control mr-2" %>
-        <%= ff.select :device_id, options_from_collection_for_select(Device.where.not(device_state: :foo), "id", "name", ff.object.device_id), {}, class: "form-control mr-2" %>
+      <div class="card mb-4">
+        <div class="form-inline p-3">
+          <%= ff.select :command, options_for_select(["start", "stop"], ff.object.command), {}, class: "form-control mr-2" %>
+          <%= ff.select :device_id, options_from_collection_for_select(Device.where.not(device_state: :foo), "id", "name", ff.object.device_id), {}, class: "form-control mr-2" %>
 
-        <label>Every:&nbsp;</label>
-        <%= ff.text_field :time_value, value: ff.object.time_value, class: "form-control mr-2", style: "width: 100px", placeholder: "*" %>
-        <%= ff.select :period, options_for_select(Cron.periods.map { |e| [e.first.titleize, e.first] }, ff.object.period), {}, class: "form-control mr-2" %>
+          <label>Every:&nbsp;</label>
+          <%= ff.text_field :time_value, value: ff.object.time_value, class: "form-control mr-2", style: "width: 100px", placeholder: "0" %>
+          <%= ff.select :period, options_for_select(Cron.periods.map { |e| [e.first.titleize, e.first] }, ff.object.period), {}, class: "form-control mr-2" %>
 
-        <label>For:&nbsp;</label>
-        <%= ff.text_field :duration, value: ff.object.duration, class: "form-control mr-2", style: "width: 100px", placeholder: "*" %> sec.&nbsp;
+          <label>For:&nbsp;</label>
+          <%= ff.text_field :duration, value: ff.object.duration, class: "form-control mr-2", style: "width: 100px", placeholder: "0" %> sec.&nbsp;
 
-        <span>Between:&nbsp;</span>
-        <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "8:00 am", class: "form-control mr-2" %>
+          <span>Between:&nbsp;</span>
+          <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "8:00 am", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-start_time" } %>
 
-        <span>And:&nbsp;</span>
-        <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2" %>
+          <span>And:&nbsp;</span>
+          <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-end_time" } %>
 
-        <%= ff.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
+          <%= ff.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
+        </div>
       </div>
     <% end %>
     <%= form.link_to_add 'Add cron', :crons, class: "btn btn-sm btn-success" %>
   </div>
 
-<!--  <hr>
+  <hr>
 
    <h3>Conditions</h3>
-  <br>
   <div class="form-group">
     <%= form.fields_for :conditions do |ff| %>
       <%= render "condition_fields", :f => ff %>
     <% end %>
     <%= form.link_to_add 'Add condition', :conditions, class: "btn btn-sm btn-success" %>
-  </div> -->
+  </div>
 <% end %>

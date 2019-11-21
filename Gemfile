@@ -40,12 +40,15 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rubyserial'
 gem 'apipie-rails'
-
 gem 'jquery-rails'
+gem 'momentjs-rails'
 gem 'bootstrap', '~> 4.1.3'
+gem 'bootstrap4-datetime-picker-rails'
 gem 'will_paginate', '~> 3.1.0'
 gem 'will_paginate-bootstrap4'
-gem 'font-awesome-rails'
+#gem 'font-awesome-rails'
+gem 'font-awesome-sass', '~> 5.11.2'
+gem 'highcharts-rails'
 gem 'chartkick'
 gem 'groupdate'
 gem 'nested_form'
@@ -56,3 +59,15 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'simple_token_authentication', '~> 1.0'
+gem 'breadcrumbs_on_rails'
+gem 'hardware_information'
+gem 'os'
+gem 'open-weather'
+gem 'openweather2'
+gem 'barby'
+gem 'rqrcode'
+
+install_if -> { RUBY_PLATFORM =~ /linux/ } do
+  gem 'dht11'
+  gem 'charlcd'
+end

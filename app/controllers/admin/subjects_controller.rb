@@ -1,11 +1,15 @@
-class Admin::SubjectsController < ApplicationController
-  before_action :set_room, only: [:new, :show, :edit, :update, :destroy]
+class Admin::SubjectsController < Admin::AdminController
+  before_action :authenticate_user!
+  
+  before_action :set_grow, only: [:index, :new, :show, :edit, :update, :destroy]
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
 
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = Subject.all
+    add_breadcrumb "Subjects"
+
+    @subjects = @grow.subjects.all
   end
 
   # GET /subjects/1
@@ -29,7 +33,7 @@ class Admin::SubjectsController < ApplicationController
 
     respond_to do |format|
       if @subject.save
-        format.html { redirect_to admin_room_subject_path(@subject.room, @subject), notice: 'Subject was successfully created.' }
+        format.html { redirect_to admin_grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully created.' }
         format.json { render :show, status: :created, location: @subject }
       else
         format.html { render :new }
@@ -43,7 +47,7 @@ class Admin::SubjectsController < ApplicationController
   def update
     respond_to do |format|
       if @subject.update(subject_params)
-        format.html { redirect_to admin_room_subject_path(@subject.room, @subject), notice: 'Subject was successfully updated.' }
+        format.html { redirect_to admin_grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully updated.' }
         format.json { render :show, status: :ok, location: @subject }
       else
         format.html { render :edit }
@@ -63,17 +67,20 @@ class Admin::SubjectsController < ApplicationController
   end
 
   private
-    def set_room
-      @room = Room.find(params[:room_id])
+    def set_grow
+      @grow = Grow.find(params[:grow_id])
+
+      add_breadcrumb "Grow ##{@grow.id}", [:admin, @grow]
     end
 
 
     def set_subject
       @subject = Subject.find(params[:id])
+
+      add_breadcrumb @subject.name, [:admin, @grow, @subject]
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def subject_params
-      params.require(:subject).permit(:room_id, :name)
+      params.require(:subject).permit(:name, :room_id, :grow_id)
     end
 end

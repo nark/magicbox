@@ -1,0 +1,41 @@
+<h1>
+  Grow #<%= @grow.id %>
+    
+  <div class="float-right">
+    <%= link_to 'Back', admin_grows_path, class: "btn btn-ligth border" %>
+    <%= link_to 'Edit', edit_admin_grow_path(@grow), class: "btn btn-success" %>
+  </div>  
+</h1>
+
+<hr>
+
+<div>
+  <span class="text-muted"><%= @grow.description %></span>
+
+  <div class="float-right">
+    <span class="badge badge-primary"><%= @grow.grow_status %></span>
+    <span class="badge badge-pill badge-info"><%= @grow.substrate %></span>
+    <span class="badge badge-pill badge-secondary"><%= @grow.flowering %></span>
+  </div>
+</div>
+
+<hr>
+
+<h4>Weeks</h4>
+
+<%= render partial: "admin/grows/weeks", locals: { grow: @grow } %>
+
+<br>
+
+<h4>
+  Subjects
+  <div class="float-right">
+    <%= link_to print_qr_admin_grow_path(@grow), class: "text-muted", style: "font-size: 11px;" do %>
+      <%= icon "fas", "print" %> Print QR
+    <% end %>-
+  </div>
+</h4>
+<%= render partial: "admin/subjects/subjects_charts", locals: { subjects: @grow.subjects } %>
+<div class="row">
+  <%= render partial: "admin/subjects/subjects", locals: { subjects: @grow.subjects } %>
+</div>

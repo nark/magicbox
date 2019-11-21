@@ -24,7 +24,7 @@ class Cron < ApplicationRecord
 
       if duration and duration != "*"
         logger.info "\n   -> #{device.name} will stop in #{duration} sec.\n"
-        CommandJob.perform_in(duration.seconds, device.id, "stop")
+        #CommandJob.perform_in(duration.seconds, device.id, "stop")
       end
       return
     end
@@ -39,7 +39,7 @@ class Cron < ApplicationRecord
 
       if duration and duration != "*"
         logger.info "\n   -> #{device.name} will start in #{duration} sec.\n"
-        CommandJob.perform_in(duration.seconds, device.id, "start")
+        #CommandJob.perform_in(duration.seconds, device.id, "start")
       end
 
       return
@@ -107,7 +107,7 @@ class Cron < ApplicationRecord
 
     between = now.between?(start_date, end_date)
 
-    #logger.info "\n#{device.name} cron_between_is_valid: #{between}, #{now}, #{start_date}, #{end_date}\n"
+    logger.info "\n#{device.name} cron_between_is_valid: #{between}, #{now}, #{start_date}, #{end_date}\n"
 
     return between
   end

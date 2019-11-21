@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyText
+  start_date: 2019-11-17
+  end_date: 2019-11-17
+  substrate: 1
+  flowering: 1
+
+two:
+  description: MyText
+  start_date: 2019-11-17
+  end_date: 2019-11-17
+  substrate: 1
+  flowering: 1

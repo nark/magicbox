@@ -1,4 +1,5 @@
-class Admin::OperationsController < ApplicationController
+class Admin::OperationsController < Admin::AdminController
+  before_action :authenticate_user!
   before_action :set_operation, only: [:show, :edit, :update, :destroy]
 
   # GET /operations

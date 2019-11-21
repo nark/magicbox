@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4">
+    <% room.devices.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">
+            <span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
+            &nbsp;
+            <%= link_to device.name, [:admin, device.room, device], style: "text-decoration: none; color: #666" %>
+            <div class="float-right">
+              <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle bg-transparent text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= icon "fas", "cog", class: "mr-4" %>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                  <%= link_to start_admin_room_device_path(device.room, device), method: :post, class: "dropdown-item text-success" do %>
+                    <%= icon "fas", "play" %>
+                    Start
+                  <% end %>
+                  <%= link_to stop_admin_room_device_path(device.room, device), method: :post, class: "dropdown-item text-danger"  do %>
+                    <%= icon "fas", "stop" %>
+                    Stop
+                  <% end %>
+                  <div class="dropdown-divider"></div>
+                  <%= link_to edit_admin_room_device_path(device.room, device), class: "dropdown-item" do %>
+                    <%= icon "fas", "edit" %>
+                    Edit
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </h5>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% room.devices.where(device_state: :foo).each do |device| %>
+    <% device.data_types.each do |data_type| %>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to device.name, [:admin, device.room, device] %>
+              <div class="float-right">
+                <%= link_to edit_admin_room_device_path(device.room, device), class: "btn btn-sm text-success" do %>
+                  <%= icon "fas", "edit" %>
+                <% end -%>
+              </div>
+            </h5>
+            <p class="card-text">
+              <h2 class="font-weight-light text-info" >
+                <% sample = device.last_sample(data_type) %>
+                <% if sample %>
+                  <%= sample.value %> <%= sample.unit %>
+                <% end %>
+
+                <small style="font-size: 14px" class="text-muted">
+                  <%= data_type.name %>
+                </small>
+              </h2>
+
+              <% samples = device.samples.where(data_type: data_type).order(created_at: :desc).limit(1000) %>
+
+              <% if !samples.empty? %>
+                <%= line_chart [{ 
+                    name: data_type.name, 
+                    data: samples.map { |e| [e.created_at, e.value] }, 
+                    color: samples.first.html_color
+                  }], 
+                  adapter: "highcharts",
+                  height: "125px",
+                  name: device.name, 
+                  library: {
+                    chart: {
+                      type: "area",
+                      zoomType: 'x', 
+                      panning: true, 
+                      panKey: 'shift',
+                      margin: [0, 0, 0, 0]
+                    },
+                    xAxis: {
+                      visible: false
+                    },
+                    yAxis: {
+                      visible: false
+                    },
+                    plotOptions: {
+                      area: {
+                        marker: {
+                          enabled: false
+                        }
+                      }
+                    }
+                  }
+                %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

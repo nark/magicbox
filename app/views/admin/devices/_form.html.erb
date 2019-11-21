@@ -1,4 +1,4 @@
-<%= form_for [:admin, room, device], :html => {:role => "form"} do |f| %>
+<%= form_for [:admin, room, device], html: {role: "form", class: "col-md-12 col-lg-8 mx-auto" } do |f| %>
 	<h1>
 		<% if device.new_record? %>
 			New device
@@ -83,7 +83,18 @@
 				<%= f.text_field :pin_number, :class => "form-control" %>
 			</div>
 		</div>
-		<div class="col-4">
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-2">
+			<div class="form-group">
+				<%= f.label :use_duration %><br>
+				<%= f.check_box :use_duration, type: "checkbox", data: { toggle: "toggle", size: "sm" } %>
+			</div>
+		</div>
+		<div class="col-8">
 			<div class="form-group">
 				<%= f.label :default_duration %>
 				<%= f.text_field :default_duration, :class => "form-control" %>

@@ -14,14 +14,40 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+//= require moment
+//= require moment/en-gb.js
+//= require tempusdominus-bootstrap-4.js
+//= require turbolinks
 //= require Chart.bundle
+//= require highcharts
+//= require highcharts/highcharts-more
 //= require chartkick
 //= require jquery_nested_form
 //= require_tree .
 
-$(document).ready(function () {
-  $('#sidebarCollapse').on('click', function () {
+
+function init_views() {
+	$('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
   });
+
   $('#roomsSubmenu').collapse('show');
+
+  $('.timepicker').datetimepicker({format: 'hh:mm', stepping: "5"});
+  $('.weekpicker').datetimepicker({format: 'YYYY-MM-DD', inline: true, sideBySide: true});
+
+  $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+}
+
+// $(document).ready(function () {
+// 	init_views();
+// });
+
+$(document).on("turbolinks:load", function() {
+	init_views();
 });
+
+$(document).on('nested:fieldAdded', function(event){
+	console.log("fieldAdded");
+  init_views();
+})

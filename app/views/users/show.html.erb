@@ -1,0 +1,11 @@
+<h1>
+	<%= @user.email %>
+		
+	<div class="float-right">
+		<%= link_to edit_user_registration_path(@user), class: "btn btn-success"  do %>
+			<%= icon "fas", "edit" %> Edit
+		<% end %>
+	</div>
+</h1>
+
+<hr>

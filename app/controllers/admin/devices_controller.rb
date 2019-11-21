@@ -1,10 +1,12 @@
-class Admin::DevicesController < ApplicationController
+class Admin::DevicesController < Admin::AdminController
 	before_action :authenticate_user!
-  before_action :set_room, only: [:new, :show, :edit, :update, :destroy]
+  before_action :set_room, only: [:index, :new, :show, :edit, :update, :destroy, :start, :stop, :samples]
   before_action :set_device, only: [:show, :edit, :update, :destroy, :start, :stop]
 
 	def index
-		@devices = Device.all
+    add_breadcrumb "Devices"
+
+		@devices = @room.devices
 
     if params.has_key? :sort_direction and params.has_key? :sort_column
       @devices = @devices.order("#{params[:sort_column]} #{params[:sort_direction]}")
@@ -25,8 +27,10 @@ class Admin::DevicesController < ApplicationController
 
 
   def show
-    @samples = Sample.where(data_type: @device.data_types).limit(100)
-    @values = @samples.order(created_at: :desc).limit(100).map { |e| [e.created_at, e.value]  }
+    @samples = @device.samples.limit(100)
+
+    @values = @samples.where(data_type: DataType.where(name: "temperature").first).order(created_at: :desc).map { |e| [e.created_at, e.value]  }
+    #@values = @samples.where(data_type: :humidity).order(created_at: :desc).limit(100).map { |e| [e.created_at, e.value]  }
   end
 
 
@@ -64,33 +68,42 @@ class Admin::DevicesController < ApplicationController
 
   def destroy
     @device.destroy
-    redirect_to admin_devices_path, notice: 'Device deleted with success.'
+    redirect_to admin_room_path(@room), notice: 'Device deleted with success.'
   end
 
 
   def start
     @device.start
-    redirect_to admin_devices_path, notice: 'Device started'
+    redirect_to admin_room_path(@room), notice: 'Device started'
   end
 
 
   def stop
     @device.stop
-    redirect_to admin_devices_path, notice: 'Device stopped'
+    redirect_to admin_room_path(@room), notice: 'Device stopped'
+  end
+
+
+  def samples
+    @devices = @room.devices
   end
 
 
 private
   def set_room
     @room = Room.find(params[:room_id])
+
+    add_breadcrumb @room.name, [:admin, @room]
   end
 
   def set_device
     @device = Device.find(params[:id])
+
+    add_breadcrumb @device.name, [:admin, @room, @device]
   end
 
   # Only allow a trusted parameter "white list" through.
   def device_params
-    params.require(:device).permit(:room_id, :device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date)
+    params.require(:device).permit(:room_id, :device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date, :use_duration)
   end
 end

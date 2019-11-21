@@ -1,0 +1,119 @@
+<h1>
+	Statistics
+</h1>
+
+<hr> 
+
+<div class="row mb-4">
+	<div class="col-6">
+		<h4>Watering of subjects</h4>
+		<%= line_chart Observation.joins(:subject).group('subjects.id').group_by_day('observations.created_at').sum(:water).transform_keys { |e| ["#{Subject.find(e[0]).name_with_grow}", e[1]] },
+			adapter: "highcharts",
+			color: "lightblue",
+		  library: {
+		    chart: {
+		      type: "spline",
+		      zoomType: 'x', 
+		      panning: true, 
+		      panKey: 'shift'
+		    },
+		    yAxis: {
+          visible: false
+        },
+        xAxis: {
+          visible: true
+        },
+		    plotOptions: {
+		      spline: {
+		        marker: {
+		          enabled: false
+		        }
+		      }
+		    } 
+		  } %>
+	</div>
+	<div class="col-6">
+		<h4>Nutrients of subjects</h4>
+		<%= line_chart Observation.joins(:subject).group('subjects.id').group_by_day('observations.created_at').sum(:nutrients).transform_keys { |e| ["#{Subject.find(e[0]).name_with_grow}", e[1]] },
+			adapter: "highcharts",
+			color: "lightblue",
+		  library: {
+		    chart: {
+		      type: "spline",
+		      zoomType: 'x', 
+		      panning: true, 
+		      panKey: 'shift'
+		    },
+		    yAxis: {
+          visible: false
+        },
+        xAxis: {
+          visible: true
+        },
+		    plotOptions: {
+		      spline: {
+		        marker: {
+		          enabled: false
+		        }
+		      }
+		    } 
+		  } %>
+	</div>
+</div>
+
+
+<% Sample.unscoped.distinct.pluck(:product_reference).each do |product_reference| %>
+	<div class="row mb-4">
+		<div class="col-12">
+			<h4><%= product_reference  %></h4>
+
+			<% data = DataType.all.map { |data_type| 
+				samples = data_type.samples.where(product_reference: product_reference).order(created_at: :desc)
+				{
+					name: data_type.name, 
+			    data: samples.map { |e| [e.created_at, e.value]  }, 
+			    color: samples.last.html_color
+				} if samples.first
+			}.compact %>
+	
+			<% if !data.empty? %>
+				<div class="card mb-4">
+				  <div class="card-header">
+				    <%= product_reference  %>
+				    <div class="float-right">
+				    	<%= " " %>
+				    </div>
+				  </div>
+				  <div class="card-body">
+						<%= line_chart data, 
+					    adapter: "highcharts",
+					    height: "350px",
+			        library: {
+			          chart: {
+			            type: "spline",
+			            zoomType: 'x', 
+			            panning: true, 
+			            panKey: 'shift'
+			          },
+			          yAxis: {
+			            visible: false
+			          },
+			          xAxis: {
+			            visible: true
+			          },
+			          plotOptions: {
+			            area: {
+			              marker: {
+			                enabled: false
+			              }
+			            }
+			          } 
+			        }
+			        %>
+			    </div>
+			  </div>
+
+		<% end %>
+		</div>
+	</div>
+<% end %>

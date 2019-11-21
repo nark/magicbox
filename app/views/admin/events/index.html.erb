@@ -1,0 +1,28 @@
+<h1>Events</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Event type</th>
+      <th>Message</th>
+      <th>Data</th>
+      <th>Room</th>
+      <th>Device</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.event_type %></td>
+        <td><%= event.message %></td>
+        <td><%= event.data %></td>
+        <td><%= link_to event.room.name, [:admin, event.room] if event.room %></td>
+        <td><%= link_to event.device.name, [:admin, event.room, event.device] if event.device %></td>
+        <td><%= fdatetime event.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

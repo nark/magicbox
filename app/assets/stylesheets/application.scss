@@ -1,5 +1,22 @@
+$grid-breakpoints: (
+  xs: 0,
+  sm: 720px,
+  md: 980px,
+  lg: 1280px
+);
+
+$container-max-widths: (
+  sm: 420px,
+  md: 720px,
+  lg: 960px
+);
+
+
 @import "bootstrap";
+@import "font-awesome-sprockets";
 @import "font-awesome";
+@import "bootstrap4-toggle";
+@import "tempusdominus-bootstrap-4.css";
 
 /*
     SIDEBAR

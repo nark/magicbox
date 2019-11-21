@@ -1,21 +1,14 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Room</th>
-      <th width="70px"></th>
-    </tr>
-  </thead>
+<% subjects.each do |subject| %>
+  <div class="col-sm-12 col-md-6 col-lg-4">
+    <div class="card bg-success text-white mb-4">
+      <h5 class="card-header align-middle">
+        <%= icon("fas", "seedling") %> <%= link_to subject.name, admin_grow_subject_path(subject.grow, subject) %>
+        <div class="float-right">
+          <%= link_to icon( "fas", "comment-dots"), new_admin_grow_subject_observation_path(subject.grow, subject), class: "btn btn-sm text-light" %>
+        </div>
+      </h5>
+      <%= render partial: "admin/observations/observations", locals: { observations: subject.observations.limit(1) } %>
+    </div>
+  </div>
+<% end %>
 
-  <tbody>
-    <% subjects.each do |subject| %>
-      <tr>
-        <td><b><%= link_to subject.name, admin_room_subject_path(subject.room, subject) %></b></td>
-        <td><%= link_to subject.room.name, admin_room_path(subject.room) %></td>
-        <td>
-          <%= link_to 'Edit', edit_admin_room_subject_path(subject.room, subject), class: "btn btn-sm btn-outline-success" %>          
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>

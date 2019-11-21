@@ -1,11 +1,24 @@
-<h1><%= t('.title', resource: resource_name.to_s.humanize) %></h1>
+<%= form_for(resource, as: resource_name, html: { method: :put, class: "col-lg-8 mx-auto" }) do |f| %>
+  <h1>
+    <%= t('.title', resource: resource_name.to_s.humanize) %>
+    <div class="float-right">
+      <%= link_to t('.back'), :back, class: "btn btn-light border" %>
+      <%= link_to t('.cancel_my_account'), resource, data: { confirm: t('.are_you_sure') }, method: :delete , class: "btn btn-danger" %>
+      <%= f.submit t('.update'), class: 'btn btn-primary' %>
+    </div>
+  </h1>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <hr>
   <%= bootstrap_devise_error_messages! %>
 
   <div class="form-group">
+    <%= f.label :username %>
+    <%= f.text_field :username, autofocus: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+    <%= f.email_field :email, autocomplete: 'email', class: 'form-control' %>
   </div>
 
   <div class="form-group">
@@ -26,12 +39,4 @@
 
     <small class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes') %></small>
   </div>
-
-  <div class="form-group">
-    <%= f.submit t('.update'), class: 'btn btn-primary' %>
-  </div>
 <% end %>
-
-<p><%= t('.unhappy') %>? <%= link_to t('.cancel_my_account'), registration_path(resource_name), data: { confirm: t('.are_you_sure') }, method: :delete %>.</p>
-
-<%= link_to t('.back'), :back %>

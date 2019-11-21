@@ -81,15 +81,39 @@
 
 <% if @device.foo? %>
 	<hr>
-	<h3>Latest samples</h3>
 
-	<div class="col-lg-12 mb-3">
-    <%= line_chart [
-			{ name: @device.name, data: @values, color: "coral" }
-		] %>
-  </div>
+	<% data = @device.data_types.map { |data_type| {
+			name: data_type.name, 
+	    data: @samples.where(data_type: data_type).order(created_at: :desc).map { |e| [e.created_at, e.value]  }, 
+	    color: @samples.where(data_type: data_type).order(created_at: :desc).first.html_color
+		} if @samples.where(data_type: data_type).order(created_at: :desc).first
+	} %>
 
-  <br>
+		<div class="col-lg-12 mb-3">
+			<% if !@samples.empty? %>
+	      <%= line_chart data, 
+	        adapter: "highcharts",
+	        height: "250px",
+	        name: @device.name, 
+	        library: {
+	          chart: {
+	            type: "spline",
+	            zoomType: 'x', 
+	            panning: true, 
+	            panKey: 'shift'
+	          },
+	          xAxis: {
+	            visible: true
+	          },
+	          yAxis: {
+	            visible: true
+	          }
+	        }
+	      %>
+      <% end %>
+	  </div>
+
+	  <br>
 
 	<table class="table table-sm">
 		<thead>

@@ -31,5 +31,5 @@ production:
   schema_search_path: public
   database: magicbox_production
   username: postgres
-  password: 2Ppyg5ok
+  password: magicbox
   port: 5432

@@ -3,7 +3,7 @@
 #
 
 # create default user
-User.create(email: "admin@example.com", password: "changeme", password_confirmation: "changeme")
+User.create(username: "Admin", email: "admin@example.com", password: "changeme", password_confirmation: "changeme")
 
 # create default room
 r = Room.create(name: "Room 1", room_type: 0, length: 60, width: 60, height: 140)

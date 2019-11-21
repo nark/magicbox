@@ -1,0 +1,14 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <% room.events.order(created_at: :desc).limit(8).each do |event| %>
+    	<li class="list-group-item">
+    		<span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
+    		&nbsp;
+    		<small><%= event.message %></small>
+    		<div class="float-right">
+    			<small class="text-muted"><%= fdatetime event.created_at %></small>
+    		</div>
+    	</li>
+    <% end %>
+  </ul>
+</div>

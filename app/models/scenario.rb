@@ -25,6 +25,8 @@ class Scenario < ApplicationRecord
 
 				now = Time.now
 
+				sleep 1
+
 				every_time_ok = false
 				seconds_max = 0
 
