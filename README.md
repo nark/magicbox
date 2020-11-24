@@ -6,11 +6,23 @@ The MagicBox project is a set of hardware and software tools organized together 
 
 ### Background
 
-Tropical plants are usually grown in a controlled room or closet. I typically use a mylar growbox inside what I grow my plant under an LED light, with air intraction, extraction and ventilation running on. Some components, lights for example, have to be scheduled at time to mimic the real lifecycle for the plants environment. Also, it is required to monitor environmental parameters like temperature and humidity to be be able to act on them as necessary. 
+Tropical plants are usually grown in a controlled room or closet. Some typically use a mylar growbox inside what they grow their plants under full-spectrum lights, with air intraction, extraction and ventilation running on. Some components, lights for example, have to be scheduled at time to mimic the real lifecycle of the plants environment. Also, it is required to monitor environmental parameters like temperature and humidity to be be able to act on them as necessary. 
 
-I could have bought all the equipments to handle every of these aspects in the way that the indoor growing industry prevails. But heck no! I want everything centralized in a nice enclosure, all managed by a powerful AI and consume my products while watching my grow being grown!
+So I could have bought all the equipments to handle every of these aspects in the way that the indoor growing industry prevails. But heck no! I want everything centralized in a nice enclosure, all managed by a smart software while consuming my productsandwhile watching my grow being grown!
 
-So I recycled an old power inverter enclosure with 8 female 220V integrated plugs and I put every components I needed in it. Power plugs are managed by 5v relays and I even connected DHT11 temperature and humidity sensors with home-made USB cables and connectors.
+I recycled an old power inverter enclosure with 8 female 220V integrated plugs and I put every components I needed in it. Power plugs are managed by 5v relays through GPIO pins. I also connected DHT11 temperature and humidity sensors with home-made USB cables and connectors to monitor the room.
+
+On the software side, I use a Ruby on Rails backend app that manages the whole system. From rooms, devices and sensors, to minimal grow management, the web interface provides all the tools I need for my indoor garden. 
+
+### Features
+
+* **Multiple rooms and devices management:** organize several grow rooms with their own devices and sensors all connected through GPIO pins on a Raspberry Pi
+* **Condition-based growing scenarios:** you can build your own growing scenarios with user defined conditions to schedule and optimize your growing environment
+* **Multiple grows management:** follow multiple grows simultaneously, move subjects (usually plants) from grow to grow and post detailed observations about them
+* **Growing journal, calendar, todos, notifications and events** give you a global view of operations 
+* Support for **pictures from mobile devices and webcams** 
+* **Data, charts and statictics** help you to fine tune your setup along the way
+* **Role-based users management:** organize your team, share and communicate to increase your productivity
 
 ## Requirements
 
@@ -27,6 +39,12 @@ So I recycled an old power inverter enclosure with 8 female 220V integrated plug
 * Raspbian 10 buster
 * Ruby 2.6.5
 * Rails 5.2.2
+
+### Skills and tools
+
+* Soldering, and tools coming with it
+* Being a little confortable with electronic in general
+* Mastering Linux is recommended, Ruby and RoR is a must
 
 ## Installation
 
