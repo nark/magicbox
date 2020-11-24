@@ -2,7 +2,10 @@ class Subject < ApplicationRecord
 	belongs_to :grow
 	belongs_to :room
 
-	has_many :observations, dependent: :delete_all
+	has_many :observations_subjects
+	has_many :observations, through: :observations_subjects, dependent: :delete_all
+	has_many :resource_datas, through: :observations
+	has_many :issues, through: :observations
 	has_many :scenarios
 
 	def name_with_grow
@@ -16,7 +19,10 @@ class Subject < ApplicationRecord
 	  require 'barby/outputter/png_outputter'
 
 	  barcode = Barby::QrCode.new("http://magicbox.local/admin/grows/#{self.grow.id}/subjects/#{self.id}/observations/new", level: :q, size: 6)
-	  base64_output = Base64.encode64(barcode.to_png({ xdim: size }))
-	  "data:image/png;base64,#{base64_output}"
+	  "data:image/png;base64,#{Base64.strict_encode64(barcode.to_png({ xdim: size }))}"
+	end
+
+	def fullname
+		"##{id} - #{name}"
 	end
 end

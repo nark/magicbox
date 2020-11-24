@@ -1,0 +1,122 @@
+<h1>
+	Statistics
+	<div class="float-right">
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <%= icon("fas", "calendar", class: "mr-4") %> 
+		  </button>
+		  <div class="dropdown-menu dropdown-menu-right">
+		    <%= link_to "Today", samples_path(date_filter: :today), class: "dropdown-item #{@date_filter == "today" ? 'active' : '' }" %>
+		    <div class="dropdown-divider"></div>
+		    <%= link_to "Last week", samples_path(date_filter: :last_week), class: "dropdown-item #{@date_filter == "last_week" ? 'active' : '' }" %>
+		    <%= link_to "Last month", samples_path(date_filter: :last_month), class: "dropdown-item #{@date_filter == "last_month" ? 'active' : '' }" %>
+		    <%= link_to "Last year", samples_path(date_filter: :last_year), class: "dropdown-item #{@date_filter == "last_year" ? 'active' : '' }" %>
+		    <div class="dropdown-divider"></div>
+		    <%= link_to "All time", samples_path(date_filter: :all_time), class: "dropdown-item #{@date_filter == "all_time" ? 'active' : '' }" %>
+		  </div>
+		</div>
+	</div>
+</h1>
+
+<hr> 
+
+<%#= render partial: "admin/subjects/subjects_charts", locals: { subjects: Subject.all, date_filter: @date_filter } %>
+
+<% Room.all.each do |room| %>
+	<div class="row mb-4">
+		<div class="col-12">
+			<h4><%= room.name  %></h4>
+
+			<% data = @data_types_samples[room.name] %>
+	
+			<% if !data.empty? %>
+				<div class="card mb-4">
+				  <div class="card-header">
+				    <%= room.name  %>
+				    <div class="float-right">
+				    	<%= " " %>
+				    </div>
+				  </div>
+				  <div class="card-body">
+						<%= line_chart data, 
+					    adapter: "highcharts",
+					    height: "350px",
+			        library: {
+			          chart: {
+			            type: "spline",
+			            zoomType: 'x', 
+			            panning: true, 
+			            panKey: 'shift'
+			          },
+			          yAxis: {
+			            visible: false
+			          },
+			          xAxis: {
+			            visible: true
+			          },
+			          plotOptions: {
+			            area: {
+			              marker: {
+			                enabled: false
+			              }
+			            }
+			          } 
+			        }
+			        %>
+			    </div>
+			  </div>
+
+		<% end %>
+		</div>
+	</div>
+<% end %>
+
+
+<% Sample.unscoped.distinct.where.not(product_reference: "dht11").pluck(:product_reference).each do |product_reference| %>
+	<div class="row mb-4">
+		<div class="col-12">
+			<h4><%= product_reference  %></h4>
+
+			<% data = @data_types_samples[product_reference] %>
+	
+			<% if !data.empty? %>
+				<div class="card mb-4">
+				  <div class="card-header">
+				    <%= product_reference  %>
+				    <div class="float-right">
+				    	<%= " " %>
+				    </div>
+				  </div>
+				  <div class="card-body">
+						<%= line_chart data, 
+					    adapter: "highcharts",
+					    height: "350px",
+			        library: {
+			          chart: {
+			            type: "spline",
+			            zoomType: 'x', 
+			            panning: true, 
+			            panKey: 'shift'
+			          },
+			          yAxis: {
+			            visible: false
+			          },
+			          xAxis: {
+			            visible: true
+			          },
+			          plotOptions: {
+			            area: {
+			              marker: {
+			                enabled: false
+			              }
+			            }
+			          } 
+			        }
+			        %>
+			    </div>
+			  </div>
+
+		<% end %>
+		</div>
+	</div>
+<% end %>

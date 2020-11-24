@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+    <h4>To Do</h4>
+    <%= render partial: "todos/todos", locals: { todos: @todos, status: :todo } %>
+  </div>
+  <div class="col-12 col-lg-6">
+    <h4>Done</h4>
+    <%= render partial: "todos/todos", locals: { todos: @dones, status: :done } %>
+  </div>
+</div>

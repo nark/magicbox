@@ -1,0 +1,17 @@
+<div class="col-md-12 col-lg-8 mx-auto">
+	<h1>
+	  Grow Journal
+
+	   <div class="float-right">
+	    <%= link_to new_observation_path, class: "btn btn-outline-primary" do %>
+	      <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
+	    <% end %>
+	  </div> 
+	</h1>
+
+	<div class="row">
+	  <div class="mx-auto">
+	    <%= render partial: "observations/observations", locals: { observations: @observations } %>
+	  </div>
+	</div>
+</div>

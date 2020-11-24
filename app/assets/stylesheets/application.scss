@@ -13,10 +13,24 @@ $container-max-widths: (
 
 
 @import "bootstrap";
+@import "dhtmlxscheduler";
+@import "simple_calendar";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "bootstrap4-toggle";
 @import "tempusdominus-bootstrap-4.css";
+
+
+
+/*
+    popover
+*/
+
+.popover{
+    max-width:400px;
+}
+
+
 
 /*
     SIDEBAR
@@ -82,8 +96,8 @@ span {
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 200px;
+    max-width: 200px;
     background: #666;
     color: #fff;
     transition: all 0.3s;
@@ -135,7 +149,7 @@ span {
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
+    padding: 13px;
     background: #606060;
 }
 
@@ -231,7 +245,7 @@ a.article:hover {
         min-width: 80px;
         max-width: 80px;
         text-align: center;
-        margin-left: -80px !important;
+        margin-left: 0px !important;
     }
     .dropdown-toggle::after {
         top: auto;
@@ -246,13 +260,26 @@ a.article:hover {
     }
     #sidebar .sidebar-header h3,
     #sidebar .CTAs {
-        display: none;
+        display: none !important;
+        color: transparent;
     }
     #sidebar .sidebar-header strong {
         display: block;
     }
     #sidebar ul li a {
-        padding: 20px 10px;
+        padding: 0px 22px;
+        padding-top: 10px;
+        color: transparent;
+        line-height: 15px;
+    }
+    #sidebar ul li a .float-right {
+        float: none !important;
+        display: none;
+    }
+    #sidebar ul li a:hover {
+        padding: 0px 22px;
+        padding-top: 10px;
+        color: transparent;
     }
     #sidebar ul li a span {
         font-size: 0.85em;
@@ -260,9 +287,15 @@ a.article:hover {
     #sidebar ul li a i {
         margin-right: 0;
         display: block;
+        color: white;
+    }
+    #sidebar ul li a:hover i {
+        color: #606060;
     }
     #sidebar ul ul a {
-        padding: 10px !important;
+        padding: 0px 26px;
+        padding-top: 10px;
+
     }
     #sidebar ul li a i {
         font-size: 1.3em;

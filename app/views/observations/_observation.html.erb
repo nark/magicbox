@@ -1,0 +1,67 @@
+<div class="card border mb-4">
+  <div class="card-header text-info">
+    <h6 class="d-inline">@<%= observation.user.username %></h6>
+
+    <div class="float-right">
+      <% if observation.user.id == current_user.id %>
+        <%= link_to edit_grow_observation_path(observation.grow, observation), class: "btn text-success" do %>
+          <%= icon("fas", "edit") %>
+        <% end %>
+      <% end %>
+
+      <%= fdatetime observation.created_at %>
+    </div>
+  </div>
+
+  <% observation.pictures.each do |p| %>
+    <%= image_tag url_for(p), class: "card-img-top" %>
+    <% break %>
+  <% end %>
+
+  <% if !observation.body.empty? %>
+    <div class="card-body">
+      <p class="card-text"><%= observation.body %></p>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <% if observation.subjects.count > 0 %>
+    <div class="card-body">
+      <% observation.subjects.each do |subject| %>
+        <%= link_to grow_subject_path(subject.grow, subject) do %>
+          <span class="badge badge-primary">
+            <%= icon("fas", "seedling") %> <%= subject.name %>
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <ul class="list-group list-group-flush">
+    <% if observation.room %>
+      <li class="list-group-item text-success">
+        <%= icon("fas", "box") %> <%= link_to observation.room.name, admin_room_path(observation.room) %>
+      </li>
+    <% end %>
+
+    <% observation.resource_datas.each do |resource_data| %>  
+      <li class="list-group-item  text-success">
+        <b><%= resource_data.resource.name %></b> 
+        <div class="float-right">
+          <%= resource_data.value %> <%= resource_data.unit %>
+        </div>
+      </li>
+    <% end %>
+
+    <% observation.issues.each do |issue| %>  
+      <li class="list-group-item text-danger">
+        <b><%= issue.resource.name %></b> 
+        <div class="float-right">
+          <%#= issue.severity %> <%#= issue.issue_type %>
+          <%= issue_icon(issue) %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

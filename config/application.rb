@@ -27,5 +27,7 @@ module Magicbox
     #     Scenario.check
     #   end
     # end
+
+    KWH_COST  = 0.17
   end
 end

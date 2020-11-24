@@ -4,6 +4,7 @@
 		<%= link_to 'Back', admin_scenarios_path, class: "btn btn-light" %>
 		<%= link_to 'Delete', admin_scenario_path(@scenario), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
     <%= link_to "Edit", edit_admin_scenario_path(@scenario), class: "btn btn-success" %>
+    <%= link_to "Run", run_admin_scenario_path(@scenario), method: :get, class: "btn btn-primary" %>
   </div>
 </h1>
 

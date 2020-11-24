@@ -63,6 +63,23 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  config.action_mailer.smtp_settings = {
+    address: "ssl0.ovh.net",
+    port: 587,
+    domain: "magicbox.read-write.fr",
+    authentication: "login",
+    enable_starttls_auto: true,
+    user_name: "rafael.warnault@read-write.fr",
+    password:  "2Ppyg5ok",
+    from: "no-reply@magicbox.read-write.fr"
+  }
+  config.action_mailer.default_options = {
+    reply_to: "no-reply@magicbox.read-write.fr",
+    from: "no-reply@magicbox.read-write.fr"
+  }
+  # ActionMailer Config
+  config.action_mailer.default_url_options = { :host => 'localhost', :protocol => 'http', port: "3000" }
+  
   #config.log_level = :debug
 
   #if ENV["RAILS_LOG_TO_STDOUT"].present?

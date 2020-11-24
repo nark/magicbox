@@ -64,10 +64,10 @@
           <%= ff.text_field :duration, value: ff.object.duration, class: "form-control mr-2", style: "width: 100px", placeholder: "0" %> sec.&nbsp;
 
           <span>Between:&nbsp;</span>
-          <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "8:00 am", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-start_time" } %>
+          <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "22:00", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-start_time" } %>
 
           <span>And:&nbsp;</span>
-          <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-end_time" } %>
+          <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "5:00", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-end_time" } %>
 
           <%= ff.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
         </div>

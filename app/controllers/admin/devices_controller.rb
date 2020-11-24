@@ -1,12 +1,12 @@
 class Admin::DevicesController < Admin::AdminController
 	before_action :authenticate_user!
-  before_action :set_room, only: [:index, :new, :show, :edit, :update, :destroy, :start, :stop, :samples]
-  before_action :set_device, only: [:show, :edit, :update, :destroy, :start, :stop]
+  before_action :set_room, only: [:index, :new, :show, :edit, :update, :destroy, :start, :stop, :samples, :query]
+  before_action :set_device, only: [:show, :edit, :update, :destroy, :start, :stop, :query]
 
 	def index
     add_breadcrumb "Devices"
 
-		@devices = @room.devices
+		@devices = @room ? @room.devices : Device.all
 
     if params.has_key? :sort_direction and params.has_key? :sort_column
       @devices = @devices.order("#{params[:sort_column]} #{params[:sort_direction]}")
@@ -49,7 +49,7 @@ class Admin::DevicesController < Admin::AdminController
     @device = Device.new(device_params)
 
     if @device.save
-      redirect_to admin_room_device_path(@device.room, @device), notice: 'Device created with success.'
+      redirect_to room_device_path(@device.room, @device), notice: 'Device created with success.'
     else
       render :new
     end
@@ -59,7 +59,7 @@ class Admin::DevicesController < Admin::AdminController
   # PATCH/PUT /devices/1
   def update
     if @device.update(device_params)
-      redirect_to admin_room_device_path(@device.room, @device), notice: 'Device updated with success.'
+      redirect_to room_device_path(@device.room, @device), notice: 'Device updated with success.'
     else
       render :edit
     end
@@ -68,19 +68,35 @@ class Admin::DevicesController < Admin::AdminController
 
   def destroy
     @device.destroy
-    redirect_to admin_room_path(@room), notice: 'Device deleted with success.'
+    redirect_to room_path(@room), notice: 'Device deleted with success.'
   end
 
 
   def start
-    @device.start
-    redirect_to admin_room_path(@room), notice: 'Device started'
+    result = @device.start 
+
+    if result == true
+      redirect_back fallback_location: room_path(@room), notice: 'Device started'
+    else
+      redirect_back fallback_location: room_path(@room), alert: "Device error: #{result}"
+    end
   end
 
 
   def stop
-    @device.stop
-    redirect_to admin_room_path(@room), notice: 'Device stopped'
+    result = @device.stop 
+
+    if result == true
+      redirect_back fallback_location: room_path(@room), notice: 'Device stopped'
+    else
+      redirect_back fallback_location: room_path(@room), alert: "Device error: #{result}"
+    end
+  end
+
+
+  def query
+    @device.query_sensor
+    redirect_back fallback_location:  room_path(@room), notice: 'Query OK'
   end
 
 
@@ -91,9 +107,11 @@ class Admin::DevicesController < Admin::AdminController
 
 private
   def set_room
-    @room = Room.find(params[:room_id])
+    if params[:room_id].present?
+      @room = Room.find(params[:room_id])
 
-    add_breadcrumb @room.name, [:admin, @room]
+      add_breadcrumb @room.name, [:admin, @room]
+    end
   end
 
   def set_device
@@ -104,6 +122,6 @@ private
 
   # Only allow a trusted parameter "white list" through.
   def device_params
-    params.require(:device).permit(:room_id, :device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date, :use_duration)
+    params.require(:device).permit(:room_id, :device_type, :device_state, :pin_number, :pin_type, :default_duration, :name, :product_reference, :description, :last_start_date, :use_duration, :watts, :volts, :amperes)
   end
 end

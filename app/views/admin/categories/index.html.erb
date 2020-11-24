@@ -1,0 +1,35 @@
+
+<h1>
+  Categories
+  <div class="float-right">
+    <%= link_to new_admin_category_path, class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %>  
+      New
+    <% end %> 
+  </div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-center">Nb resources</th>
+      <th width="140px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><b><%= category.name %></b></td>
+        <td class="text-center"><%= category.resources.count %></td>
+        <td>
+        	<%= link_to 'Edit', edit_admin_category_path(category), class: "btn btn-sm btn-outline-success" %>
+        	<%= link_to 'Destroy', [:admin, category], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-outline-danger" %>		
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

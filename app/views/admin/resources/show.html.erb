@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @resource.name %>
+</p>
+
+<p>
+  <strong>Shortname:</strong>
+  <%= @resource.shortname %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @resource.description %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @resource.category_id %>
+</p>
+
+<p>
+  <strong>Choices:</strong>
+  <%= @resource.choices %>
+</p>
+
+<p>
+  <strong>Units:</strong>
+  <%= @resource.units %>
+</p>
+
+<%= link_to 'Edit', edit_resource_path(@resource) %> |
+<%= link_to 'Back', resources_path %>

@@ -1,0 +1,32 @@
+<h1>
+	<%= @subject.name %>
+	
+	<div class="float-right">
+		<%= link_to 'Back', admin_room_path(@subject.room), class: "btn btn-light border" %>
+		<%= link_to 'Edit', edit_admin_grow_subject_path(@subject.grow, @subject), class: "btn btn-success" %>	
+		<%= link_to icon( "fas", "plus")+" "+icon( "fas", "comment-dots"), new_grow_subject_observation_path(@subject.grow, @subject, subject_ids: [@subject.id]), class: "btn btn-outline-primary" %>	
+	</div>
+</h1>
+
+<%#= render partial: "subjects/subjects_charts", locals: { subjects: [@subject] } %>
+
+<hr>
+
+<div class="row">
+	<div class="col-9">
+		<h4>Observations</h4>
+		<%= render partial: "observations/observations", locals: { observations: @subject.observations } %>
+	</div>
+	<div class="col-3">
+		<h4>QR Code</h4>
+		<%= image_tag @subject.generate_qr(5), class: "img-fluid" %>
+		<hr>
+		<h4>In room</h4>
+		<div class="list-group">
+			<%= link_to [:admin, @subject.room], class: "list-group-item" do %>
+				<%= icon "fas", "home" %> &nbsp;
+				<%= @subject.room.name %>
+			<% end %>
+		</div>
+	</div>
+</div>

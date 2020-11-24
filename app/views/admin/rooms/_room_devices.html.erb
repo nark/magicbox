@@ -1,12 +1,12 @@
 <div class="row">
-  <div class="col-sm-12 col-md-6 col-lg-4">
+  <div class="col-sm-12 col-md-6 col-lg-6">
     <% room.devices.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">
             <span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
             &nbsp;
-            <%= link_to device.name, [:admin, device.room, device], style: "text-decoration: none; color: #666" %>
+            <%= link_to device.name, [device.room, device], style: "text-decoration: none; color: #666" %>
             <div class="float-right">
               <div class="dropdown">
                 <button class="btn btn-sm dropdown-toggle bg-transparent text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,6 +21,7 @@
                     <%= icon "fas", "stop" %>
                     Stop
                   <% end %>
+
                   <div class="dropdown-divider"></div>
                   <%= link_to edit_admin_room_device_path(device.room, device), class: "dropdown-item" do %>
                     <%= icon "fas", "edit" %>
@@ -35,14 +36,19 @@
     <% end %>
   </div>
 
-  <% room.devices.where(device_state: :foo).each do |device| %>
-    <% device.data_types.each do |data_type| %>
-      <div class="col-sm-12 col-md-6 col-lg-4">
+  <div class="col-sm-12 col-md-6 col-lg-6">
+    <% room.devices.where(device_state: :foo).each do |device| %>
+      <% device.data_types.each do |data_type| %>
+        
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title">
-              <%= link_to device.name, [:admin, device.room, device] %>
+              <%= link_to device.name, [device.room, device] %>
               <div class="float-right">
+                <%= link_to query_room_device_path(device.room, device), method: :post, class: "btn btn-sm text-info"  do %>
+                  <%= icon "fas", "question" %>
+                <% end %>
+
                 <%= link_to edit_admin_room_device_path(device.room, device), class: "btn btn-sm text-success" do %>
                   <%= icon "fas", "edit" %>
                 <% end -%>
@@ -98,7 +104,7 @@
             </p>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 <nav id="sidebar">
   <div class="sidebar-header">
-      <h3>
+      <h3 class="mt-1">
         <%= link_to root_path do %>
           <%= icon "fas", "seedling", class: "text-success" %>
           MagicBox
@@ -11,63 +11,149 @@
 
   <ul class="list-unstyled components">
     <li>
-      <%= link_to admin_dashboard_path do %>
+      <%= link_to dashboard_path do %>
       	<%= icon "fas", "tachometer-alt" %>
       	Dashboard
       <% end %>
     </li>
     <li>
-      <%= link_to admin_samples_path do %>
+      <%= link_to journal_path do %>
+        <%= icon "fas", "newspaper" %>
+        Journal
+      <% end %>
+    </li>
+    <li>
+      <%= link_to calendar_path do %>
+        <%= icon "fas", "calendar" %>
+        Calendar
+      <% end %>
+    </li>
+    <li>
+      <%= link_to todos_path do %>
+        <%= icon "fas", "clock" %> To Do
+        <% if current_user.todos_count > 0 %>
+          <div class="float-right">
+            <span class="badge badge-light">
+              <%= current_user.todos_count %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to notifications_path do %>
+        <%= icon "fas", "flag" %>
+        Notifications
+        <div class="float-right">
+          <% if current_user.unread_notifications_count > 0 %>
+            <span class="badge badge-light">
+              <%= current_user.unread_notifications_count %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </li>
+
+    <li>
+      <%= link_to samples_path do %>
         <%= icon "fas", "chart-line" %>
         Statistics
       <% end %>
     </li>
   </ul>
 
-  <ul class="list-unstyled components">
-    <li>
-      <%= link_to admin_grows_path do %>
-        <%= icon "fas", "seedling" %>
-        Grows
-      <% end %>
-    </li>
+    <ul class="list-unstyled components">
+      <li>
+        <%= link_to grows_path do %>
+          <%= icon "fas", "seedling" %>
+          Grows
+        <% end %>
+      </li>
 
-    <li>
-      <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-        <%= icon "fas", "home" %>
-        Rooms
-      </a>
-      <ul class="collapse list-unstyled" id="roomsSubmenu">
-      	<% Room.all.each do |room| %>
-      		<li>
-             <%= link_to [:admin, room] do %>
-              <small><%= icon "fas", "home" %></small> <%= room.name %>
-             <% end %>
-          </li>
-      	<% end %>
-      </ul>
-    </li>
+      <li>
+        <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <%= icon "fas", "box" %>
+          Rooms
+        </a>
+        <ul class="collapse list-unstyled" id="roomsSubmenu">
+          <% Room.all.each do |room| %>
+            <li>
+               <%= link_to room do %>
+                <small><%= icon "fas", "box" %></small> <%= room.name %>
+               <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
 
-    <li>
-      <%= link_to admin_scenarios_path do %>
-      	<%= icon "fas", "clock" %>
-      	Scenarios
-      <% end %>
-    </li>
+    <% if current_user.is_admin? %>
+    <ul class="list-unstyled components">
+      <li>
+        <%= link_to admin_scenarios_path do %>
+          <%= icon "fas", "clock", class: "ml-1 mr-2" %>
+          Scenarios
+        <% end %>
+      </li>
 
-    <li>
-      <%= link_to admin_users_path do %>
-        <%= icon "fas", "users" %>
-        Users
-      <% end %>
-    </li>
-  </ul>
+      <li>
+        <%= link_to admin_devices_path do %>
+          <%= icon "fas", "cogs", class: "ml-1 mr-2" %>
+          Devices
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to admin_alerts_path do %>
+          <%= icon "fas", "exclamation-triangle" %>
+          Alerts
+        <% end %>
+      </li>
+    </ul>
+
+    <ul class="list-unstyled components">
+      <li>
+        <%= link_to admin_categories_path do %>
+          <%= icon "fas", "box", class: "" %>
+          Categories
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to admin_resources_path do %>
+          <%= icon "fas", "tint", class: "ml-1 mr-2 pr-1" %>
+          Resources
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to admin_data_types_path do %>
+          <%= icon "fas", "database", class: "ml-1 mr-2 pr-1" %>
+          Data types
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to admin_users_path do %>
+          <%= icon "fas", "users" %>
+          Users
+        <% end %>
+      </li>
+      <li>
+        <%= link_to admin_settings_path do %>
+          <%= icon "fas", "cog" %>
+          Settings
+        <% end %>
+      </li>
+    </ul>
+  <% end %>
+
 
   <ul class="list-unstyled components">
     <li>
       <%= link_to current_user do %>
         <%= icon "fas", "user" %>
-        <%= current_user.email %>
+        <%= current_user.username %>
       <% end %>
     </li>
     <li>

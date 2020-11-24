@@ -30,6 +30,6 @@ production:
   host: 127.0.0.1
   schema_search_path: public
   database: magicbox_production
-  username: postgres
-  password: magicbox
+  username: pi
+  password: 2Ppyg5ok
   port: 5432

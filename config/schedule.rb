@@ -42,3 +42,6 @@
 # 	command "/usr/bin/python /home/pi/magicbox/scripts/arduino.py COMMAND:DIGITAL_WRITE:7:1 && sleep 300 && /usr/bin/python /home/pi/magicbox/scripts/arduino.py COMMAND:DIGITAL_WRITE:7:0"
 # end
 
+every 4.minute do
+	runner "Scenario.run"
+end

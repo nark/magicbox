@@ -1,0 +1,73 @@
+<h1>
+  Grow #<%= @grow.id %>
+    
+  <div class="float-right">
+    <%= link_to 'Back', grows_path, class: "btn btn-ligth border" %>
+    <%= link_to new_grow_subject_path(@grow), class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %>
+      Subject
+    <% end %>
+    <%= link_to 'Edit', edit_admin_grow_path(@grow), class: "btn btn-success" %>
+    <%= link_to new_grow_observation_path(@grow), class: "btn btn-outline-primary" do %>
+      <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
+    <% end %>
+  </div>  
+</h1>
+
+<hr>
+
+<div>
+  <span class="text-muted"><%= @grow.description %></span>
+
+  <div class="float-right">
+    <span class="badge badge-primary"><%= @grow.grow_status %></span>
+    <span class="badge badge-pill badge-info"><%= @grow.substrate %></span>
+    <span class="badge badge-pill badge-secondary"><%= @grow.flowering %></span>
+  </div>
+
+  <span class="ml-2 text-<%= @grow.progress_color %> font-weight-bold">
+    <%= @grow.progress_percents %>%
+  </span>
+</div>
+
+<hr>
+
+<h4>
+Weeks
+  <div class="float-right">
+    <div class="col-sm-4 col-md-3 col-lg-2 mb-3">
+    <%= link_to icon("fas", "plus") + ' Week', new_grow_week_path(@grow), class: "btn btn-sm btn-outline-secondary" %>
+</div>
+  </div>
+</h4>
+
+<%= render partial: "calendar/calendar", locals: { 
+  todos_json: @todos_json,
+  weeks_json: @weeks_json,
+  observations_json: @observations_json,
+  issues_json: @issues_json } %>
+  
+<br>
+
+<h4>
+  Subjects
+  <div class="float-right">
+    <%= link_to print_qr_grow_path(@grow), class: "text-muted", style: "font-size: 11px;" do %>
+      <%= icon "fas", "print" %> Print QR
+    <% end %>-
+  </div>
+</h4>
+<%#= render partial: "admin/subjects/subjects_charts", locals: { subjects: @grow.subjects } %>
+<div class="row">
+  <%= render partial: "admin/subjects/subjects", locals: { subjects: @grow.subjects } %>
+</div>
+
+<h4>
+  Observations
+</h4>
+
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-8">
+    <%= render partial: "observations/observations", locals: { observations: @grow.observations } %>
+  </div>
+</div>

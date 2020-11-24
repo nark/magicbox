@@ -22,9 +22,11 @@ class Cron < ApplicationRecord
       self.last_exec_time = Time.now
       self.save!
 
-      if duration and duration != "*"
+      logger.info "#{duration} #{duration.class}"
+
+      if duration and duration != 0
         logger.info "\n   -> #{device.name} will stop in #{duration} sec.\n"
-        #CommandJob.perform_in(duration.seconds, device.id, "stop")
+        CommandJob.perform_in(duration.seconds, device.id, "stop")
       end
       return
     end
@@ -37,9 +39,9 @@ class Cron < ApplicationRecord
       self.last_exec_time = Time.now
       self.save!
 
-      if duration and duration != "*"
+      if duration and duration != 0
         logger.info "\n   -> #{device.name} will start in #{duration} sec.\n"
-        #CommandJob.perform_in(duration.seconds, device.id, "start")
+        CommandJob.perform_in(duration.seconds, device.id, "start")
       end
 
       return

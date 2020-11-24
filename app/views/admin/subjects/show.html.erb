@@ -8,9 +8,7 @@
 	</div>
 </h1>
 
-<hr>
-
-<%= render partial: "admin/subjects/subjects_charts", locals: { subjects: [@subject] } %>
+<%#= render partial: "admin/subjects/subjects_charts", locals: { subjects: [@subject] } %>
 
 <hr>
 
@@ -24,24 +22,39 @@
 					<div class="float-right">
 						<%= time_ago_in_words observation.created_at %>
 						<% if observation.user.id == current_user.id %>
-							<%= link_to edit_admin_grow_subject_observation_path(@subject.grow, @subject), class: "btn text-success" do %>
+							<%= link_to edit_admin_grow_subject_observation_path(@subject.grow, @subject, observation), class: "btn text-success" do %>
 					    	<%= icon("fas", "edit") %>
 					    <% end %>
 						<% end %>
 					</div>
 				</div>
-			  <div class="card-body">
-			    <p class="card-text"><%= observation.body %></p>
-			  </div>
+				<% if !observation.body.empty? %>
+				  <div class="card-body">
+				    <p class="card-text"><%= observation.body %></p>
+				  </div>
+			  <% end %>
+			  <ul class="list-group list-group-flush">
+			    <% observation.resource_datas.each do |resource_data| %>	
+			    	<li class="list-group-item  text-success">
+			    		<b><%= resource_data.resource.name %></b> 
+			    		<div class="float-right">
+			    			<%= resource_data.value %> <%= resource_data.unit %>
+			    		</div>
+			    	</li>
+			    <% end %>
+			  </ul>
+			  <ul class="list-group list-group-flush">
+			    <% observation.issues.each do |issue| %>	
+			    	<li class="list-group-item text-danger">
+			    		<b><%= issue.resource.name %></b> 
+			    		<div class="float-right">
+			    			<%= issue.severity %> <%= issue.issue_type %>
+			    		</div>
+			    	</li>
+			    <% end %>
+			  </ul>
 			  <div class="card-footer">
-			  	<div class="row">
-		        <div class="col-6 text-center">
-		          <small class="text-info"><%= observation.water %> L</small>
-		        </div>
-		        <div class="col-6 text-center">
-		          <small class="text-success"><%= observation.nutrients %> mL/LL</small>
-		        </div>
-		      </div>
+			  	
 			  </div>
 			</div>
 		<% end %>

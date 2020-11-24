@@ -1,0 +1,22 @@
+<% if room.camshots.count > 0 %>
+  <div class="card mb-3">
+    <%= image_tag room.camshots.last, class: "card-img-top" %>
+    <div class="card-body">
+      <%= link_to take_camshot_admin_room_path(room), method: :post, class: "btn btn-primary" do %>
+        <%= icon "fas", "camera" %>
+      <% end %>
+      <div class="float-right">
+      	<span class="text-muted">The room is <%= room.is_dark ? "dark" : "lit" %></span>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <% if room.observations.last and room.observations.last.pictures.first %>
+  <div class="card mb-3">
+    <%= image_tag room.observations.last.pictures.first, class: "card-img-top" %>
+  </div>
+  
+  <small class="text-muted"><i><%= fdatetime room.observations.last.pictures.first.created_at %></i></small>
+
+  <% end %>
+<% end %>

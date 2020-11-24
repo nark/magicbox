@@ -59,6 +59,22 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.smtp_settings = {
+    address: "ssl0.ovh.net",
+    port: 587,
+    domain: "magicbox.read-write.fr",
+    authentication: "login",
+    enable_starttls_auto: true,
+    user_name: "rafael.warnault@read-write.fr",
+    password:  "2Ppyg5ok",
+    from: "no-reply@magicbox.read-write.fr"
+  }
+  config.action_mailer.default_options = {
+    reply_to: "no-reply@magicbox.read-write.fr",
+    from: "no-reply@magicbox.read-write.fr"
+  }
+  # ActionMailer Config
+  config.action_mailer.default_url_options = { :host => 'magicbox.read-write.fr', :protocol => 'https' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

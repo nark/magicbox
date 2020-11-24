@@ -13,13 +13,21 @@ class Admin::GrowsController < Admin::AdminController
   # GET /grows/1
   # GET /grows/1.json
   def show
+    @todos_json = current_user.todos.to_json(methods: [:text, :url, :color, :start_date, :end_date])
+    @weeks_json = @grow.weeks.joins(:grow).where.not('grows.grow_status': [:done, :aborted]).to_json(methods: [:text, :url, :color])
+    @observations_json = @grow.observations.all.to_json(methods: [:start_date, :end_date, :text, :url])
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @grow.to_json(include: :subjects) }
+    end
   end
 
   # GET /grows/new
   def new
     @grow = Grow.new
 
-    add_breadcrumb "Grows", admin_grows_path
+    add_breadcrumb "Grows", grows_path
     add_breadcrumb "New"
   end
 
@@ -41,6 +49,8 @@ class Admin::GrowsController < Admin::AdminController
           Subject.create(name: "Subject #{i+1}", grow_id: @grow.id, room_id: room.id) if room
         end
 
+        @grow.generate_weeks
+
         format.html { redirect_to [:admin, @grow], notice: 'Grow was successfully created.' }
         format.json { render :show, status: :created, location: @grow }
       else
@@ -55,6 +65,8 @@ class Admin::GrowsController < Admin::AdminController
   def update
     respond_to do |format|
       if @grow.update(grow_params)
+        @grow.generate_weeks
+
         format.html { redirect_to [:admin, @grow], notice: 'Grow was successfully updated.' }
         format.json { render :show, status: :ok, location: @grow }
       else
@@ -88,6 +100,18 @@ class Admin::GrowsController < Admin::AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def grow_params
-      params.require(:grow).permit(:grow_status, :description, :start_date, :end_date, :substrate, :flowering, :number_of_subjects)
+      params.require(:grow).permit(
+        :grow_status, 
+        :description, 
+        :start_date, 
+        :seedling_weeks,
+        :vegging_weeks, 
+        :flowering_weeks,
+        :flushing_weeks,
+        :drying_weeks,
+        :curing_weeks,
+        :substrate, 
+        :flowering,
+        :number_of_subjects)
     end
 end

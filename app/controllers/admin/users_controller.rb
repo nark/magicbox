@@ -67,6 +67,7 @@ private
       :id,
       :username,
       :email,
+      :is_admin,
       :reset_password_token,
       :password,
       :password_confirmation,

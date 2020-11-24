@@ -63,7 +63,7 @@
 		<div class="col-12">
 			<div class="form-group">
 				<%= f.label :product_reference %>
-				<%= f.text_field :product_reference, :class => "form-control" %>
+				<%= f.select :product_reference, options_for_select(["dht11"], f.object.product_reference), {include_blank: "None"}, :class => "form-control" %>
 			</div>
 		</div>
 	</div>
@@ -79,8 +79,31 @@
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<%= f.label :pin_number %>
-				<%= f.text_field :pin_number, :class => "form-control" %>
+				<%= f.label "GPIO" %>
+				<%= f.select :pin_number, options_for_select((0..27).step(1).map { |e| e }), {}, :class => "form-control" %>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :watts %>
+				<%= f.number_field :watts, :class => "form-control", step: :any %>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :volts %>
+				<%= f.number_field :volts, :class => "form-control", step: :any %>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<%= f.label :amperes %>
+				<%= f.number_field :amperes, :class => "form-control", step: :any %>
 			</div>
 		</div>
 	</div>

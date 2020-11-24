@@ -1,0 +1,3 @@
+<% observations.order(created_at: :desc).each do |observation| %>
+  <%= render partial: "observations/observation", locals: {observation: observation} %>
+<% end %>  

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2'
@@ -66,8 +66,14 @@ gem 'open-weather'
 gem 'openweather2'
 gem 'barby'
 gem 'rqrcode'
+gem 'rmagick'
+gem 'mini_magick'
+gem "simple_calendar", "~> 2.0"
+gem 'dotenv-rails'
 
 install_if -> { RUBY_PLATFORM =~ /linux/ } do
   gem 'dht11'
   gem 'charlcd'
 end
+
+gem "rails-settings-cached", "~> 2.3"

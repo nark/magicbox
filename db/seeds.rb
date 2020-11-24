@@ -3,7 +3,13 @@
 #
 
 # create default user
-User.create(username: "Admin", email: "admin@example.com", password: "changeme", password_confirmation: "changeme")
+User.create(username: "Admin", email: "admin@example.com", password: "changeme", password_confirmation: "changeme", is_admin: true)
+
+# create default categories
+# TBD : call rake task
+
+# create default
+# TBD : call rake task
 
 # create default room
 r = Room.create(name: "Room 1", room_type: 0, length: 60, width: 60, height: 140)
@@ -14,20 +20,97 @@ h = DataType.create(name: "humidity")
 s = DataType.create(name: "soil_moisture")
 w = DataType.create(name: "water_level")
 
+DataType.create(name: "weather_temperature")
+DataType.create(name: "weather_humidity")
+DataType.create(name: "weather_pressure")
+DataType.create(name: "weather_clouds")
+DataType.create(name: "weather_wind_speed")
+DataType.create(name: "weather_wind_angle")
+
+DataType.create(name: "cpu_usage")
+DataType.create(name: "cpu_temp")
+DataType.create(name: "cpu_voltage")
+DataType.create(name: "memory_used")
+DataType.create(name: "memory_free")
+
 # create default device in the room
-d = Device.create!(room_id: r.id, device_type: 1, device_state: 2, name: "Temperature/humidity", product_reference: "vma311", description: "Temperature/humidity (NTC/DHT11) sensor for Arduino")
+d = Device.create!(room_id: r.id, device_type: 1, device_state: 2, name: "Temp/hum", product_reference: "dht11", description: "Temperature/humidity sensor (NTC/DHT11)")
 d.data_types << t
 d.data_types << h
 
-d = Device.create!(room_id: r.id, device_type: 1, device_state: 2, name: "Soil moisture", product_reference: "vma303", description: "Soil moisture sensor for Arduino")
-d.data_types << s
+Device.create!(room_id: r.id, device_type: 2, device_state: 0, name: "Air", product_reference: "unknow", description: "Intractor/extractor device recycling the air into the room")
+Device.create!(room_id: r.id, device_type: 2, device_state: 0, name: "Fan", product_reference: "unknow", description: "Fan used to move air around the room")
+Device.create!(room_id: r.id, device_type: 5, device_state: 0, name: "Light", product_reference: "unknow", description: "Light giving some sun to the room")
 
-d = Device.create!(room_id: r.id, device_type: 1, device_state: 2, name: "Water level", product_reference: "vma303", description: "Water level sensor for Arduino")
-d.data_types << w
+water_category = Category.create(name: "Water", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+nutrients_category = Category.create(name: "Nutrients", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+Category.create(name: "Air", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+Category.create(name: "Light", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
 
-Device.create!(room_id: r.id, device_type: 2, device_state: 0, name: "Cooling fan", product_reference: "SanACE40", description: "Fan used to cool the environment when the temperature goes up too much")
-Device.create!(room_id: r.id, device_type: 3, device_state: 0, name: "Water pump", product_reference: "unknow", description: "Water pump used to fill the water tank when level goes down")
-Device.create!(room_id: r.id, device_type: 4, device_state: 0, name: "Air pump", product_reference: "unknow", description: "Air pump to brew and keep hight level of oxygen in the water tank")
+Resource.create(
+  name: "Water quantity",
+  shortname: "H2O",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: water_category.id,
+  choices: [],
+  units: ["l", "dl", "cl", "ml"]
+)
+
+Resource.create(
+  name: "Water type",
+  shortname: "Type",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: water_category.id,
+  choices: ["Tap water", "Mineral water", "Purified water", "Distiled water (reverse osmosis)"],
+  units: []
+)
+
+Resource.create(
+  name: "PH",
+  shortname: "PH",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: water_category.id,
+  choices: [],
+  units: ["PH"]
+)
+
+Resource.create(
+  name: "EC",
+  shortname: "EC",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: water_category.id,
+  choices: [],
+  units: ["EC"]
+)
+
+
+# NUTRIENTS
+Resource.create(
+  name: "Nitrogen",
+  shortname: "N",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: nutrients_category.id,
+  choices: [],
+  units: ["l", "dl", "cl", "ml"]
+)
+
+Resource.create(
+  name: "Phosphorus",
+  shortname: "P",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: nutrients_category.id,
+  choices: [],
+  units: ["l", "dl", "cl", "ml"]
+)
+
+Resource.create(
+  name: "Potatium",
+  shortname: "K",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  category_id: nutrients_category.id,
+  choices: [],
+  units: ["l", "dl", "cl", "ml"]
+)
 
 # create default scenario
 s = Scenario.create!(name: "Scenario 1", enabled: true)

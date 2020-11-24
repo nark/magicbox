@@ -7,29 +7,44 @@
 		<th width="80px">State</th>
 		<th>Ref.</th>
 		<th width="90px">PIN type</th>
-		<th width="80px">PIN nb</th>
+		<th width="80px">GPIO</th>
 		<th>Room</th>
-		<th width="125px"></th>
+		<th width="180px"></th>
 	</thead>
-	<% devices.each do |d| %>
+	<% devices.group_by(&:device_type).each do |device_type, devices| %>
 		<tr>
-			<td><small>#<%= d.id %></small></td>
-			<td><strong><%= link_to d.name, [:admin, d.room, d] %></strong></td>
-			<td><%= d.device_type.titleize %></td>
-			<td><small><%= d.data_types_string %></small></td>
-			<td>
-				<% if !d.foo? %>
-					<span class="badge badge-pill badge-<%= d.state_color %>"><%= d.device_state.titleize %></span>
-				<% end %>
-			</td>
-			<td><i><%= d.product_reference %></i></td>
-			<td class="text-center"><span class="badge badge-pill badge-<%= d.pin_color %>"><%= d.pin_type.titleize %></span></td>
-			<td class="text-center"><%= d.pin_number %></td>
-			<td><%= link_to d.room.name, admin_room_path(d.room) %></td>
-			<td>
-				<%= link_to "Stop", stop_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-danger" %>
-				<%= link_to "Start", start_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+			<td colspan="10">
+				<b class="text-primary">
+					<%= icon "fas", "cog" %>
+					<%= device_type.humanize.pluralize.upcase %>
+				</b>
 			</td>
 		</tr>
+		<% devices.each do |d| %>
+			<tr>
+				<td><small>#<%= d.id %></small></td>
+				<td><strong><%= link_to d.name, [:admin, d.room, d] %></strong></td>
+				<td><%= d.device_type.titleize %></td>
+				<td><small><%= d.data_types_string %></small></td>
+				<td>
+					<% if !d.foo? %>
+						<span class="badge badge-pill badge-<%= d.state_color %>"><%= d.device_state.titleize %></span>
+					<% end %>
+				</td>
+				<td><i><%= d.product_reference %></i></td>
+				<td class="text-center"><span class="badge badge-pill badge-<%= d.pin_color %>"><%= d.pin_type.titleize %></span></td>
+				<td class="text-center"><%= d.pin_number %></td>
+				<td><%= link_to d.room.name, admin_room_path(d.room) %></td>
+				<td>
+					<% if d.sensor? %>
+						<%= link_to "Query", query_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+					<% else %>
+						<%= link_to "Stop", stop_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-danger" %>
+						<%= link_to "Start", start_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+					<% end %>
+					<%= link_to "Edit", edit_admin_room_device_path(d.room, d), class: "btn btn-sm btn-outline-success" %>
+				</td>
+			</tr>
+		<% end %>
 	<% end %>
 </table>

@@ -1,5 +1,5 @@
 class Api::V1::DevicesController < ApiController
-  acts_as_token_authentication_handler_for User
+  #acts_as_token_authentication_handler_for User
   before_action :set_device, only: [:show, :update, :destroy, :start, :stop]
 
   resource_description do

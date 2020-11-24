@@ -1,0 +1,50 @@
+<%= form_with(model: [:admin, resource], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= resource.new_record? ? "New Resource" : "Editing Resource" %>
+    <div class="float-right">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <% if resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(resource.errors.count, "error") %> prohibited this resource from being saved:</h2>
+
+      <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class:  "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :shortname %>
+    <%= form.text_field :shortname, class:  "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class:  "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :category_id %>
+    <%= form.select :category_id, options_from_collection_for_select(Category.all, "id", "name", form.object.category_id), {}, class:  "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :choices %>
+    <%= form.text_field :choices, multiple: true, value: resource.new_record? ? "" : form.object.choices.join(", "), class:  "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :units %>
+    <%= form.text_field :units, multiple: true, value: resource.new_record? ? "" : form.object.units.join(", "), class:  "form-control" %>
+  </div>
+<% end %>

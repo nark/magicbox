@@ -1,0 +1,23 @@
+<ul class="list-group">
+  <% todos.each do |todo| %>
+    <li class="list-group-item">
+      <span class="align-middle">
+        <%= icon 'fas', "bell", class: "#{(status != :done) ? 'text-success' : 'text-muted'} mr-2" %>
+        <%= todo.body %>    
+      </span>
+      <div class="float-right">
+        <small class="text-muted"><%= fdatetime todo.date %></small>
+
+        <% if status == :todo %>
+          <%= link_to done_todo_path(todo), method: :post, class: "btn btn-sm text-success ml-3" do %>
+            <%= icon 'fas', "check" %>
+          <% end %>
+        <% else %>
+          <%= link_to undone_todo_path(todo), method: :post, class: "btn btn-sm text-danger ml-3" do %>
+            <%= icon 'fas', "undo" %>
+          <% end %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

@@ -1,6 +1,6 @@
 class Admin::ScenariosController < Admin::AdminController
   before_action :authenticate_user!
-  before_action :set_scenario, only: [:show, :edit, :update, :destroy]
+  before_action :set_scenario, only: [:show, :edit, :update, :destroy, :run]
 
   # GET /scenarios
   # GET /scenarios.json
@@ -23,8 +23,8 @@ class Admin::ScenariosController < Admin::AdminController
   # GET /scenarios/1/edit
   def edit
     if @scenario.conditions.count == 0
-      condition = @scenario.conditions.build
-      condition.operations.build
+      #condition = @scenario.conditions.build
+      #condition.operations.build
     end
   end
 
@@ -66,6 +66,12 @@ class Admin::ScenariosController < Admin::AdminController
       format.html { redirect_to admin_scenarios_url, notice: 'Scenario was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+
+  def run
+    @scenario.run2
+    redirect_to admin_scenario_path(@scenario), notice: 'Scenario was successfully ran.'
   end
 
   private

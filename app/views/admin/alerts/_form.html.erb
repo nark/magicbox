@@ -1,0 +1,62 @@
+<%= form_with(model: [:admin, alert], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= alert.new_record? ? "New alert" : "Editing alert" %>
+    <div class="float-right">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <% if alert.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
+
+      <ul>
+      <% alert.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :alert_type %>
+    <%= form.select :alert_type, options_for_select(Alert.alert_types.keys.map { |e| [e.titleize, e] }, form.object.alert_type), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :data_type_id %>
+    <%= form.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", form.object.data_type_id), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :resource_id %>
+    <%= form.select :resource_id, options_from_collection_for_select(Resource.all, "id", "name", form.object.resource_id), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :operator %>
+    <%= form.select :operator, options_for_select(Alert.operators.keys.map { |e| [e.titleize, e] }, form.object.operator), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :value %>
+    <%= form.text_field :value, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :message %>
+    <%= form.text_area :message, class: "form-control" %>
+  </div>
+
+
+  <hr>
+
+  <div class="form-group">
+    <%= form.label "Users" %><br>
+    <%= form.collection_check_boxes :user_ids, User.all, "id", "email", class: "form-control" do |ff| %>
+      <%= ff.check_box %>
+      <%= ff.object.username %>  (<%= ff.object.email %>)
+      <br>
+    <% end %>
+  </div>
+<% end %>

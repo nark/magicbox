@@ -3,11 +3,12 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, if: -> { controller_name == 'sessions' && action_name == 'create' }
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :authenticate_user!
   
   add_breadcrumb '<i class="fa fa-home"></i>'.html_safe, :root_path
 
 	def after_sign_in_path_for(resource)
-    admin_dashboard_path
+    dashboard_path
   end
 
   def configure_permitted_parameters

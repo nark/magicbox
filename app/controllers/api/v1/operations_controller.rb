@@ -1,4 +1,4 @@
-class Api::V1::OperationsController < ApplicationController
+class Api::V1::OperationsController < ApiController
   before_action :set_operation, only: [:show, :edit, :update, :destroy]
 
   # GET /operations

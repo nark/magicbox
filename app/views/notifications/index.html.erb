@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-8">
+		<h1>
+			Notifications
+			<div class="float-right">
+				<%= link_to icon("fas", "trash")+' Clear All Notifications', clear_all_notifications_path, method: :delete, class: "btn btn-sm btn-danger" %>
+			</div>
+		</h1>
+		<table class="table">
+			<% @notifications.each do |notification| %>
+				<tr>
+					<td><%= notification.alert.title %></td>
+					<td><%= notification.alert.message %></td>
+					<td><%= fdatetime notification.alert.created_at %></td>
+					<td><%= link_to icon("fas", "trash"), notification, method: :delete, class: "btn btn-sm btn-danger" %></td>
+				</tr>
+			<% end %>
+		</table>
+		<%= will_paginate @notifications %>
+	</div>
+	<div class="col-4">
+		<h1>
+		Events
+			<div class="float-right">
+			</div>
+		</h1>
+		<% Room.all.each do |room| %>
+			<h5><%= room.name %></h5>
+			<%= render partial: "admin/events/events", locals: {room: room} %>
+			<br>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<%= form_with(model: todo, local: true) do |form| %>
+  <% if todo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(todo.errors.count, "error") %> prohibited this todo from being saved:</h2>
+
+      <ul>
+      <% todo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= form.hidden_field :user_id, value: current_user.id, class: "form-control" %>
+  <%= form.hidden_field :todo_status, value: :todo, class: "form-control" %>
+
+  <div class="form-group">
+    <%= form.text_area :body, autofocus: true, placeholder: "What to do here...", class: "form-control" %>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <%= form.hidden_field :date, value: fdatetime(form.object.date), class: "form-control mr-2", id: "datetimepicker-todo-date" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.check_box :notify %> Notify
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save", class: "btn btn-block btn-primary" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#datetimepicker-todo-date').datetimepicker({format: 'YYYY-MM-DD HH:mm', inline: true, sideBySide: true, stepping: 5});
+</script>

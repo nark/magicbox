@@ -33,21 +33,33 @@ function init_views() {
 
   $('#roomsSubmenu').collapse('show');
 
-  $('.timepicker').datetimepicker({format: 'hh:mm', stepping: "5"});
+  
+  $('.timepicker').datetimepicker({format: 'HH:mm', stepping: "5"});
   $('.weekpicker').datetimepicker({format: 'YYYY-MM-DD', inline: true, sideBySide: true});
+  $('#datetimepicker-todo-date').datetimepicker({format: 'YYYY-MM-DD HH:mm', inline: true, sideBySide: true});
+
+  $(document).on('mouseup touchend', function (e) {
+  var container = $('.bootstrap-datetimepicker-widget');
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+      container.parent().datetimepicker('hide');
+    }
+  });
 
   $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+
+  $(function () {
+    $('[data-toggle="popover"]').popover({container: 'body'})
+  })
 }
 
-// $(document).ready(function () {
-// 	init_views();
-// });
+$(document).ready(function () {
+	init_views();
+});
 
 $(document).on("turbolinks:load", function() {
 	init_views();
 });
 
 $(document).on('nested:fieldAdded', function(event){
-	console.log("fieldAdded");
   init_views();
 })

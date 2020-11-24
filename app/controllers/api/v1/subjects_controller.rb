@@ -1,4 +1,4 @@
-class Api::V1::SubjectsController < ApplicationController
+class Api::V1::SubjectsController < ApiController
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
 
   resource_description do

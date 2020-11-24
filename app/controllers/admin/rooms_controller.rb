@@ -1,6 +1,6 @@
 class Admin::RoomsController < Admin::AdminController
   before_action :authenticate_user!
-  before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :set_room, only: [:show, :edit, :update, :destroy, :take_camshot]
 
   # GET /rooms
   # GET /rooms.json
@@ -11,7 +11,7 @@ class Admin::RoomsController < Admin::AdminController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    add_breadcrumb @room.name, [:admin, @room]
+    add_breadcrumb @room.name, @room
   end
 
   # GET /rooms/new
@@ -68,6 +68,13 @@ class Admin::RoomsController < Admin::AdminController
       format.json { head :no_content }
     end
   end
+
+
+  def take_camshot
+    @room.take_camshot
+    redirect_to [:admin, @room], notice: 'Camshot was successfully created.'
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

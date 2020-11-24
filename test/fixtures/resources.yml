@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  shortname: MyString
+  description: MyText
+  category_id: 1
+  choices: 
+  units: 
+
+two:
+  name: MyString
+  shortname: MyString
+  description: MyText
+  category_id: 1
+  choices: 
+  units: 

@@ -1,5 +1,5 @@
 <% scenario.rooms.each do |room| %>
-	<div class="row">
+<!-- 	<div class="row">
 		<% room.devices.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
 			<% crons = scenario.crons.where(device_id: device.id) %>
 
@@ -18,10 +18,11 @@
 	  					<% crons.order(start_time: :asc).each do |cron| %>
 								<li class="list-group-item">
 									<b><%= cron.device.name %></b> should <b><%= cron.command %></b> every 
-								<b><%= cron.any_time? ? "time" : "#{cron.time_value} #{cron.period}" %></b> 
-								<% if cron.start_time and cron.end_time %>
-									between <b><%= ftime cron.start_time %></b> and <b><%= ftime cron.end_time %></b>
-								<% end %>
+									<b><%= cron.any_time? ? "time" : "#{cron.time_value} #{cron.period}" %></b> 
+									<%= cron.duration != nil ? " for <b>#{cron.duration} sec.</b>".html_safe : "" %>
+									<% if cron.start_time and cron.end_time %>
+										between <b><%= ftime cron.start_time %></b> and <b><%= ftime cron.end_time %></b>
+									<% end %>
 								</li>
 							<% end %>
 	  				<% else %>
@@ -32,6 +33,40 @@
 					</ul>
 				</div>
 			</div>
+		<% end %>
+	</div> -->
+
+	<div class="row">
+		<% room.devices.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
+			<div class="col-sm-12 col-md-12 col-lg-6">
+				<div class="card mb-4">
+					<div class="card-header">
+				    <b><%= device.name %></b>
+
+				    <div class="float-right">
+				    	<span class="badge badge-pill badge-<%= device.state_color %>"><%= device.device_state.titleize %></span>
+				    </div>
+				  </div>
+
+	  			<ul class="list-group list-group-flush">
+	  				<% if device.operations.count > 0 %>
+	  					<% device.operations.joins(:condition).order(start_time: :asc).each do |operation| %>
+								<li class="list-group-item">
+									The device should <b><%= operation.command %></b> 
+									<% if operation.condition.start_time and operation.condition.end_time %>
+										between <b><%= ftime operation.condition.start_time %></b> and <b><%= ftime operation.condition.end_time %></b>
+									<% end %>
+									if <b><%= operation.condition.data_type.name %></b> is <b><%= [">=","<="][operation.condition.predicate.to_i] %></b> to <b><%= operation.condition.target_value %></b>
+								</li>
+							<% end %>
+	  				<% else %>
+	  					<li class="list-group-item text-center text-muted">
+	  						<i>No condition yet</i>
+	  					</li>
+	  				<% end %>
+	  			</ul>
+	  		</div>
+	  	</div>
 		<% end %>
 	</div>
 <% end %>

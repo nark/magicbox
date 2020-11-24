@@ -1,4 +1,4 @@
-class Api::V1::ScenariosController < ApplicationController
+class Api::V1::ScenariosController < ApiController
   before_action :set_scenario, only: [:show, :edit, :update, :destroy]
 
 
