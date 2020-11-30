@@ -30,7 +30,7 @@ class Grow < ApplicationRecord
   has_many :observations, dependent: :delete_all
 
   def name
-    "##{id} #{description}"
+    "##{id} - #{description}"
   end
 
   def active_subjects

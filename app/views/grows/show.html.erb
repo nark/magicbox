@@ -1,5 +1,5 @@
 <h1>
-  Grow #<%= @grow.id %>
+  <%= @grow.name %>
     
   <div class="float-right">
     <%= link_to 'Back', grows_path, class: "btn btn-ligth border" %>
@@ -17,17 +17,20 @@
 <hr>
 
 <div>
-  <span class="text-muted"><%= @grow.description %></span>
-
-  <div class="float-right">
+  <div class="float-right ml-3">
     <span class="badge badge-primary"><%= @grow.grow_status %></span>
     <span class="badge badge-pill badge-info"><%= @grow.substrate %></span>
     <span class="badge badge-pill badge-secondary"><%= @grow.flowering %></span>
   </div>
 
-  <span class="ml-2 text-<%= @grow.progress_color %> font-weight-bold">
-    <%= @grow.progress_percents %>%
-  </span>
+  <div style="padding-top: 5px;">
+      <div class="text-muted">
+    <small>From <b><%= fdate @grow.start_date %></b> to <b><%= fdate @grow.end_date %></b></small>
+  </div>
+    <div class="progress">
+      <div class="progress-bar bg-<%= @grow.progress_color %>" role="progressbar" style="width: <%= @grow.progress_percents %>%" aria-valuenow="<%= @grow.progress_percents %>" aria-valuemin="0" aria-valuemax="100"><%= @grow.progress_percents %>%</div>
+    </div>
+  </div>
 </div>
 
 <hr>

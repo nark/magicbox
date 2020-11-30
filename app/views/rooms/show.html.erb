@@ -52,7 +52,7 @@
     <%= link_to admin_room_devices_path(@room), class: "text-muted mr-2", style: "font-size: 11px;" do %>
       <%= icon "fas", "eye" %> All devices
     <% end %>
-    <%= link_to room_events_path(@room), class: "text-muted", style: "font-size: 11px;" do %>
+    <%= link_to events_path(room_id: @room.id), class: "text-muted", style: "font-size: 11px;" do %>
       <%= icon "fas", "eye" %> All events
     <% end %>
   </div>

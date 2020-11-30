@@ -18,7 +18,7 @@ On the software side, I use a Ruby on Rails backend app that manages the whole s
 
 * **Multiple rooms and devices management:** organize several grow rooms with their own devices and sensors all connected through GPIO pins on a Raspberry Pi
 * **Condition-based growing scenarios:** you can build your own growing scenarios with user defined conditions to schedule and optimize your growing environment
-* **Multiple grows management:** follow multiple grows simultaneously, move subjects (usually plants) from grow to grow and post detailed observations about them
+* **Multiple grows management:** follow multiple grows simultaneously, move subjects (usually plants) from grow to grow, track them with QR codes and post detailed observations about them
 * **Growing journal, calendar, todos, notifications and events** give you a global view of operations 
 * Support for **pictures from mobile devices and webcams** 
 * **Data, charts and statictics** help you to fine tune your setup along the way

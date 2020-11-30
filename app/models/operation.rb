@@ -2,11 +2,12 @@ class Operation < ApplicationRecord
 	belongs_to :condition_group
 	belongs_to :device
 
+
 	def execute_operation
 		if command == "start"
       logger.info "\n  -> Start #{device.name}\n"
       
-      device.start(event_type: :condition, event: false)
+      device.start(event_type: :cron, event: true)
 
       logger.info "#{duration} #{duration.class}"
 
@@ -22,7 +23,7 @@ class Operation < ApplicationRecord
     if command == "stop"
       logger.info "\n  -> Stop #{device.name}\n"
       
-      device.stop(event_type: :condition, event: false)
+      device.stop(event_type: :cron, event: true)
 
       if duration and duration != 0
         logger.info "\n   -> #{device.name} will start in #{duration} sec.\n"

@@ -46,12 +46,13 @@ Rails.application.routes.draw do
     get :print_qr, on: :member
   end
 
+  resources :events
+
   resources :rooms, except: [:index, :edit, :update, :new, :create] do
     post :take_camshot, on: :member
     resources :devices, only: [:show, :query]  do
       post :query, on: :member
     end
-    resources :events
   end
 
   # Admin namespace
@@ -73,7 +74,6 @@ Rails.application.routes.draw do
         post :start, on: :member
         post :stop,  on: :member
       end
-      resources :events
     end
     
     resources :devices

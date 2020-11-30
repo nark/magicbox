@@ -45,6 +45,8 @@ class Device < ApplicationRecord
     options = options.reverse_merge(default_options)
     state_changed = self.off?
 
+    logger.info options
+
     begin
       RPi::GPIO.set_numbering :bcm
 
@@ -65,9 +67,11 @@ class Device < ApplicationRecord
 
         Event.create(event_type: options[:event_type], message: "#{self.name} ran #{self.default_duration} sec.", device_id: self.id, room_id: self.room.id)
       else 
-        if state_changed and options[:event_type] == :cron
-          Event.create(event_type: :cron, message: "#{self.name} started", device_id: self.id, room_id: self.room.id)
-        else
+        if options[:event_type] == :cron
+          if state_changed
+            Event.create(event_type: :cron, message: "#{self.name} started", device_id: self.id, room_id: self.room.id)
+          end  
+        else 
           if options[:event]
             Event.create(event_type: :action, message: "#{self.name} started", device_id: self.id, room_id: self.room.id)
           end
@@ -92,17 +96,20 @@ class Device < ApplicationRecord
     options = options.reverse_merge(default_options)
     state_changed = self.on?
 
+    logger.info options
+
     begin
       RPi::GPIO.set_numbering :bcm
       sleep 1
       RPi::GPIO.setup self.pin_number, :as => :output, :initialize => :low
-      #sleep 1
-      #RPi::GPIO.clean_up
+
       self.device_state = :off
       self.save
   
-      if state_changed and options[:event_type] == :cron
-        Event.create(event_type: :cron, message: "#{self.name} stopped", device_id: self.id, room_id: self.room.id)
+      if options[:event_type] == :cron
+        if state_changed
+          Event.create(event_type: :cron, message: "#{self.name} stopped", device_id: self.id, room_id: self.room.id)
+        end
       else
         if options[:event]
           Event.create(event_type: :action, message: "#{self.name} stopped", device_id: self.id, room_id: self.room.id)
