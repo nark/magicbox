@@ -2,6 +2,7 @@
 class Setting < RailsSettings::Base
   cache_prefix { "v1" }
 
+  field :app_hostname, type: :stirng, default: "https://192.168.1.23"
   field :openweather_city, 							type: :string, default: "Narbonne"
   field :openweather_endpoint, 					type: :string, default: "http://api.openweathermap.org/data/2.5/weather"
   field :time_zone, 										type: :string, default: "Europe/Paris"

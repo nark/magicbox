@@ -18,7 +18,7 @@ class Subject < ApplicationRecord
 	  require 'barby/barcode/qr_code'
 	  require 'barby/outputter/png_outputter'
 
-	  barcode = Barby::QrCode.new("http://magicbox.local/admin/grows/#{self.grow.id}/subjects/#{self.id}/observations/new", level: :q, size: 6)
+	  barcode = Barby::QrCode.new("#{Setting.app_hostname}/grows/#{self.grow.id}/subjects/#{self.id}/observations/new", level: :q, size: 6)
 	  "data:image/png;base64,#{Base64.strict_encode64(barcode.to_png({ xdim: size }))}"
 	end
 

@@ -30,13 +30,13 @@ class Room < ApplicationRecord
 	def total_watts
 		w = 0
 
-		scenario.crons.each do |cron|
-			if cron.device.watts && cron.device.watts > 0.0
-				if cron.command == "start"
-					w += cron.device.watts
-				end
-			end
-		end
+		# scenario.crons.each do |cron|
+		# 	if cron.device.watts && cron.device.watts > 0.0
+		# 		if cron.command == "start"
+		# 			w += cron.device.watts
+		# 		end
+		# 	end
+		# end
 
 		return w.round(2)
 	end
@@ -45,21 +45,21 @@ class Room < ApplicationRecord
 	def kwh_day
 		kwh = 0
 
-		scenario.crons.each do |cron|
-			if cron.device.watts && cron.device.watts > 0.0
-				if cron.command == "start"
-					running_time = 24
+		# scenario.crons.each do |cron|
+		# 	if cron.device.watts && cron.device.watts > 0.0
+		# 		if cron.command == "start"
+		# 			running_time = 24
 
-					if cron.need_check_between && cron.cron_between_is_valid(Time.now)
-						running_time = 24 - ((cron.end_time - cron.start_time).abs / 3600)
-					end
+		# 			if cron.need_check_between && cron.cron_between_is_valid(Time.now)
+		# 				running_time = 24 - ((cron.end_time - cron.start_time).abs / 3600)
+		# 			end
 
-					if running_time > 0
-						kwh += running_time * cron.device.watts / 1000
-					end
-				end
-			end
-		end
+		# 			if running_time > 0
+		# 				kwh += running_time * cron.device.watts / 1000
+		# 			end
+		# 		end
+		# 	end
+		# end
 
 		return kwh.round(2)
 	end

@@ -49,6 +49,10 @@ function init_views() {
 
   $(function () {
     $('[data-toggle="popover"]').popover({container: 'body'})
+
+    $("[data-toggle='popover']").on('shown.bs.popover', function(){
+      $('#todo_notify').bootstrapToggle()
+    });
   })
 }
 

@@ -29,8 +29,8 @@
   <div class="row">
     <div class="col-2">
       <div class="form-group">
-        <br>
-        <%= form.check_box :enabled %> enabled
+        <%= form.label :enabled %><br>
+        <%= form.check_box :enabled, data: {toggle: "toggle", size: "sm"} %>
       </div>
     </div>
     <div class="col-4">
@@ -48,41 +48,11 @@
 
   <hr>
 
-  <h3>Crons</h3>
+   <h3>Condition groups</h3>
   <div class="form-group">
-    <%= form.fields_for :crons do |ff| %>
-      <div class="card mb-4">
-        <div class="form-inline p-3">
-          <%= ff.select :command, options_for_select(["start", "stop"], ff.object.command), {}, class: "form-control mr-2" %>
-          <%= ff.select :device_id, options_from_collection_for_select(Device.where.not(device_state: :foo), "id", "name", ff.object.device_id), {}, class: "form-control mr-2" %>
-
-          <label>Every:&nbsp;</label>
-          <%= ff.text_field :time_value, value: ff.object.time_value, class: "form-control mr-2", style: "width: 100px", placeholder: "0" %>
-          <%= ff.select :period, options_for_select(Cron.periods.map { |e| [e.first.titleize, e.first] }, ff.object.period), {}, class: "form-control mr-2" %>
-
-          <label>For:&nbsp;</label>
-          <%= ff.text_field :duration, value: ff.object.duration, class: "form-control mr-2", style: "width: 100px", placeholder: "0" %> sec.&nbsp;
-
-          <span>Between:&nbsp;</span>
-          <%= ff.text_field :start_time, value: ftime(ff.object.start_time), placeholder: "22:00", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-start_time" } %>
-
-          <span>And:&nbsp;</span>
-          <%= ff.text_field :end_time, value: ftime(ff.object.end_time), placeholder: "5:00", class: "form-control mr-2 timepicker", id: "timepicker-#{ff.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{ff.object.id}-end_time" } %>
-
-          <%= ff.link_to_remove "Remove", class: "btn btn-sm btn-danger" %>
-        </div>
-      </div>
+    <%= form.fields_for :condition_groups do |ff| %>
+      <%= render "condition_group_fields", :f => ff %>
     <% end %>
-    <%= form.link_to_add 'Add cron', :crons, class: "btn btn-sm btn-success" %>
-  </div>
-
-  <hr>
-
-   <h3>Conditions</h3>
-  <div class="form-group">
-    <%= form.fields_for :conditions do |ff| %>
-      <%= render "condition_fields", :f => ff %>
-    <% end %>
-    <%= form.link_to_add 'Add condition', :conditions, class: "btn btn-sm btn-success" %>
+    <%= form.link_to_add 'Add group of conditions', :condition_groups, class: "btn btn-sm btn-success" %>
   </div>
 <% end %>

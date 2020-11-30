@@ -70,7 +70,7 @@ class Admin::ScenariosController < Admin::AdminController
 
 
   def run
-    @scenario.run2
+    @scenario.run2(@scenario.rooms.first) if @scenario.rooms.first
     redirect_to admin_scenario_path(@scenario), notice: 'Scenario was successfully ran.'
   end
 
@@ -87,33 +87,24 @@ class Admin::ScenariosController < Admin::AdminController
         :name, 
         :subject_id, 
         :description, 
-        crons_attributes: [
-          :id, 
-          :cron_type,
-          :scenario_id,
-          :device_id,
-          :predicate,
-          :command,
-          :period,
-          :start_time,
-          :end_time,
-          :delay,
-          :repeats,
-          :duration,
-          :last_exec_time,
-          :time_value,
-          :_destroy,
-        ],
-        conditions_attributes: [
-          :id, 
+        condition_groups_attributes: [
+          :id,
           :name,
-          :data_type_id,
-          :predicate,
-          :target_value,
-          :start_time,
-          :end_time,
           :scenario_id,
+          :enabled,
           :_destroy,
+          conditions_attributes: [
+            :id, 
+            :data_type_id,
+            :predicate,
+            :target_value,
+            :start_time,
+            :end_time,
+            :condition_type,
+            :logic,
+            :condition_group_id,
+            :_destroy
+          ],
           operations_attributes: [
             :id,
             :command, 
@@ -121,9 +112,10 @@ class Admin::ScenariosController < Admin::AdminController
             :retries, 
             :device_id, 
             :description, 
-            :condition_id,
+            :condition_group_id,
             :_destroy
           ]
-      ])
+        ]
+      )
     end
 end

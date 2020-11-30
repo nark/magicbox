@@ -1,4 +1,6 @@
 class Event < ApplicationRecord
+  default_scope { order(created_at: :desc) }
+
   belongs_to :room
   belongs_to :device
   
@@ -36,5 +38,28 @@ class Event < ApplicationRecord
 
   def color
     return "lightblue"
+  end
+
+
+  def self.search(params)
+    events = Event.all
+
+    if params[:message].present?
+      events = events.where('message iLIKE ?', "%#{params[:message]}%")
+    end
+
+    if params[:event_type].present?
+      events = events.where(event_type: params[:event_type])
+    end
+
+    if params[:room_id].present?
+      events = events.where(room_id: params[:room_id])
+    end
+
+    if params[:device_id].present?
+      events = events.where(device_id: params[:device_id])
+    end
+
+    return events
   end
 end

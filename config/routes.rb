@@ -73,7 +73,9 @@ Rails.application.routes.draw do
         post :start, on: :member
         post :stop,  on: :member
       end
+      resources :events
     end
+    
     resources :devices
     resources :data_types
     resources :scenarios do

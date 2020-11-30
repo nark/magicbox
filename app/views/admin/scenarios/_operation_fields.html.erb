@@ -1,5 +1,6 @@
+<hr>
 <div class="form-inline pb-2">
-	<%= f.select :device_id, options_from_collection_for_select(Device.all, "id", "name", f.object.device_id), {}, class: "form-control mr-2" %>
+	<%= f.select :device_id, options_from_collection_for_select(Device.where.not(device_type: :sensor), "id", "name", f.object.device_id), {}, class: "form-control mr-2" %>
 	<%= f.select :command, options_for_select(["start", "stop"], f.object.command), {}, class: "form-control mr-2" %>
 	<%= f.link_to_remove "Remove",  class: "btn btn-sm btn-danger" %>
 </div>

@@ -17,6 +17,8 @@ class ObservationsController < ApplicationController
 
   # GET /observations/new
   def new
+    add_breadcrumb "New observation"
+
     @observation = Observation.new
 
     if current_user.observations.last 

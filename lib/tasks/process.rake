@@ -1,12 +1,12 @@
 namespace :process do
 	desc "Process all"
   task :run => :environment do
-  	# Device.all.each do |d|
-  	# 	if d.sensor?
-  	# 		d.query_sensor
-  	# 		sleep 6
-  	# 	end
-  	# end
+  	Device.all.each do |d|
+  		if d.sensor?
+  			d.query_sensor
+  			sleep 6
+  		end
+  	end
 
   	cpu_temp = 0
   	if OS.mac?
@@ -150,7 +150,7 @@ namespace :process do
 
 
 
-  	Scenario.run
+  	Scenario.run2
 
     Alert.all.each do |alert|
       alert.trigger

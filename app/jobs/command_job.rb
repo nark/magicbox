@@ -10,5 +10,7 @@ class CommandJob < ApplicationJob
     elsif command == "stop"
     	@device.stop(event_type: :cron, event: true)
     end
+
+    sleep 1
   end
 end

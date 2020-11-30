@@ -1,25 +1,58 @@
-<div class="form-inline pb-2">
-	<span>Between:&nbsp;</span>
-  <%= f.text_field :start_time, value: ftime(f.object.start_time), placeholder: "8:00 am", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-start_time" } %>
+<div class="card p-4 mb-3">
+	<div class="form-inline pb-2" style="position: relative">
+		<%= f.select :logic, options_for_select(Condition.logics.keys.map { |e| [Condition.logic_text(e.to_sym), e] }, f.object.logic), {}, class: "form-control mr-2" %>
 
-  <span>And:&nbsp;</span>
-  <%= f.text_field :end_time, value: ftime(f.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-end_time" } %>
+		<%= f.select :condition_type, options_for_select(Condition.condition_types.keys.map { |e| [Condition.condition_type_text(e.to_sym), e] }, f.object.condition_type), {}, class: "form-control mr-2 condition_type" %>
+
+		<div class="condition_form condition_type_date">
+			<span>Between:&nbsp;</span>
+		  <%= f.text_field :start_time, value: ftime(f.object.start_time), placeholder: "8:00 am", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-start_time" } %>
+
+		  <span>And:&nbsp;</span>
+		  <%= f.text_field :end_time, value: ftime(f.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-end_time" } %>
+		</div>
+
+		<div class="form-inline condition_form condition_type_data_type">
+			<%= f.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", f.object.data_type_id), {}, class: "form-control mr-2" %>
+			<%= f.select :predicate, options_for_select([[">=", 0], ["<=", 1]], f.object.predicate), {}, class: "form-control mr-2" %>
+			<%= f.number_field :target_value, placeholder: "Target value", class: "form-control mr-2" %>
+		</div>
+
+		<%= f.link_to_remove "Remove", class: "btn btn-sm btn-danger" %><br>
+	</div>
 </div>
 
-<div class="form-inline pb-2">
-	<%= f.text_field :name, placeholder: "Name", class: "form-control mr-2" %>
-	<%= f.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", f.object.data_type_id), {}, class: "form-control mr-2" %>
-	<%= f.select :predicate, options_for_select([[">=", 0], ["<=", 1]], f.object.predicate), {}, class: "form-control mr-2" %>
-	<%= f.number_field :target_value, placeholder: "Target value", class: "form-control mr-2" %>
-	<%= f.link_to_remove "Remove", class: "btn btn-sm btn-danger" %><br>
-</div>
 
-<div class="offset-1">
-	<h5>Operations</h5>
+<script type="text/javascript">
 
-	<%= f.fields_for :operations do |ff| %>
-		<%= render "operation_fields", :f => ff %>
-	<% end %>
-	<%= f.link_to_add 'Add operation', :operations, class: "btn btn-sm btn-success mt-2" %>
-	<hr>
-</div>
+function toggle_condition_types() {
+	$(".condition_type").change(function() {
+		console.log("toggle_condition_types");
+
+		$(this).parent().parent().find(".condition_form").hide()
+
+	  var el = $(this).parent().parent().find(".condition_type_" + $(this).val());
+	  console.log(el)
+
+	  el.show();
+	});
+}
+
+function init() {
+	toggle_condition_types();
+
+  $(".condition_type").change()
+}
+
+$(document).on("ready", function() {
+  init()
+});
+
+$(document).on("turbolinks:load", function() {
+  init()
+});
+
+$(document).on('nested:fieldAdded', function(event){
+  init()
+});
+</script>

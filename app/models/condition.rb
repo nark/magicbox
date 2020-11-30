@@ -1,15 +1,69 @@
 class Condition < ApplicationRecord
-	belongs_to :scenario
+  include ApplicationHelper
+	belongs_to :condition_group
 	belongs_to :data_type
-	has_many :operations 
 
-	accepts_nested_attributes_for :operations, allow_destroy: true, reject_if: :all_blank
+  enum condition_type: {
+    date:           0,
+    data_type:      1,
+    resource:       2,
+    device_state:   3
+  }
+
+  enum logic: {
+    and_operator: 0,
+    or_operator:  1
+  }
+
+
+  def self.condition_type_text(c)
+    return "Time" if c == :date
+    return c.to_s.titleize
+  end
+
+
+  def self.logic_text(l)
+    return "AND" if l == :and_operator
+    return "OR"
+  end
+
+
+  def check_condition(room)
+    if date?
+      now = Time.now
+
+      check_between = self.need_check_between()
+      between = self.cron_between_is_valid(now)
+
+      if !check_between or (check_between and between)
+        return true
+      end
+    elsif data_type?
+      return true if self.check_data_type_for_room(room)
+
+    end
+
+    return false
+  end
+
+
+  def condition_text
+    if date?
+      return "<b>current time (#{ftime(Time.now)})</b> is between <b>#{ftime(start_time)}</b> and <b>#{ftime(end_time)}</b>"
+    elsif data_type?
+      return "<b>#{data_type.name}</b> is <b>#{[[">=", 0], ["<=", 1]][predicate].first}</b> to <b>#{target_value}</b>"
+    end
+    return "unknow condition"
+  end
+
 
 	def check_data_type_for_room(room)
 		return true if !data_type
 
-		sample = room.samples.where(data_type_id: data_type.id).order("created_at").last
+		sample = room.samples.where(data_type_id: data_type.id).order("created_at").first
 		return true if !sample
+
+    #logger.info "check_data_type_for_room : #{sample.inspect}"
 
 		# [">=", 0], ["<=", 1]
 		if predicate == 0

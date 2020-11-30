@@ -1,5 +1,5 @@
 class Operation < ApplicationRecord
-	belongs_to :condition
+	belongs_to :condition_group
 	belongs_to :device
 
 	def execute_operation

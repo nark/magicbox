@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_123953) do
+ActiveRecord::Schema.define(version: 2020_11_29_215647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,16 +64,25 @@ ActiveRecord::Schema.define(version: 2020_11_24_123953) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "conditions", force: :cascade do |t|
+  create_table "condition_groups", force: :cascade do |t|
+    t.integer "scenario_id"
     t.string "name"
+    t.boolean "enabled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "conditions", force: :cascade do |t|
     t.integer "data_type_id"
     t.integer "predicate"
     t.integer "target_value"
     t.time "start_time"
     t.time "end_time"
-    t.integer "scenario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "condition_group_id"
+    t.integer "condition_type", default: 0
+    t.integer "logic", default: 0
   end
 
   create_table "crons", force: :cascade do |t|
@@ -196,10 +205,10 @@ ActiveRecord::Schema.define(version: 2020_11_24_123953) do
     t.integer "retries"
     t.integer "device_id"
     t.string "description"
-    t.integer "condition_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "duration"
+    t.integer "condition_group_id"
   end
 
   create_table "resource_datas", force: :cascade do |t|

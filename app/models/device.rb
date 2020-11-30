@@ -29,7 +29,6 @@ class Device < ApplicationRecord
 
   has_many :devices_data_types
   has_many :data_types, through: :devices_data_types, source: :data_type
-  has_many :crons
   has_many :operations
 
   def last_sample(data_type)
@@ -128,8 +127,8 @@ class Device < ApplicationRecord
         result = dht.read
         sleep 4
 
-        puts "!!! query_sensor : #{result.temperature} #{result.humidity}"
-        puts "!!! #{result.inspect}"
+        logger.info "!!! query_sensor : #{result.temperature} #{result.humidity}"
+        logger.info "!!! #{result.inspect}"
 
         unless result.temperature.nan? and result.humidity.nan?
           temp_dt = DataType.find_by(name: "temperature")

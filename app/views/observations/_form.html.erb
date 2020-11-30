@@ -33,7 +33,7 @@
   <div class="form-group row">
     <%= form.label "Subject: ", class: "col-sm-2 col-form-label" %>
     <div class="col-sm-10">
-      <%= form.select :subject_ids, options_from_collection_for_select(Subject.joins(:grow).where.not('grows.grow_status': [:done, :aborted]), "id", "fullname", observation.subjects.count > 0 ? observation.subjects.map { |e| e.id } : params[:subject_ids]), {},  multiple: true, class: "form-control subjects_select", style: "height: 200px" %>
+      <%= form.select :subject_ids, options_from_collection_for_select(Subject.joins(:grow).where.not('grows.grow_status': [:done, :aborted]), "id", "fullname", observation.subjects.count > 0 ? observation.subjects.map { |e| e.id } : params[:subject_ids] ? params[:subject_ids] : @subject.id), {},  multiple: true, class: "form-control subjects_select", style: "height: 200px" %>
     </div>
   </div>
 
@@ -253,7 +253,6 @@ function reload_resource() {
 function reload_subjects() {
   $(".grows_select").change(function() {
     if($(this).val().length > 0) {
-
       $.ajax({
         url: '/admin/grows/' + $(this).val(),
         type: 'GET',
@@ -264,13 +263,17 @@ function reload_subjects() {
         success: function(room){ 
           console.log(room);
 
+          var selected = $(".subjects_select").val()
           $(".subjects_select").empty();
 
           $.each(room.subjects, function(index, subject) {
-            console.log(subject)
             $option = $("<option></option>")
-              .attr("value", subject.id)
-              .text("#" + subject.id + " - " + subject.name);
+                .attr("value", subject.id)
+                .text("#" + subject.id + " - " + subject.name);
+
+            if(subject.id == selected) {
+              $option.attr("selected", "selected")
+            }
 
             $(".subjects_select").append($option);
           })

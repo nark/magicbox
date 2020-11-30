@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CronTest < ActiveSupport::TestCase
+class ConditionGroupTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
