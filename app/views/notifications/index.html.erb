@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-8">
+	<div class="col-lg-12">
 		<h1>
 			Notifications
 			<div class="float-right">
@@ -17,17 +17,5 @@
 			<% end %>
 		</table>
 		<%= will_paginate @notifications %>
-	</div>
-	<div class="col-4">
-		<h1>
-		Events
-			<div class="float-right">
-			</div>
-		</h1>
-		<% Room.all.each do |room| %>
-			<h5><%= room.name %></h5>
-			<%= render partial: "admin/events/events", locals: {room: room} %>
-			<br>
-		<% end %>
 	</div>
 </div>

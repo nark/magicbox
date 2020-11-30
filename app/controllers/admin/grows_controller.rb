@@ -51,7 +51,7 @@ class Admin::GrowsController < Admin::AdminController
 
         @grow.generate_weeks
 
-        format.html { redirect_to [:admin, @grow], notice: 'Grow was successfully created.' }
+        format.html { redirect_to @grow, notice: 'Grow was successfully created.' }
         format.json { render :show, status: :created, location: @grow }
       else
         format.html { render :new }
@@ -67,7 +67,7 @@ class Admin::GrowsController < Admin::AdminController
       if @grow.update(grow_params)
         @grow.generate_weeks
 
-        format.html { redirect_to [:admin, @grow], notice: 'Grow was successfully updated.' }
+        format.html { redirect_to @grow, notice: 'Grow was successfully updated.' }
         format.json { render :show, status: :ok, location: @grow }
       else
         format.html { render :edit }
@@ -81,7 +81,7 @@ class Admin::GrowsController < Admin::AdminController
   def destroy
     @grow.destroy
     respond_to do |format|
-      format.html { redirect_to [:admin, :grows], notice: 'Grow was successfully destroyed.' }
+      format.html { redirect_to :grows, notice: 'Grow was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
