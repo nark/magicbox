@@ -27,9 +27,19 @@
 
 
 function init_views() {
-	$('#sidebarCollapse').on('click', function () {
-    $('#sidebar').toggleClass('active');
+  console.log("init_views");
+
+  $("#sidebar").mCustomScrollbar({
+      theme: "minimal"
   });
+
+
+  $('#sidebarCollapse').on('click', function () {
+      $('#sidebar, #content').toggleClass('active');
+      $('.collapse.in').toggleClass('in');
+      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+  });
+
 
   $('#roomsSubmenu').collapse('show');
 
@@ -57,7 +67,7 @@ function init_views() {
 }
 
 $(document).ready(function () {
-	init_views();
+	//init_views();
 });
 
 $(document).on("turbolinks:load", function() {

@@ -1,7 +1,7 @@
 <div class="col-12 mb-3">
 	<div class="card ">
 	  <h5 class="card-header "><%= link_to icon("fas", "seedling") + " #{grow.description}", grow %>
-	  	<div class="float-right">
+	  	<div class="float-right d-none d-md-block">
 	  		<span class="badge <%= grow.status_badge_class %> ml-2"><%= grow.grow_status %></span>
 		    <span class="badge badge-pill badge-info"><%= grow.substrate %></span>
 		    <span class="badge badge-pill badge-secondary"><%= grow.flowering %></span>

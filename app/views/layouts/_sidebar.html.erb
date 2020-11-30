@@ -6,31 +6,58 @@
           MagicBox
         <% end %>
       </h3>
-      <strong>MB</strong>
   </div>
 
   <ul class="list-unstyled components">
     <li>
       <%= link_to dashboard_path do %>
-      	<%= icon "fas", "tachometer-alt" %>
+      	<%= icon "fas", "tachometer-alt", class: "ml-1 mr-2 pr-1" %>
       	Dashboard
       <% end %>
     </li>
+  </ul>
+
+  <ul class="list-unstyled components">
+    <li>
+      <%= link_to grows_path do %>
+        <%= icon "fas", "seedling", class: "ml-1 mr-2 pr-1" %>
+        Grows
+      <% end %>
+    </li>
+
+    <li>
+      <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %>
+        Rooms
+      </a>
+      <ul class="collapse list-unstyled" id="roomsSubmenu">
+        <% Room.all.each do |room| %>
+          <li>
+             <%= link_to room do %>
+              <small><%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %></small> <%= room.name %>
+             <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="list-unstyled components">
     <li>
       <%= link_to journal_path do %>
-        <%= icon "fas", "newspaper" %>
+        <%= icon "fas", "newspaper", class: "ml-1 mr-2 pr-1" %>
         Journal
       <% end %>
     </li>
     <li>
       <%= link_to calendar_path do %>
-        <%= icon "fas", "calendar" %>
+        <%= icon "fas", "calendar", class: "ml-1 mr-2 pr-1" %>
         Calendar
       <% end %>
     </li>
     <li>
       <%= link_to todos_path do %>
-        <%= icon "fas", "clock" %> To do's
+        <%= icon "fas", "clock", class: "ml-1 mr-2 pr-1" %> To do's
         <% if current_user.todos_count > 0 %>
           <div class="float-right">
             <span class="badge badge-light">
@@ -40,9 +67,10 @@
         <% end %>
       <% end %>
     </li>
+
     <li>
       <%= link_to notifications_path do %>
-        <%= icon "fas", "flag" %>
+        <%= icon "fas", "flag", class: "ml-1 mr-2 pr-1" %>
         Notifications
         <div class="float-right">
           <% if current_user.unread_notifications_count > 0 %>
@@ -56,43 +84,19 @@
 
     <li>
       <%= link_to events_path do %>
-        <%= icon "fas", "exclamation-triangle" %>
+        <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
         Events
       <% end %>
     </li>
 
     <li>
       <%= link_to samples_path do %>
-        <%= icon "fas", "chart-line" %>
+        <%= icon "fas", "chart-line", class: "ml-1 mr-2 pr-1" %>
         Statistics
       <% end %>
     </li>
   </ul>
 
-    <ul class="list-unstyled components">
-      <li>
-        <%= link_to grows_path do %>
-          <%= icon "fas", "seedling" %>
-          Grows
-        <% end %>
-      </li>
-
-      <li>
-        <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-          <%= icon "fas", "box" %>
-          Rooms
-        </a>
-        <ul class="collapse list-unstyled" id="roomsSubmenu">
-          <% Room.all.each do |room| %>
-            <li>
-               <%= link_to room do %>
-                <small><%= icon "fas", "box" %></small> <%= room.name %>
-               <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </li>
-    </ul>
 
     <% if current_user.is_admin? %>
     <ul class="list-unstyled components">
@@ -112,7 +116,7 @@
 
       <li>
         <%= link_to admin_alerts_path do %>
-          <%= icon "fas", "exclamation-triangle" %>
+          <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
           Alerts
         <% end %>
       </li>
@@ -121,14 +125,14 @@
     <ul class="list-unstyled components">
       <li>
         <%= link_to admin_categories_path do %>
-          <%= icon "fas", "box", class: "" %>
+          <%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %>
           Categories
         <% end %>
       </li>
 
       <li>
         <%= link_to admin_resources_path do %>
-          <%= icon "fas", "tint", class: "ml-1 mr-2 pr-1" %>
+          <%= icon "fas", "tint", class: "ml-1 mr-2 pr-2" %>
           Resources
         <% end %>
       </li>
@@ -142,13 +146,13 @@
 
       <li>
         <%= link_to admin_users_path do %>
-          <%= icon "fas", "users" %>
+          <%= icon "fas", "users", class: "ml-1 mr-2" %>
           Users
         <% end %>
       </li>
       <li>
         <%= link_to admin_settings_path do %>
-          <%= icon "fas", "cog" %>
+          <%= icon "fas", "cog", class: "ml-1 mr-2 pr-1" %>
           Settings
         <% end %>
       </li>
@@ -159,14 +163,14 @@
   <ul class="list-unstyled components">
     <li>
       <%= link_to current_user do %>
-        <%= icon "fas", "user" %>
+        <%= icon "fas", "user", class: "ml-1 mr-2 pr-1" %>
         <%= current_user.username %>
       <% end %>
     </li>
     <li>
       <% if user_signed_in? %>
         <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
-          <%= icon "fas", "sign-out-alt" %>
+          <%= icon "fas", "sign-out-alt", class: "ml-1 mr-2 pr-1" %>
           Disconnect
         <% end %>
       <% end %>

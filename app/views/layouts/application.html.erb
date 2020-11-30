@@ -3,6 +3,7 @@
   <head>
     <title>Magicbox</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= csrf_meta_tags %>
@@ -24,6 +25,9 @@
             </div>
         </div>
       </div>  
+
+      <!-- Dark Overlay element -->
+      <div class="overlay"></div>
     <% else %>   
       <h1 class="text-center mt-5 ">MagicBox</h1>
       <%= yield %> 

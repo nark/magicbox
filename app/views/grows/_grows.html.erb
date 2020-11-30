@@ -15,7 +15,7 @@
   <tbody>
     <% grows.each do |grow| %>
       <tr>
-        <td><%= link_to "#{grow.name}", grow %></td>
+        <td class="text-primary"><b><%= link_to "#{grow.name}", grow %></b></td>
         <td>
           <div class="progress">
             <div class="progress-bar bg-<%= grow.progress_color %>" role="progressbar" style="width: <%= grow.progress_percents %>%" aria-valuenow="<%= grow.progress_percents %>" aria-valuemin="0" aria-valuemax="100"><%= grow.progress_percents %>%</div>
