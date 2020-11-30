@@ -10,27 +10,31 @@
 <table class="table table-sm">
   <thead>
     <tr>
-      <th width="80px"></th>
+      <th class="text-center" width="80px">Enabled</th>
       <th>Name</th>
       <th>Description</th>
       <th>In use by</th>
-      <th width="52px"></th>
+      <th width="110px"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @scenarios.each do |scenario| %>
       <tr>
-        <td style="vertical-align: middle;">
+        <td class="text-center" style="vertical-align: middle;">
           <% if scenario.enabled %>
-            <span class="badge badge-pill badge-success">enabled</span>
+            <%= icon "fas", "check", class: "text-success" %>
           <% end %>
         </td>
-        <td style="vertical-align: middle;"><%= link_to scenario.name, admin_scenario_path(scenario) %></td>
+        <td style="vertical-align: middle;">
+          <b class="text-primary"><%= link_to scenario.name, admin_scenario_path(scenario) %></b>
+        </td>
         <td style="vertical-align: middle;"><%= scenario.description %></td>
         <td style="vertical-align: middle;"><%= scenario.rooms.pluck(:name).join %></td>
         <td>
-          <%= link_to "Edit", edit_admin_scenario_path(scenario), class: "btn btn-sm btn-success btn-outline-success" %>
+          <%= link_to "Run", run_admin_scenario_path(scenario), class: "btn btn-sm btn-outline-primary" %>
+
+          <%= link_to "Edit", edit_admin_scenario_path(scenario), class: "btn btn-sm btn-outline-success" %>
         </td>
       </tr>
     <% end %>

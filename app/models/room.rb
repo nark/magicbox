@@ -43,24 +43,24 @@ class Room < ApplicationRecord
 	def kwh_day
 		kwh = 0
 
-		scenario.condition_groups.each do |group|
-			group.operations.each do |operation|
-				if operation.command == "start"
-					running_time = 24
+		if scenario.enabled?
+			scenario.condition_groups.each do |group|
+				group.operations.each do |operation|
+					if operation.command == "start"
+						running_time = 24
 
-					group.conditions.where(condition_type: :date).each do |condition|
-						running_time = (condition.end_time - condition.start_time).abs / 3600
-					end
+						group.conditions.where(condition_type: :date).each do |condition|
+							running_time = (condition.end_time - condition.start_time).abs / 3600
+						end
 
-					if running_time > 0
-						puts "#{operation.device.name} : #{running_time}"
-
-						kwh += running_time * operation.device.watts / 1000
+						if running_time > 0
+							kwh += running_time * operation.device.watts / 1000
+						end
 					end
 				end
 			end
 		end
-
+		
 		return kwh.round(2)
 	end
 
