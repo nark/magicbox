@@ -1,27 +1,7 @@
 class Admin::GrowsController < Admin::AdminController
   before_action :authenticate_user!
-  before_action :set_grow, only: [:show, :edit, :update, :destroy, :print_qr]
+  before_action :set_grow, only: [:edit, :update, :destroy]
 
-  # GET /grows
-  # GET /grows.json
-  def index
-    @grows = Grow.all
-
-    add_breadcrumb "Grows"
-  end
-
-  # GET /grows/1
-  # GET /grows/1.json
-  def show
-    @todos_json = current_user.todos.to_json(methods: [:text, :url, :color, :start_date, :end_date])
-    @weeks_json = @grow.weeks.joins(:grow).where.not('grows.grow_status': [:done, :aborted]).to_json(methods: [:text, :url, :color])
-    @observations_json = @grow.observations.all.to_json(methods: [:start_date, :end_date, :text, :url])
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @grow.to_json(include: :subjects) }
-    end
-  end
 
   # GET /grows/new
   def new
@@ -86,9 +66,6 @@ class Admin::GrowsController < Admin::AdminController
     end
   end
 
-  def print_qr
-    
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

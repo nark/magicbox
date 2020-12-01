@@ -1,7 +1,9 @@
 <h1>
   Grows
   <div class="float-right">
-    <%= link_to 'New Grow', new_admin_grow_path, class: "btn btn-primary" %>
+    <%= link_to new_admin_grow_path, class: "btn btn-primary" do %>
+    	<%= icon "fas", "plus" %> Grow
+    <% end %>
   </div>
 </h1>
 

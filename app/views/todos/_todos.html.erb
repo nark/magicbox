@@ -19,7 +19,13 @@
           <% end %>
         </div>
       </div>
-      <small class="text-muted">Scheduled to <b><%= fdatetime todo.date %></b></small>
+      <small class="text-muted">Scheduled to <b><%= fdatetime todo.date %></b>
+        <div class="float-right">
+          <%= link_to edit_todo_path(todo), class: "btn btn-sm py-0 text-success ml-3" do %>
+            <%= icon 'fas', "edit" %>
+          <% end %>
+        </div>
+      </small>
     </li>
   <% end %>
 </ul>

@@ -15,7 +15,7 @@ class DevicesController < ApplicationController
 
   def query
     @device.query_sensor
-    redirect_to room_path(@room), notice: 'Query OK'
+    redirect_to room_path(@room), notice: 'Query device succeeded.'
   end
 
 

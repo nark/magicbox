@@ -2,7 +2,9 @@
   <h1>
     <%= room.new_record? ? "New Room" : "Editing Room" %>
     <div class="float-right">
-      <%= link_to "Delete", [:admin, room], method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+      <% if !room.new_record?  %>
+        <%= link_to "Delete", [:admin, room], method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+      <% end %>
       <%= form.submit "Save", class: "btn btn-primary" %>
     </div>
   </h1>

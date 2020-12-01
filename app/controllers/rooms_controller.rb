@@ -1,12 +1,8 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_room, only: [:show, :edit, :update, :destroy, :take_camshot]
+  before_action :set_room, only: [:show, :take_camshot]
 
-  # GET /rooms
-  # GET /rooms.json
-  def index
-    @rooms = Room.all
-  end
+
 
   # GET /rooms/1
   # GET /rooms/1.json

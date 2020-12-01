@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
   resources :events
 
-  resources :rooms, except: [:index, :edit, :update, :new, :create] do
+  resources :rooms, only: [:show, :take_camshot] do
     post :take_camshot, on: :member
     resources :devices, only: [:show, :query]  do
       post :query, on: :member
@@ -63,7 +63,7 @@ Rails.application.routes.draw do
       get :update_password, on: :member
     end
 
-    resources :grows do
+    resources :grows, only: [:edit, :update, :new, :create] do
       resources :subjects do
 
       end
@@ -76,11 +76,13 @@ Rails.application.routes.draw do
       end
     end
     
-    resources :devices
+    resources :devices, only: [:index]
+
     resources :data_types
     resources :scenarios do
       get :run, on: :member
     end
+    
     resources :conditions
     resources :operations
     resources :alerts do

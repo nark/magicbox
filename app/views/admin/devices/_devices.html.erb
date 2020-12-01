@@ -23,7 +23,7 @@
 		<% devices.each do |d| %>
 			<tr>
 				<td><small>#<%= d.id %></small></td>
-				<td class="text-primary"><strong><%= link_to d.name, [ d.room, d] %></strong></td>
+				<td><strong class="text-primary"><%= link_to d.name, [d.room, d] %></strong></td>
 				<td><%= d.device_type.titleize %></td>
 				<td><small><%= d.data_types_string %></small></td>
 				<td>
@@ -36,8 +36,12 @@
 				<td class="text-center"><%= d.pin_number %></td>
 				<td><%= link_to d.room.name, admin_room_path(d.room) %></td>
 				<td>
-					<%= link_to "Stop", stop_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-danger" %>
-					<%= link_to "Start", start_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+					<% if d.sensor? %>
+						<%= link_to "Query", query_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+					<% else %>
+						<%= link_to "Stop", stop_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-danger" %>
+						<%= link_to "Start", start_admin_room_device_path(d.room, d), method: :post, class: "btn btn-sm btn-outline-info" %>
+					<% end %>
 					<%= link_to "Edit", edit_admin_room_device_path(d.room, d), class: "btn btn-sm btn-outline-success" %>
 				</td>
 			</tr>

@@ -26,14 +26,6 @@ class Admin::DevicesController < Admin::AdminController
 	end
 
 
-  def show
-    @samples = @device.samples.limit(100)
-
-    @values = @samples.where(data_type: DataType.where(name: "temperature").first).order(created_at: :desc).map { |e| [e.created_at, e.value]  }
-    #@values = @samples.where(data_type: :humidity).order(created_at: :desc).limit(100).map { |e| [e.created_at, e.value]  }
-  end
-
-
   def new
     @device = Device.new
   end
@@ -91,12 +83,6 @@ class Admin::DevicesController < Admin::AdminController
     else
       redirect_back fallback_location: room_path(@room), alert: "Device error: #{result}"
     end
-  end
-
-
-  def query
-    @device.query_sensor
-    redirect_back fallback_location:  room_path(@room), notice: 'Query OK'
   end
 
 

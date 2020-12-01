@@ -8,11 +8,6 @@ class Admin::RoomsController < Admin::AdminController
     @rooms = Room.all
   end
 
-  # GET /rooms/1
-  # GET /rooms/1.json
-  def show
-    add_breadcrumb @room.name, @room
-  end
 
   # GET /rooms/new
   def new
@@ -68,13 +63,7 @@ class Admin::RoomsController < Admin::AdminController
       format.json { head :no_content }
     end
   end
-
-
-  def take_camshot
-    @room.take_camshot
-    redirect_to [:admin, @room], notice: 'Camshot was successfully created.'
-  end
-
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,6 +1,6 @@
 class GrowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_grow, only: [:show, :edit, :update, :destroy, :print_qr]
+  before_action :set_grow, only: [:show, :print_qr]
 
   # GET /grows
   # GET /grows.json

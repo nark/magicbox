@@ -4,10 +4,11 @@
   </span>
   <div class="float-right">
     <%= link_to new_admin_room_device_path(@room), class: "btn btn-info" do %>
-      <%= icon "fas", "plus" %>
-      Device
+      <%= icon "fas", "plus" %> Device
     <% end %>
-    <%= link_to 'Edit', edit_admin_room_path(@room), class: "btn btn-success" %>
+    <%= link_to edit_admin_room_path(@room), class: "btn btn-success" do %>
+      <%= icon "fas", "edit" %> Edit
+    <% end %>
   </div>
 </h1>
 
