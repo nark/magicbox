@@ -41,7 +41,7 @@ On the software side, it uses a Ruby on Rails backend app that manages the whole
 
 ### Software
 
-* Raspbian 10 buster
+* Raspbian 10 buster (Raspberry Pi OS - Kernel 5.4)
 * Ruby 2.7.2
 * Rails 5.2.2
 
@@ -189,7 +189,7 @@ With the `rake db:seed` command executed earlier, some presets has been populate
 
 The GPIO setup can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
 
-Magicbox provides a deatiled view of your GPIO pins and attached devices at `http://localhost:3000/admin/dashboard/gpio` to help you fix potential issues.
+Magicbox provides a deatiled view of your GPIO pins and attached devices at [http://localhost:3000/admin/dashboard/gpio](http://localhost:3000/admin/dashboard/gpio) to help you fix potential issues.
 
 ### Rooms
 
