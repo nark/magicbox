@@ -187,9 +187,13 @@ With the `rake db:seed` command executed earlier, some presets has been populate
 
 ### GPIO setup
 
-The GPIO setup can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device.
+The GPIO setup can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
+
+Magicbox provides a deatiled view of your GPIO pins and attached devices at `http://localhost:3000/admin/dashboard/gpio` to help you fix potential issues.
 
 ### Rooms
+
+
 
 ### Devices
 
