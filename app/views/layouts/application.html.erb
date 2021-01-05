@@ -7,6 +7,61 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= csrf_meta_tags %>
+
+    <% if current_user %>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: "<%= ENV['ONESIGNAL_APP_ID'] %>",
+          safari_web_id: "<%= ENV['ONESIGNAL_SAFARI_WEB_ID'] %>",
+          notifyButton: {
+            enable: true,
+          },
+          autoRegister: false,
+          allowLocalhostAsSecureOrigin: true,
+          notifyButton: {
+            enable: true
+          },
+          webhooks: {
+            cors: true
+          }
+        });
+        OneSignal.on('subscriptionChange', function (isSubscribed) {
+          if (isSubscribed) {
+            OneSignal.getUserId(function(userId) {
+              console.log("userId : " + userId);
+              $.ajax({
+                url:'/api/v1/users/<%= current_user.id %>/push_devices',
+                type:'POST',
+                dataType:'json',
+                data: { push_device: { device_id: userId }},
+                success:function(data){
+                  console.log(data);
+                },
+                error:function(data){
+                  console.err(data);
+                }
+            });
+              // return userService.updateUser(user_params)
+              //   .then(onSuccess);
+                
+              // function onSuccess (response) {
+              //   console.log("response.data : ");
+              //   console.log(response.data);
+
+              //   var user = response.data.user;
+              //   OneSignal.push(["sendTag", "user_id", user.id]);
+              //   OneSignal.push(["sendTag", "user_name", user.name]);
+              //   OneSignal.push(["sendTag", "user_email", user.email]);
+              // }
+            });
+          }
+        });
+      });
+    </script>
+    <% end %> 
   </head>
 
   <body>
@@ -29,7 +84,12 @@
       <!-- Dark Overlay element -->
       <div class="overlay"></div>
     <% else %>   
-      <h1 class="text-center mt-5 ">MagicBox</h1>
+      <h1 class="text-center mt-5 " style="font-size: 5rem;">
+        <%= icon "fas", "seedling", class: "text-success" %>
+      </h1>
+      <h1 class="text-center mt-1 ">
+        MagicBox
+      </h1>
       <%= yield %> 
     <% end %> 
   </body>

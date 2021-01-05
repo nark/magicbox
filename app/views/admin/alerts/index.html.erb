@@ -11,20 +11,20 @@
 <table class="table">
   <thead>
     <tr>
-      <th>User</th>
       <th>Type</th>
       <th class="text-center">Parameter</th>
       <th>Operator</th>
       <th class="text-center">Value</th>
       <th>Message</th>
+      <th class="text-center" width="80px">Enabled</th>
+      <th>Push</th>
       <th width="200px"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @alerts.each do |alert| %>
-      <tr>
-        <td><%= alert.users.map { |e| e.email }.join(", ") %></td>
+      <tr>        
         <td>
           <span class="badge badge-pill badge-<%= alert.data_type_alert? ? 'primary' : 'success' %>">
             <%= alert.alert_type.titleize %>    
@@ -42,6 +42,8 @@
         <td><%= alert.operator %></td>
         <td class="text-center"><%= alert.value %></td>
         <td class="text-monospace"><%= alert.message %></td>
+        <td><%= alert.enabled ? icon("fas", "check", class: "text-success") : icon("fas", "close") %></td>
+        <td><%= alert.push_enabled ? icon("fas", "check", class: "text-success") : icon("fas", "close") %></td>
         <td>
           <%= link_to 'Edit', edit_admin_alert_path(alert), class: "btn btn-sm btn-outline-success" %>
           <%= link_to 'Test', test_admin_alert_path(alert), method: :post, class: "btn btn-sm btn-outline-warning" %>

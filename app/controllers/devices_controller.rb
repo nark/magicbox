@@ -7,9 +7,7 @@ class DevicesController < ApplicationController
 
   def show
     @samples = @device.samples.limit(100)
-
     @values = @samples.where(data_type: DataType.where(name: "temperature").first).order(created_at: :desc).map { |e| [e.created_at, e.value]  }
-    #@values = @samples.where(data_type: :humidity).order(created_at: :desc).limit(100).map { |e| [e.created_at, e.value]  }
   end
 
 

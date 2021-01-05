@@ -7,14 +7,32 @@
 			</div>
 		</h1>
 		<table class="table">
-			<% @notifications.each do |notification| %>
-				<tr>
-					<td><%= notification.alert.title %></td>
-					<td><%= notification.alert.message %></td>
-					<td><%= fdatetime notification.alert.created_at %></td>
-					<td><%= link_to icon("fas", "trash"), notification, method: :delete, class: "btn btn-sm btn-danger" %></td>
-				</tr>
-			<% end %>
+			<thead>
+				<th>From</th>
+				<th>Message</th>
+				<th>Context</th>
+				<th>Date</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<% @notifications.each do |notification| %>
+					<tr>
+						<td><span class="badge badge-<%= notification.notifiable.notifiable_color %>"><%= icon "fas", notification.notifiable.notifiable_icon %> <%= notification.notifiable.class.to_s %></span></td>
+						<td><%= notification.notifiable.message %></td>
+						<td>
+							<% if notification.notifiable.class.to_s == "Alert" %>
+								<% if notification.notified and notification.notified.try(:room) %>
+									<%= link_to notification.notified.room do %>
+										<span class="badge badge-info"><%= notification.notified.room.name %></span>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+						<td><small><%= fdatetime notification.created_at %></small></td>
+						<td><%= link_to icon("fas", "trash"), notification, method: :delete, class: "btn btn-sm btn-danger" %></td>
+					</tr>
+				<% end %>
+			</tbody>
 		</table>
 		<%= will_paginate @notifications %>
 	</div>

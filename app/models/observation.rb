@@ -14,6 +14,8 @@ class Observation < ApplicationRecord
 
 	has_many_attached :pictures
 
+	validates :body, presence: true
+
 	def start_date
 		created_at
 	end

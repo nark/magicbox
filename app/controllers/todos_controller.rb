@@ -87,6 +87,6 @@ class TodosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def todo_params
-      params.require(:todo).permit(:todo_status, :user_id, :date, :body, :notify)
+      params.require(:todo).permit(:todo_status, :user_id, :date, :body, :notify_email, :notify_push, :renotify_every_minute)
     end
 end

@@ -9,3 +9,17 @@
 </h1>
 
 <hr>
+
+<div class="row">
+	<div class="col-12 col-lg-6">
+		<h3>Push Devices</h3>
+
+		<ul class="list-group">
+			<% current_user.push_devices.each do |pd| %>
+				<li class="list-group-item">
+					<span class="text-monospace"><%= pd.device_id %></span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+</div>

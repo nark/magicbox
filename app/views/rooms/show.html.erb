@@ -85,13 +85,15 @@
   <%= render partial: "admin/subjects/subjects", locals: { subjects: @room.active_subjects } %>
 </div>
 
-<% if @room.scenario %>
+<% unless @room.scenarios.empty? %>
   <br> 
+  
+  <% @room.scenarios.each do |scenario| %>
+    <h4><%= scenario.name %></h4>
 
-  <h4><%= @room.scenario.name %></h4>
+    <%= render partial: "admin/scenarios/scenario", locals: {scenario: scenario} %>
 
-  <%= render partial: "admin/scenarios/scenario", locals: {scenario: @room.scenario} %>
-
-  <br>
+    <br>
+  <% end %>
 <% end %>
 

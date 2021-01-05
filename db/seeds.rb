@@ -34,13 +34,16 @@ DataType.create(name: "memory_used")
 DataType.create(name: "memory_free")
 
 # create default device in the room
-d = Device.create!(room_id: r.id, device_type: 1, device_state: 2, name: "Temp/hum", product_reference: "dht11", description: "Temperature/humidity sensor (NTC/DHT11)")
+d = Device.create!(room_id: r.id, device_type: :sensor, device_state: 2, name: "Temp/hum", product_reference: "dht11", description: "Temperature/humidity sensor (DHT11)")
 d.data_types << t
 d.data_types << h
 
-Device.create!(room_id: r.id, device_type: 2, device_state: 0, name: "Air", product_reference: "unknow", description: "Intractor/extractor device recycling the air into the room")
-Device.create!(room_id: r.id, device_type: 2, device_state: 0, name: "Fan", product_reference: "unknow", description: "Fan used to move air around the room")
-Device.create!(room_id: r.id, device_type: 5, device_state: 0, name: "Light", product_reference: "unknow", description: "Light giving some sun to the room")
+Device.create!(room_id: r.id, pin_number: 18, device_type: :light, device_state: 0, name: "Light", product_reference: "unknow", description: "Light giving some sun to the room")
+Device.create!(room_id: r.id, pin_number: 23, device_type: :extractor, device_state: 0, name: "Extractor", product_reference: "unknow", description: "Extractor device pushing used air out the room")
+Device.create!(room_id: r.id, pin_number: 6,  device_type: :intractor, device_state: 0, name: "Intractor", product_reference: "unknow", description: "Intractor device sucking new air into the room")
+Device.create!(room_id: r.id, pin_number: 12, device_type: :fan, device_state: 0, name: "Fan", product_reference: "unknow", description: "Fan that moves the air inside the room")
+Device.create!(room_id: r.id, pin_number: 16, device_type: :heater, device_state: 0, name: "Heater", product_reference: "unknow", description: "Heater used to maintain the right temperature")
+Device.create!(room_id: r.id, pin_number: 25, device_type: :water_pump, device_state: 0, name: "Water", product_reference: "unknow", description: "A pump that manages an auto-catering system")
 
 water_category = Category.create(name: "Water", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
 nutrients_category = Category.create(name: "Nutrients", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit")
@@ -50,7 +53,7 @@ Category.create(name: "Light", description: "Lorem ipsum dolor sit amet, consect
 Resource.create(
   name: "Water quantity",
   shortname: "H2O",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Amount of liquid water",
   category_id: water_category.id,
   choices: [],
   units: ["l", "dl", "cl", "ml"]
@@ -59,25 +62,25 @@ Resource.create(
 Resource.create(
   name: "Water type",
   shortname: "Type",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Type of water used for watering your grows",
   category_id: water_category.id,
   choices: ["Tap water", "Mineral water", "Purified water", "Distiled water (reverse osmosis)"],
   units: []
 )
 
 Resource.create(
-  name: "PH",
-  shortname: "PH",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  name: "pH",
+  shortname: "pH",
+  description: "Scale used to specify the acidity or basicity of an aqueous solution",
   category_id: water_category.id,
   choices: [],
-  units: ["PH"]
+  units: ["pH"]
 )
 
 Resource.create(
   name: "EC",
   shortname: "EC",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Electrical conductivity is the measure of a material's ability to allow the transport of an electric charge",
   category_id: water_category.id,
   choices: [],
   units: ["EC"]
@@ -88,7 +91,7 @@ Resource.create(
 Resource.create(
   name: "Nitrogen",
   shortname: "N",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Nitrogen is a nonmetal chemical element essential for plant grow",
   category_id: nutrients_category.id,
   choices: [],
   units: ["l", "dl", "cl", "ml"]
@@ -97,7 +100,7 @@ Resource.create(
 Resource.create(
   name: "Phosphorus",
   shortname: "P",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Phosphates are required for the biosynthesis of genetic material as well as ATP, essential for life.",
   category_id: nutrients_category.id,
   choices: [],
   units: ["l", "dl", "cl", "ml"]
@@ -106,15 +109,16 @@ Resource.create(
 Resource.create(
   name: "Potatium",
   shortname: "K",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  description: "Potatium provides the ionic environment for metabolic processes in the cytosol, and as such functions as a regulator of various processes including growth regulation.",
   category_id: nutrients_category.id,
   choices: [],
   units: ["l", "dl", "cl", "ml"]
 )
 
 # create default scenario
-s = Scenario.create!(name: "Scenario 1", enabled: true)
-r.scenario = s
+growing_scenario = Scenario.import("db/samples/Growing.json", "Growing")
+blooming_scenario = Scenario.import("db/samples/Blooming.json", "Blooming")
+climat_scenario = Scenario.import("db/samples/Climat.json", "Climat")
+watering_scenario = Scenario.import("db/samples/Watering.json", "Watering")
 
-# create a subject in this room
-su = Subject.create(room_id: r.id, name: "Subject 1")
+r.scenarios << [growing_scenario, climat_scenario, watering_scenario]

@@ -12,8 +12,8 @@
   <hr>
 
   <% if room.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h4>
 
       <ul>
       <% room.errors.full_messages.each do |message| %>
@@ -49,7 +49,10 @@
   <hr> 
 
   <div class="form-group">
-    <%= form.label "Scenario" %>
-    <%= form.select :scenario_id, options_from_collection_for_select(Scenario.all, "id", "name", @room.scenario ? room.scenario.id : Scenario.first.id), {}, class: "form-control col-3" %>
+    <%= form.label "Scenarios" %><br>
+    <%= form.collection_check_boxes :scenario_ids, Scenario.where(enabled: true), "id", "name", class: "form-control" do |ff| %>
+      <%= ff.check_box %> <%= ff.object.name %><br>
+    <% end %>
+    <%#= form.select :scenario_id, options_from_collection_for_select(Scenario.all, "id", "name", @room.scenario ? room.scenario.id : nil), {include_blank: "None"}, class: "form-control col-3" %>
   </div>
 <% end %>

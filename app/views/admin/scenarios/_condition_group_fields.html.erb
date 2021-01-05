@@ -1,7 +1,7 @@
 <div class="card p-4 mb-3">
 	<div class="form-inline">
 		<%= f.check_box :enabled, data: {toggle: "toggle", size: "sm"} %>
-		<%= f.text_field :name, class: "form-control mx-2" %>
+		<%= f.text_field :name, placeholder: "Condition name...", class: "form-control mx-2" %>
 
 		<%= f.link_to_remove "Remove", class: "btn btn-sm btn-danger" %><br>
 	</div>

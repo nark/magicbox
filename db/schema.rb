@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_215647) do
+ActiveRecord::Schema.define(version: 2020_12_31_133407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,14 +37,21 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "alert_users", force: :cascade do |t|
-    t.integer "alert_id"
+  create_table "alert_push_users", force: :cascade do |t|
     t.integer "user_id"
+    t.integer "alert_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "alerts", force: :cascade do |t|
+  create_table "alert_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "alert_id", default: -> { "gen_random_uuid()" }, null: false
+  end
+
+  create_table "alerts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "alert_type"
     t.integer "data_type_id"
     t.integer "resource_id"
@@ -55,6 +62,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "latest_send"
+    t.boolean "enabled", default: true
+    t.boolean "push_enabled", default: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -83,23 +92,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.integer "condition_group_id"
     t.integer "condition_type", default: 0
     t.integer "logic", default: 0
-  end
-
-  create_table "crons", force: :cascade do |t|
-    t.integer "scenario_id"
-    t.integer "device_id"
-    t.string "command"
-    t.integer "delay"
-    t.integer "repeats"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "period", default: 0
-    t.time "start_time"
-    t.time "end_time"
-    t.integer "cron_type", default: 0
-    t.datetime "last_exec_time"
-    t.integer "time_value"
     t.integer "duration"
+    t.datetime "last_duration_checked_at"
   end
 
   create_table "data_types", force: :cascade do |t|
@@ -119,7 +113,7 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.integer "pin_number", default: 0
     t.integer "pin_type", default: 0
     t.datetime "last_start_date"
-    t.integer "default_duration", default: 1000
+    t.integer "default_duration", default: 1
     t.integer "room_id"
     t.boolean "use_duration", default: false
     t.float "watts", default: 0.0
@@ -155,10 +149,10 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.integer "number_of_subjects", default: 4
     t.integer "seedling_weeks", default: 1
     t.integer "vegging_weeks", default: 2
-    t.integer "flowering_weeks", default: 8
+    t.integer "flowering_weeks", default: 7
+    t.integer "flushing_weeks", default: 1
     t.integer "drying_weeks", default: 1
     t.integer "curing_weeks", default: 3
-    t.integer "flushing_weeks", default: 1
   end
 
   create_table "issues", force: :cascade do |t|
@@ -173,12 +167,17 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.integer "alert_id"
     t.integer "user_id"
-    t.boolean "email_sent", default: false
     t.boolean "read", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "notifiable_type", default: "Alert"
+    t.boolean "notify_email", default: true
+    t.boolean "notify_push", default: true
+    t.uuid "notifiable_id"
+    t.string "notified_type"
+    t.bigint "notified_id"
+    t.index ["notified_type", "notified_id"], name: "index_notifications_on_notified_type_and_notified_id"
   end
 
   create_table "observations", force: :cascade do |t|
@@ -186,8 +185,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.integer "grow_id"
     t.integer "subject_id"
     t.text "body"
-    t.float "water"
-    t.float "nutrients"
+    t.float "water", default: 0.0
+    t.float "nutrients", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -203,12 +202,19 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.string "command"
     t.integer "delay"
     t.integer "retries"
-    t.integer "device_id"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "duration"
     t.integer "condition_group_id"
+    t.integer "device_type", default: 0
+  end
+
+  create_table "push_devices", force: :cascade do |t|
+    t.string "device_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "resource_datas", force: :cascade do |t|
@@ -293,9 +299,12 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.integer "user_id"
     t.datetime "date"
     t.text "body"
-    t.boolean "notify", default: true
+    t.boolean "notify_email", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "notify_push", default: true
+    t.datetime "notified_date"
+    t.integer "renotify_every_minute", default: 15
   end
 
   create_table "users", force: :cascade do |t|
@@ -308,7 +317,7 @@ ActiveRecord::Schema.define(version: 2020_11_29_215647) do
     t.datetime "updated_at", null: false
     t.string "authentication_token", limit: 30
     t.string "username"
-    t.boolean "is_admin", default: true
+    t.boolean "is_admin", default: false
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

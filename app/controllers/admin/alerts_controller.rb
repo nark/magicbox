@@ -1,10 +1,10 @@
 class Admin::AlertsController < Admin::AdminController
-  before_action :set_alert, only: [:show, :edit, :update, :destroy, :test, :clear]
+  before_action :set_alert, only: [:show, :edit, :update, :destroy, :test, :clear, :trigger]
 
   # GET /alerts
   # GET /alerts.json
   def index
-    @alerts = Alert.all
+    @alerts = Alert.all.order(:created_at)
   end
 
   # GET /alerts/1
@@ -65,7 +65,13 @@ class Admin::AlertsController < Admin::AdminController
   def test
     @alert.test_alert
 
-    redirect_to request.referrer, notice: 'Alert Test was successfully sent.'
+    redirect_to request.referrer, notice: 'Alert was successfully tested.'
+  end
+
+  def trigger
+    @alert.trigger
+
+    redirect_to request.referrer, notice: 'Alert was successfully triggered.'
   end
 
 
@@ -77,6 +83,16 @@ class Admin::AlertsController < Admin::AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def alert_params
-      params.require(:alert).permit(:alert_type, :data_type_id, :resource_id, :operator, :value, :message, user_ids: [])
+      params.require(:alert).permit(
+        :alert_type, 
+        :data_type_id, 
+        :resource_id, 
+        :operator, 
+        :value, 
+        :message,
+        :enabled,
+        :push_enabled, 
+        user_ids: [],
+        push_user_ids: [])
     end
 end

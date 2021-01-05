@@ -1,4 +1,8 @@
+require 'mb_logger'
+
 class Alert < ApplicationRecord
+  include ActionView::Helpers::TextHelper
+
 	enum alert_type: {
     :data_type_alert => 0,
     :resource_alert  => 1
@@ -27,26 +31,67 @@ class Alert < ApplicationRecord
   has_many :alert_users
   has_many :users, through: :alert_users
 
-  has_many :notifications
+  has_many :alert_push_users, class_name: "AlertPushUser"
+  has_many :push_users, through: :alert_push_users, source: :user
+
+  has_many :notifications, as: :notifiable, dependent: :delete_all
+
+  validates :value, presence: true
+  validates :message, presence: true
 
   def title
-    "Alert##{id}: #{data_type.name} #{operator} #{value}"
+    "Alert"
   end
+
+
+  def email_subject
+    "ALERT: #{title}"
+  end
+
+
+  def notifiable_color
+    "danger"
+  end
+
+
+  def notifiable_icon
+    "exclamation-triangle"
+  end
+
+
+  def notifiable_url
+    Setting.app_hostname + Rails.application.routes.url_helpers.notifications_path
+  end
+
 
   def test_alert
     self.users.each do |u|
-      n = Notification.create(user_id: u.id,  alert_id: self.id)
-
-      UserMailer.with(notification: n, user: u).notification_email.deliver_now
+      Notification.create!(
+        user: u, 
+        notify_email: true, 
+        notify_push: push_enabled, 
+        notifiable: self).notify()
     end
   end
 
+  def self.trigger
+    MB_LOGGER.info("# Start Trigger Alerts ############")
+    Alert.all.each do |alert|
+      alert.trigger
+    end
+    MB_LOGGER.info("# End Trigger Alerts ##############")
+  end
+
   def trigger
+    return unless enabled?
+
+    context_object = nil
     triggered = false
     info = ""
 
     if data_type_alert?
       last_sample = Sample.where(data_type_id: data_type.id).limit(1).first
+      context_object = last_sample.device
 
       case operator.to_sym
       when :equal       
@@ -91,24 +136,37 @@ class Alert < ApplicationRecord
       # when :not_end_with 
       #   triggered = false
       #   info = "false"
-      end   
+      end
 
     elsif resource_alert?
       last_data = ResourceData.where(resource_id: resource.id).order("created_at").last
+      context_object = last_data.observation
     end
 
     if triggered
+      MB_LOGGER.info("  -> Alert triggered: #{self.message} - #{self.users.count} users")
+
       now = Time.zone.now
 
       #if !latest_send or latest_send <= (now - 1.hour)
-        self.users.each do |u|
-          n = Notification.create(user_id: u.id,  alert_id: self.id)
 
-          UserMailer.with(notification: n, user: u).notification_email.deliver_now
-        end
+      self.users.each do |u|
+        MB_LOGGER.info("  -> Before notify : #{u.inspect}")
 
-        self.latest_send = now
-        self.save
+        n = Notification.create!(
+          user: u, 
+          notify_email: true, 
+          notify_push: push_enabled, 
+          notifiable: self,
+          notified: context_object)
+
+        MB_LOGGER.info("  -> Notification : #{n.inspect}")
+
+        n.notify()
+      end
+
+      # self.latest_send = now
+      # self.save
       #end
     end
   end

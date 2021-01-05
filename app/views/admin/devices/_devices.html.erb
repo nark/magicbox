@@ -14,7 +14,7 @@
 	<% devices.group_by(&:device_type).each do |device_type, devices| %>
 		<tr>
 			<td colspan="10">
-				<b class="text-primary">
+				<b class="text-muted">
 					<%= icon "fas", "cog" %>
 					<%= device_type.humanize.pluralize.upcase %>
 				</b>
@@ -27,7 +27,7 @@
 				<td><%= d.device_type.titleize %></td>
 				<td><small><%= d.data_types_string %></small></td>
 				<td>
-					<% if !d.foo? %>
+					<% if !d.idle? %>
 						<span class="badge badge-pill badge-<%= d.state_color %>"><%= d.device_state.titleize %></span>
 					<% end %>
 				</td>

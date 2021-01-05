@@ -3,7 +3,7 @@
 	
 	<div class="float-right">
 		<%= link_to 'Back', admin_room_path(@subject.room), class: "btn btn-light border" %>
-		<%= link_to 'Edit', edit_admin_grow_subject_path(@subject.grow, @subject), class: "btn btn-success" %>	
+		<%= link_to 'Edit', edit_admin_grow_subject_path(@subject.grow, @subject), class: "btn btn-success" %>
 		<%= link_to icon( "fas", "plus")+" "+icon( "fas", "comment-dots"), new_grow_subject_observation_path(@subject.grow, @subject, subject_ids: [@subject.id]), class: "btn btn-outline-primary" %>	
 	</div>
 </h1>
@@ -21,7 +21,22 @@
 		<h4>QR Code</h4>
 		<%= image_tag @subject.generate_qr(5), class: "img-fluid" %>
 		<hr>
-		<h4>In room</h4>
+		<h4>In room
+			<div class="float-right">
+				<div class="dropdown d-inline">
+		      <button class="btn btn-sm dropdown-toggle text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        <%= icon "fas", "share" %> Move To&nbsp;&nbsp;&nbsp;&nbsp;
+		      </button>
+		      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+		        <% Room.all.each do |room| %>
+		          <%= link_to move_to_admin_grow_subject_path(@subject.grow, @subject, room_id: room.id), method: :post, class: "dropdown-item" do %>
+		              <%= room.name %>
+		          <% end %>
+		        <% end %>
+		      </div>
+		    </div>
+			</div>
+		</h4>
 		<div class="list-group">
 			<%= link_to [:admin, @subject.room], class: "list-group-item" do %>
 				<%= icon "fas", "home" %> &nbsp;

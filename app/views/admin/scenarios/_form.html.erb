@@ -8,6 +8,9 @@
 
     <div class="actions float-right">
       <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless scenario.new_record? %>
+        <%= link_to 'Delete', admin_scenario_path(scenario), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
       <%= form.submit "Save", :class => "btn btn-primary" %>
     </div>
   </h1>
@@ -15,8 +18,8 @@
   <br>
 
   <% if scenario.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(scenario.errors.count, "error") %> prohibited this scenario from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(scenario.errors.count, "error") %> prohibited this scenario from being saved:</h4>
 
       <ul>
       <% scenario.errors.full_messages.each do |message| %>

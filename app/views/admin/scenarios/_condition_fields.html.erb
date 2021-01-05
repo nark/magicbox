@@ -12,6 +12,19 @@
 		  <%= f.text_field :end_time, value: ftime(f.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-end_time" } %>
 		</div>
 
+		<div class="condition_form condition_type_time_duration">
+			<span>Every:&nbsp;</span>
+			<%= f.number_field :time_duration_hours, value: f.object.time_duration_hours, placeholder: "Hours", class: "form-control mr-2" %> hour(s) and 
+			<%= f.number_field :time_duration_minutes, value: f.object.time_duration_minutes, placeholder: "Minutes", class: "form-control mr-2", max: 59, step: 5 %> minutes
+
+			<div class="d-inline-block mx-4">
+				<small class="text-muted">
+					Last check: <%= fdatetime f.object.last_duration_checked_at || f.object.created_at %>
+					Next check: <%= fdatetime (f.object.last_duration_checked_at || f.object.created_at) + (f.object.duration * 60) if f.object.duration %>
+				</small>
+			</div>
+		</div>
+
 		<div class="form-inline condition_form condition_type_data_type">
 			<%= f.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", f.object.data_type_id), {}, class: "form-control mr-2" %>
 			<%= f.select :predicate, options_for_select([[">=", 0], ["<=", 1]], f.object.predicate), {}, class: "form-control mr-2" %>

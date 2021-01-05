@@ -10,8 +10,8 @@
   <hr>
 
   <% if observation.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(observation.errors.count, "error") %> prohibited this observation from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(observation.errors.count, "error") %> prohibited this observation from being saved:</h4>
 
       <ul>
       <% observation.errors.full_messages.each do |message| %>
@@ -57,7 +57,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.file_field :pictures, multiple: true, accept: "image/*", capture: "camera" %>
+    <%= form.file_field :pictures, multiple: true, accept: "image/*", capture: "camera", data: {role: :none} %>
 
     <% observation.pictures.each do |p| %>
       <%= image_tag url_for(p), class: "img-thumbnail" %><br>

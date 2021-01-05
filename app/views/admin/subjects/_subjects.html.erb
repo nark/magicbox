@@ -4,9 +4,25 @@
       <h4 class="card-header text-success">
         <%= icon("fas", "seedling") %> <%= link_to subject.name, grow_subject_path(subject.grow, subject) %>
         <div class="float-right">
-          <%= link_to new_grow_subject_observation_path(subject.grow, subject, subject_ids: [subject.id]), class: "btn btn-sm text-success" do %>
-            <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
-          <% end %>
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle bg-transparent text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= icon "fas", "cog", class: "mr-4" %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+
+              <%= link_to new_grow_subject_observation_path(subject.grow, subject, subject_ids: [subject.id]), class: "dropdown-item" do %>
+                <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %> Observation
+              <% end %>
+
+              <div class="dropdown-divider"></div>
+
+              <% Room.all.each do |room| %>
+                <%= link_to move_to_admin_grow_subject_path(subject.grow, subject, room_id: room.id), method: :post, class: "dropdown-item" do %>
+                    Move to <%= room.name %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </h4>
       <%#= render partial: "admin/observations/observations", locals: { observations: subject.observations.limit(1) } %>

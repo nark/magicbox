@@ -1,18 +1,12 @@
+require 'mb_logger'
+
 class Device < ApplicationRecord
-	enum device_type: {
-    :unknow    	=> 0,
-    :sensor	  	=> 1,
-    :fan				=> 2,
-    :water_pump => 3,
-    :air_pump		=> 4,
-    :light			=> 5,
-    :camera     => 6
-  }
+	include DeviceTypeEnum
 
   enum device_state: {
     :off    	  => 0,
     :on 	  	  => 1,
-    :foo 	 	  	=> 2,
+    :idle       => 2,
     :starting   => 3,
     :stopping   => 4
   }
@@ -29,7 +23,11 @@ class Device < ApplicationRecord
 
   has_many :devices_data_types
   has_many :data_types, through: :devices_data_types, source: :data_type
-  has_many :operations
+  # has_many :operations # replaced by device_type in operations
+
+  has_many :notifications, as: :notified
+
+  validates :name, presence: true
 
   def last_sample(data_type)
     samples.where(data_type: data_type).order(created_at: :desc).limit(1).first
@@ -57,15 +55,14 @@ class Device < ApplicationRecord
       self.device_state = :on
       self.save
 
+      MB_LOGGER.tagged("Device-#{self.id}") do
+        MB_LOGGER.info "  -> Start #{self.name} by #{options[:event_type]}"
+      end
+
       if self.use_duration 
-        sleep self.default_duration
+        CommandJob.perform_in(self.default_duration.seconds, self.id, "stop", options[:event_type])
 
-        RPi::GPIO.setup self.pin_number, :as => :output, :initialize => :low
-
-        self.device_state = :off
-        self.save
-
-        Event.create(event_type: options[:event_type], message: "#{self.name} ran #{self.default_duration} sec.", device_id: self.id, room_id: self.room.id)
+        Event.create(event_type: options[:event_type], message: "#{self.name} started for #{self.default_duration} sec.", device_id: self.id, room_id: self.room.id)
       else 
         if options[:event_type] == :cron
           if state_changed
@@ -105,6 +102,10 @@ class Device < ApplicationRecord
 
       self.device_state = :off
       self.save
+
+      MB_LOGGER.tagged("Device-#{self.id}") do
+        MB_LOGGER.info "  -> Stop #{self.name} by #{options[:event_type]}"
+      end
   
       if options[:event_type] == :cron
         if state_changed
@@ -134,8 +135,9 @@ class Device < ApplicationRecord
         result = dht.read
         sleep 4
 
-        logger.info "!!! query_sensor : #{result.temperature} #{result.humidity}"
-        logger.info "!!! #{result.inspect}"
+        MB_LOGGER.info "# Query sensor: #{product_reference} (GPIO##{pin_number}) "
+        MB_LOGGER.info " -> Temp    : #{result.temperature}"
+        MB_LOGGER.info " -> Humidity: #{result.humidity}"
 
         unless result.temperature.nan? and result.humidity.nan?
           temp_dt = DataType.find_by(name: "temperature")
@@ -173,7 +175,7 @@ class Device < ApplicationRecord
       return "danger"
     elsif on?
       return "success"
-    elsif foo?
+    elsif idle?
       return "secondary"
     elsif starting? or stopping?
       return "warning"

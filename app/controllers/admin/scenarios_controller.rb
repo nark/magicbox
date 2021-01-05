@@ -1,6 +1,6 @@
 class Admin::ScenariosController < Admin::AdminController
   before_action :authenticate_user!
-  before_action :set_scenario, only: [:show, :edit, :update, :destroy, :run]
+  before_action :set_scenario, only: [:show, :edit, :update, :destroy, :run, :export]
 
   # GET /scenarios
   # GET /scenarios.json
@@ -31,7 +31,26 @@ class Admin::ScenariosController < Admin::AdminController
   # POST /scenarios
   # POST /scenarios.json
   def create
-    @scenario = Scenario.new(scenario_params)
+    params = scenario_params
+    if params[:condition_groups_attributes]
+      params[:condition_groups_attributes].each do |key, group|
+        if group[:conditions_attributes]
+          group[:conditions_attributes].each do |skey, condition|
+            if Condition.condition_types[condition[:condition_type]] == Condition.condition_types[:time_duration]
+              if condition[:time_duration_hours] and condition[:time_duration_minutes]
+                condition[:duration] = (condition[:time_duration_hours].to_i * 60) + condition[:time_duration_minutes].to_i
+              elsif condition[:time_duration_hours]
+                condition[:duration] = (condition[:time_duration_hours].to_i * 60)
+              elsif condition[:time_duration_minutes]
+                condition[:duration] = condition[:time_duration_minutes].to_i
+              end
+            end
+          end
+        end
+      end
+    end
+
+    @scenario = Scenario.new(params)
 
     respond_to do |format|
       if @scenario.save
@@ -47,8 +66,27 @@ class Admin::ScenariosController < Admin::AdminController
   # PATCH/PUT /scenarios/1
   # PATCH/PUT /scenarios/1.json
   def update
+    params = scenario_params
+    if params[:condition_groups_attributes]
+      params[:condition_groups_attributes].each do |key, group|
+        if group[:conditions_attributes]
+          group[:conditions_attributes].each do |skey, condition|
+            if Condition.condition_types[condition[:condition_type]] == Condition.condition_types[:time_duration]
+              if condition[:time_duration_hours] and condition[:time_duration_minutes]
+                condition[:duration] = (condition[:time_duration_hours].to_i * 60) + condition[:time_duration_minutes].to_i
+              elsif condition[:time_duration_hours]
+                condition[:duration] = (condition[:time_duration_hours].to_i * 60)
+              elsif condition[:time_duration_minutes]
+                condition[:duration] = condition[:time_duration_minutes].to_i
+              end
+            end
+          end
+        end
+      end
+    end
+
     respond_to do |format|
-      if @scenario.update(scenario_params)
+      if @scenario.update(params)
         format.html { redirect_to admin_scenario_path(@scenario), notice: 'Scenario was successfully updated.' }
         format.json { render :show, status: :ok, location: @scenario }
       else
@@ -74,6 +112,63 @@ class Admin::ScenariosController < Admin::AdminController
     redirect_to admin_scenario_path(@scenario), notice: 'Scenario was successfully ran.'
   end
 
+
+  def export
+    json = @scenario.as_json(
+      except: [
+        :id,
+        :created_at, 
+        :updated_at, 
+        :subject_id
+      ], 
+      include: {
+        condition_groups: {
+          except: [
+            :id,
+            :scenario_id,
+            :created_at, 
+            :updated_at
+          ], 
+          include: [
+            conditions: {
+              except: [
+                :id,
+                :condition_group_id,
+                :last_duration_checked_at,
+                :created_at, 
+                :updated_at
+              ]
+            },
+            operations: { 
+              except: [
+                :id,
+                :device_id,
+                :delay,
+                :retries,
+                :condition_group_id,
+                :created_at, 
+                :updated_at
+              ]
+            }
+          ]
+        }
+      }
+    )
+
+    send_data(JSON.pretty_generate(json), filename: "#{@scenario.name}.json")
+  end
+
+
+
+  def import
+    json_file = scenario_params[:json_file]
+
+    scenario = Screnario.import(json_file.tempfile, scenario_params[:name])
+
+    redirect_back fallback_location: admin_scenarios_url
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_scenario
@@ -87,6 +182,7 @@ class Admin::ScenariosController < Admin::AdminController
         :name, 
         :subject_id, 
         :description, 
+        :json_file,
         condition_groups_attributes: [
           :id,
           :name,
@@ -96,6 +192,9 @@ class Admin::ScenariosController < Admin::AdminController
           conditions_attributes: [
             :id, 
             :data_type_id,
+            :duration,
+            :time_duration_hours,
+            :time_duration_minutes,
             :predicate,
             :target_value,
             :start_time,
@@ -110,7 +209,8 @@ class Admin::ScenariosController < Admin::AdminController
             :command, 
             :delay, 
             :retries, 
-            :device_id, 
+            :duration,
+            :device_type, 
             :description, 
             :condition_group_id,
             :_destroy

@@ -1,7 +1,7 @@
 <%= form_with(model: todo, local: true) do |form| %>
   <% if todo.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(todo.errors.count, "error") %> prohibited this todo from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(todo.errors.count, "error") %> prohibited this todo from being saved:</h4>
 
       <ul>
       <% todo.errors.full_messages.each do |message| %>
@@ -26,8 +26,16 @@
     </div>
   </div>
 
+  <hr>
+
   <div class="form-group">
-    <%= form.check_box :notify, data: {toggle: "toggle", size: "sm"} %> Notify
+    <%= form.check_box :notify_email, data: {toggle: "toggle", size: "sm"} %> <span class="mr-3">Notify by email</span>
+    <%= form.check_box :notify_push, data: {toggle: "toggle", size: "sm"} %> Notify by web push
+  </div>
+
+  <div class="form-group">
+    <label>Renotify every:</label>
+    <%= form.select :renotify_every_minute, options_for_select([["15 minutes", 15], ["30 minutes", 30], ["60 minutes", 60], ["12 hours", 720], ["24 hours", 1440], ["2 days", 2880], ["3 days", 4320]], form.object.renotify_every_minute), {}, class: "form-control" %>
   </div>
 
   <div class="actions">

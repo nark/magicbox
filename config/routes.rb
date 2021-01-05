@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
 
   get "/dashboard" => "dashboard#index"
-  
   get "/journal" => "journal#index"
   get "/calendar" => "calendar#index"
 
@@ -65,12 +64,12 @@ Rails.application.routes.draw do
 
     resources :grows, only: [:edit, :update, :new, :create] do
       resources :subjects do
-
+        post :move_to, on: :member
       end
     end
 
     resources :rooms do
-      resources :devices, only: [:index, :edit, :update, :new, :create, :start, :stop] do
+      resources :devices, only: [:index, :edit, :update, :new, :create, :start, :stop, :destroy] do
         post :start, on: :member
         post :stop,  on: :member
       end
@@ -81,12 +80,15 @@ Rails.application.routes.draw do
     resources :data_types
     resources :scenarios do
       get :run, on: :member
+      get :export, on: :member
+      post :import, on: :collection
     end
     
     resources :conditions
     resources :operations
     resources :alerts do
       post :test, on: :member
+      post :trigger, on: :member
     end
     resources :categories
     resources :resources
@@ -101,6 +103,11 @@ Rails.application.routes.draw do
   namespace :api do
   	namespace :v1 do
   		get '/context', to: "context#index"
+
+      # device token
+      resources :users, only: [:show] do
+        resources :push_devices, only: [:create]
+      end
 
   		resources :devices, only: [:index, :show, :update, :start, :stop] do
   			post :start, on: :member

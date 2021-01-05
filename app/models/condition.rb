@@ -1,13 +1,24 @@
+require 'mb_logger'
+require 'dotiw'
+
 class Condition < ApplicationRecord
   include ApplicationHelper
+  include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::NumberHelper
+
+  attr_accessor :time_duration_hours
+  attr_accessor :time_duration_minutes
+
 	belongs_to :condition_group
 	belongs_to :data_type
 
   enum condition_type: {
     date:           0,
+    time_duration:  4,
     data_type:      1,
     resource:       2,
-    device_state:   3
+    device_state:   3,
   }
 
   enum logic: {
@@ -15,9 +26,26 @@ class Condition < ApplicationRecord
     or_operator:  1
   }
 
+  #after_validation :compute_duration
+
+  after_initialize do |condition|
+    if condition.duration
+      self.time_duration_hours = condition.duration / 60
+      self.time_duration_minutes = condition.duration % 60
+    end
+  end
+
+  after_find do |condition|
+    if condition.duration
+      time = Time.at(condition.duration).utc
+      self.time_duration_hours = condition.duration / 60
+      self.time_duration_minutes = condition.duration % 60
+    end
+  end
+
 
   def self.condition_type_text(c)
-    return "Time" if c == :date
+    return "Time Range" if c == :date
     return c.to_s.titleize
   end
 
@@ -38,6 +66,15 @@ class Condition < ApplicationRecord
       if !check_between or (check_between and between)
         return true
       end
+    elsif time_duration?
+      self.last_duration_checked_at = self.created_at if !self.last_duration_checked_at
+      now = Time.now.utc
+
+      if self.last_duration_checked_at + (duration * 60) < now
+        self.last_duration_checked_at = now
+        self.save
+        return true
+      end
     elsif data_type?
       return true if self.check_data_type_for_room(room)
 
@@ -52,6 +89,8 @@ class Condition < ApplicationRecord
       return "<b>current time (#{ftime(Time.now)})</b> is between <b>#{ftime(start_time)}</b> and <b>#{ftime(end_time)}</b>"
     elsif data_type?
       return "<b>#{data_type.name}</b> is <b>#{[[">=", 0], ["<=", 1]][predicate].first}</b> to <b>#{target_value}</b>"
+     elsif time_duration?
+      return "not ran since <b>#{distance_of_time_in_words(duration * 60)}</b>"
     end
     return "unknow condition"
   end
@@ -179,5 +218,20 @@ class Condition < ApplicationRecord
     end
 
     return false
+  end
+
+
+  def compute_duration
+    d = nil
+
+    if time_duration_hours and time_duration_minutes
+      d = (time_duration_hours * 60) + time_duration_minutes
+    elsif time_duration_hours
+      d = (time_duration_hours * 60)
+    elsif time_duration_minutes
+      d = time_duration_minutes
+    end
+
+    return d
   end
 end

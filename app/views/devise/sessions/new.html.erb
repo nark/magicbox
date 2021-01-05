@@ -1,5 +1,5 @@
-<div class="col-sm-4 col-ls-12 mx-auto mt-5 pt-5">
-  <h1><%= t('.sign_in') %></h1>
+<div class="card col-sm-4 col-ls-12 mx-auto mt-5 pt-5">
+  <h2 class="text-center"><%= t('.sign_in') %></h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="form-group">
@@ -21,8 +21,10 @@
     </div>
   <% end %>
 
+  <hr>
+
   <div class="form-group">
-    <%= f.submit  t('.sign_in'), class: 'btn btn-primary' %>
+    <%= f.submit  t('.sign_in'), class: 'btn btn-block btn-primary' %>
   </div>
 <% end %>
 

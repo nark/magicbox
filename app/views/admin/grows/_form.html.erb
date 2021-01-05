@@ -13,8 +13,8 @@
   <hr>
 
   <% if grow.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(grow.errors.count, "error") %> prohibited this grow from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(grow.errors.count, "error") %> prohibited this grow from being saved:</h4>
 
       <ul>
       <% grow.errors.full_messages.each do |message| %>

@@ -9,21 +9,15 @@
   </div>
 
   <ul class="list-unstyled components">
-    <li>
-      <%= link_to dashboard_path do %>
-      	<%= icon "fas", "tachometer-alt", class: "ml-1 mr-2 pr-1" %>
-      	Dashboard
-      <% end %>
-    </li>
+    <%= sidebar_item dashboard_path, "Dashboard" do %>
+    	<%= icon "fas", "tachometer-alt", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
   </ul>
 
   <ul class="list-unstyled components">
-    <li>
-      <%= link_to grows_path do %>
-        <%= icon "fas", "seedling", class: "ml-1 mr-2 pr-1" %>
-        Grows
-      <% end %>
-    </li>
+    <%= sidebar_item(grows_path, "Grows") do %>
+      <%= icon "fas", "seedling", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
 
     <li>
       <a href="#roomsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -32,141 +26,84 @@
       </a>
       <ul class="collapse list-unstyled" id="roomsSubmenu">
         <% Room.all.each do |room| %>
-          <li>
-             <%= link_to room do %>
-              <small><%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %></small> <%= room.name %>
-             <% end %>
-          </li>
+          <%= sidebar_item(room_path(room), room.name) do %>
+              <%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %>
+          <% end %>
         <% end %>
       </ul>
     </li>
   </ul>
 
   <ul class="list-unstyled components">
-    <li>
-      <%= link_to journal_path do %>
-        <%= icon "fas", "newspaper", class: "ml-1 mr-2 pr-1" %>
-        Journal
-      <% end %>
-    </li>
-    <li>
-      <%= link_to calendar_path do %>
-        <%= icon "fas", "calendar", class: "ml-1 mr-2 pr-1" %>
-        Calendar
-      <% end %>
-    </li>
-    <li>
-      <%= link_to todos_path do %>
-        <%= icon "fas", "clock", class: "ml-1 mr-2 pr-1" %> To do's
-        <% if current_user.todos_count > 0 %>
-          <div class="float-right">
-            <span class="badge badge-light">
-              <%= current_user.todos_count %>
-            </span>
-          </div>
-        <% end %>
-      <% end %>
-    </li>
+    <%= sidebar_item(journal_path, "Journal") do %>
+      <%= icon "fas", "newspaper", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
+    <%= sidebar_item(calendar_path, "Calendar") do %>
+      <%= icon "fas", "calendar", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
 
-    <li>
-      <%= link_to notifications_path do %>
-        <%= icon "fas", "flag", class: "ml-1 mr-2 pr-1" %>
-        Notifications
-        <div class="float-right">
-          <% if current_user.unread_notifications_count > 0 %>
-            <span class="badge badge-light">
-              <%= current_user.unread_notifications_count %>
-            </span>
-          <% end %>
-        </div>
-      <% end %>
-    </li>
+    <%= sidebar_item(todos_path, "To do's", badge_count: current_user.todos_count) do %>
+      <%= icon "fas", "clock", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
 
-    <li>
-      <%= link_to events_path do %>
-        <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
-        Events
-      <% end %>
-    </li>
+    <%= sidebar_item(notifications_path, "Notifications", badge_count: current_user.unread_notifications_count) do %>
+      <%= icon "fas", "flag", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
 
-    <li>
-      <%= link_to samples_path do %>
-        <%= icon "fas", "chart-line", class: "ml-1 mr-2 pr-1" %>
-        Statistics
-      <% end %>
-    </li>
+    <%= sidebar_item(events_path, "Events") do %>
+      <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
+
+    <%= sidebar_item(samples_path, "Statistics") do %>
+      <%= icon "fas", "chart-line", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
   </ul>
 
 
     <% if current_user.is_admin? %>
     <ul class="list-unstyled components">
-      <li>
-        <%= link_to admin_scenarios_path do %>
-          <%= icon "fas", "clock", class: "ml-1 mr-2" %>
-          Scenarios
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_scenarios_path, "Scenarios") do %>
+        <%= icon "fas", "clock", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
+      
+      <%= sidebar_item(admin_devices_path, "Devices") do %>
+        <%= icon "fas", "cogs", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
 
-      <li>
-        <%= link_to admin_devices_path do %>
-          <%= icon "fas", "cogs", class: "ml-1 mr-2" %>
-          Devices
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to admin_alerts_path do %>
-          <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
-          Alerts
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_alerts_path, "Alerts") do %>
+        <%= icon "fas", "exclamation-triangle", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
     </ul>
 
     <ul class="list-unstyled components">
-      <li>
-        <%= link_to admin_categories_path do %>
-          <%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %>
-          Categories
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_categories_path, "Categories") do %>
+        <%= icon "fas", "box", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
 
-      <li>
-        <%= link_to admin_resources_path do %>
-          <%= icon "fas", "tint", class: "ml-1 mr-2 pr-2" %>
-          Resources
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_resources_path, "Resources") do %>
+        <%= icon "fas", "tint", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
 
-      <li>
-        <%= link_to admin_data_types_path do %>
-          <%= icon "fas", "database", class: "ml-1 mr-2 pr-1" %>
-          Data types
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_data_types_path, "Data types") do %>
+        <%= icon "fas", "database", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
 
-      <li>
-        <%= link_to admin_users_path do %>
-          <%= icon "fas", "users", class: "ml-1 mr-2" %>
-          Users
-        <% end %>
-      </li>
-      <li>
-        <%= link_to admin_settings_path do %>
-          <%= icon "fas", "cog", class: "ml-1 mr-2 pr-1" %>
-          Settings
-        <% end %>
-      </li>
+      <%= sidebar_item(admin_users_path, "Users") do %>
+        <%= icon "fas", "users", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
+
+      <%= sidebar_item(admin_settings_path, "Settings") do %>
+        <%= icon "fas", "cog", class: "ml-1 mr-2 pr-1" %>
+      <% end %>
     </ul>
   <% end %>
 
 
   <ul class="list-unstyled components">
-    <li>
-      <%= link_to current_user do %>
-        <%= icon "fas", "user", class: "ml-1 mr-2 pr-1" %>
-        <%= current_user.username %>
-      <% end %>
-    </li>
+    <%= sidebar_item(current_user, current_user.username) do %>
+      <%= icon "fas", "user", class: "ml-1 mr-2 pr-1" %>
+    <% end %>
+
     <li>
       <% if user_signed_in? %>
         <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>

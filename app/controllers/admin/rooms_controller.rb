@@ -25,10 +25,14 @@ class Admin::RoomsController < Admin::AdminController
 
     respond_to do |format|
       if @room.save
-        scenario = Scenario.find(room_params[:scenario_id])
-        @room.scenario = scenario if scenario
+        # if room_params[:scenario_id]
+        #   scenario = Scenario.find(room_params[:scenario_id])
+        #   @room.scenario = scenario if scenario
+        # else
+        #   @room.scenario = nil
+        # end
         
-        format.html { redirect_to [:admin, @room], notice: 'Room was successfully created.' }
+        format.html { redirect_to @room, notice: 'Room was successfully created.' }
         format.json { render :show, status: :created, location: @room }
       else
         format.html { render :new }
@@ -42,10 +46,14 @@ class Admin::RoomsController < Admin::AdminController
   def update
     respond_to do |format|
       if @room.update(room_params)
-        scenario = Scenario.find(room_params[:scenario_id])
-        @room.scenario = scenario if scenario
+        # if room_params[:scenario_id].present?
+        #   scenario = Scenario.find(room_params[:scenario_id])
+        #   @room.scenario = scenario if scenario
+        # else
+        #   @room.scenario = nil
+        # end
 
-        format.html { redirect_to [:admin, @room], notice: 'Room was successfully updated.' }
+        format.html { redirect_to @room, notice: 'Room was successfully updated.' }
         format.json { render :show, status: :ok, location: @room }
       else
         format.html { render :edit }
@@ -73,6 +81,12 @@ class Admin::RoomsController < Admin::AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
-      params.require(:room).permit(:name, :room_type, :length, :width, :height, :scenario_id)
+      params.require(:room).permit(
+        :name, 
+        :room_type, 
+        :length, 
+        :width, 
+        :height, 
+        scenario_ids: [])
     end
 end

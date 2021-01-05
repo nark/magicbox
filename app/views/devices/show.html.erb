@@ -58,7 +58,7 @@
 			</tr>
 			<tr>
 				<td width="200px" class="bg-light font-weight-bold">Device state</td>
-				<td><% if !@device.foo? %><span class="badge badge-pill badge-<%= @device.state_color %>"><%= @device.device_state.titleize %></span><% end %></td>
+				<td><% if !@device.idle? %><span class="badge badge-pill badge-<%= @device.state_color %>"><%= @device.device_state.titleize %></span><% end %></td>
 			</tr>
 			<tr>
 				<td width="200px" class="bg-light font-weight-bold">PIN type</td>
@@ -84,7 +84,7 @@
 	</div>
 </div>
 
-<% if @device.foo? %>
+<% if @device.idle? %>
 	<hr>
 
 	<% data = @device.data_types.map { |data_type| {

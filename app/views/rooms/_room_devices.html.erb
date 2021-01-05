@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <% room.devices.where.not(device_state: :foo).order(pin_number: :asc).each do |device| %>
+    <% room.devices.where.not(device_state: :idle).order(pin_number: :asc).each do |device| %>
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">
@@ -37,7 +37,7 @@
   </div>
 
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <% room.devices.where(device_state: :foo).each do |device| %>
+    <% room.devices.where(device_state: :idle).each do |device| %>
       <% device.data_types.each do |data_type| %>
         
         <div class="card mb-4">

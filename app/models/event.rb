@@ -8,8 +8,7 @@ class Event < ApplicationRecord
     :action		=> 0,
     :alert 		=> 1,
     :cron			=> 2,
-    :api			=> 3,
-    :condition => 4
+    :api			=> 3
   }
 
   def badge_class

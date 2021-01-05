@@ -12,6 +12,8 @@ module Admin
     private
       def setting_params
         params.require(:setting).permit(
+          :app_email,
+          :app_hostname,
         	:openweather_city, 				
 					:openweather_endpoint, 		
 					:time_zone, 							

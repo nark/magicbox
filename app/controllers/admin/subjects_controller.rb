@@ -1,8 +1,8 @@
 class Admin::SubjectsController < Admin::AdminController
   before_action :authenticate_user!
   
-  before_action :set_grow, only: [:index, :new, :show, :edit, :update, :destroy]
-  before_action :set_subject, only: [:show, :edit, :update, :destroy]
+  before_action :set_grow, only: [:index, :new, :show, :edit, :update, :destroy, :move_to]
+  before_action :set_subject, only: [:show, :edit, :update, :destroy, :move_to]
 
   # GET /subjects
   # GET /subjects.json
@@ -33,7 +33,7 @@ class Admin::SubjectsController < Admin::AdminController
 
     respond_to do |format|
       if @subject.save
-        format.html { redirect_to admin_grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully created.' }
+        format.html { redirect_to grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully created.' }
         format.json { render :show, status: :created, location: @subject }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class Admin::SubjectsController < Admin::AdminController
   def update
     respond_to do |format|
       if @subject.update(subject_params)
-        format.html { redirect_to admin_grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully updated.' }
+        format.html { redirect_to grow_subject_path(@subject.grow, @subject), notice: 'Subject was successfully updated.' }
         format.json { render :show, status: :ok, location: @subject }
       else
         format.html { render :edit }
@@ -65,6 +65,14 @@ class Admin::SubjectsController < Admin::AdminController
       format.json { head :no_content }
     end
   end
+
+
+  def move_to
+    @subject.update(room_id: params[:room_id])
+
+    redirect_to room_path(@subject.room), notice: "Subject was successfully moved to #{@subject.room.name}."
+  end
+
 
   private
     def set_grow

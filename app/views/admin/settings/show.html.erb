@@ -8,7 +8,10 @@
 	<br>
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
-	    <a class="nav-link active" id="calendar-tab" data-toggle="tab" href="#calendar" role="tab" aria-controls="calendar" aria-selected="true">Calendar</a>
+	    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <a class="nav-link " id="calendar-tab" data-toggle="tab" href="#calendar" role="tab" aria-controls="calendar" aria-selected="true">Calendar</a>
 	  </li>
 	  <li class="nav-item" role="presentation">
 	    <a class="nav-link" id="datetime-tab" data-toggle="tab" href="#datetime" role="tab" aria-controls="datetime" aria-selected="true">Date and Time</a>
@@ -20,7 +23,20 @@
 
 
 	<div class="tab-content" id="myTabContent">
-		<div class="tab-pane fade show active" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
+		<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+			<br>
+			<div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>App email</code></label>
+		    <%= f.text_field :app_email, value: Setting.app_email, class: "form-control col-lg-8 col-12 ml-3"  %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Public URL</code></label>
+		    <%= f.text_field :app_hostname, value: Setting.app_hostname, class: "form-control col-lg-8 col-12 ml-3"  %>
+		  </div>
+		</div>
+
+		<div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
 	  	<br>
 		  <div class="form-group row mr-3">
 		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Default View</code></label>

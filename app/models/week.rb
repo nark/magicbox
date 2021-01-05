@@ -1,4 +1,6 @@
 class Week < ApplicationRecord
+  default_scope { order(start_date: :desc) }
+  
 	belongs_to :grow
 
 	enum week_type: {

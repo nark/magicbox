@@ -40,8 +40,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :is_admin %>
-    <%= form.check_box :is_admin %>
+    <%= form.check_box :is_admin, data: {toggle: "toggle", size: "sm"} %> is Admin
   </div>
 
   <% if user.new_record? %>

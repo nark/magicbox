@@ -8,9 +8,24 @@
 
 		<div class="actions float-right">
       <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless device.new_record? %>
+      	<%= link_to "Delete", admin_room_device_path(device.room, device), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-danger" %>
+      <% end %>
       <%= f.submit "Save", :class => "btn btn-primary" %>
     </div>
 	</h1>
+
+  <% if device.errors.any? %>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(device.errors.count, "error") %> prohibited this device from being saved:</h4>
+
+      <ul>
+      <% device.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
 	<hr>
 
@@ -80,7 +95,7 @@
 		<div class="col-4">
 			<div class="form-group">
 				<%= f.label "GPIO" %>
-				<%= f.select :pin_number, options_for_select((0..27).step(1).map { |e| e }, f.object.pin_number), {disabled: Device.where('devices.pin_number != 0 OR devices.pin_number IS NOT NULL').pluck(:pin_number)}, :class => "form-control" %>
+				<%= f.select :pin_number, options_for_select((0..27).step(1).map { |e| e }, f.object.pin_number), {include_blank: "None", disabled: Device.where('devices.pin_number != 0 OR devices.pin_number IS NOT NULL').pluck(:pin_number)}, :class => "form-control" %>
 			</div>
 		</div>
 	</div>

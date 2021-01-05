@@ -4,32 +4,52 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
+# default: &default
+#   adapter: sqlite3
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   timeout: 5000
+
+# development:
+#   adapter: postgresql
+#   host: 127.0.0.1
+#   schema_search_path: public
+#   database: magicbox_development
+#   username: nark
+#   password: 2Ppyg5ok
+#   port: 5432
+
+# # Warning: The database defined as "test" will be erased and
+# # re-generated from your development database when you run "rake".
+# # Do not set this db to the same as development or production.
+# test:
+#   <<: *default
+#   database: db/test.sqlite3
+
+# production:
+#   adapter: postgresql
+#   host: 127.0.0.1
+#   schema_search_path: public
+#   database: magicbox_production
+#   username: pi
+#   password: 2Ppyg5ok
+#   port: 5432
+
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  port: 5432
+  host: <%= ENV['DATABASE_HOST'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
-  adapter: postgresql
-  host: 127.0.0.1
-  schema_search_path: public
-  database: magicbox_development
-  username: nark
-  password: 2Ppyg5ok
-  port: 5432
+  <<: *default
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
 
 production:
-  adapter: postgresql
-  host: 127.0.0.1
-  schema_search_path: public
-  database: magicbox_production
-  username: pi
-  password: 2Ppyg5ok
-  port: 5432
+  <<: *default

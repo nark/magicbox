@@ -10,7 +10,6 @@
 		<% end %>
 
 		<%= link_to "Edit", edit_admin_room_device_path(@device.room, @device), class: "btn btn btn-success" %>
-		<%= link_to "Delete", admin_room_device_path(@device.room, @device), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-danger" %>
 	</div>
 </h1>
 
@@ -58,7 +57,7 @@
 			</tr>
 			<tr>
 				<td width="200px" class="bg-light font-weight-bold">Device state</td>
-				<td><% if !@device.foo? %><span class="badge badge-pill badge-<%= @device.state_color %>"><%= @device.device_state.titleize %></span><% end %></td>
+				<td><% if !@device.idle? %><span class="badge badge-pill badge-<%= @device.state_color %>"><%= @device.device_state.titleize %></span><% end %></td>
 			</tr>
 			<tr>
 				<td width="200px" class="bg-light font-weight-bold">PIN type</td>
@@ -84,7 +83,7 @@
 	</div>
 </div>
 
-<% if @device.foo? %>
+<% if @device.idle? %>
 	<hr>
 
 	<% data = @device.data_types.map { |data_type| {

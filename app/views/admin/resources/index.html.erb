@@ -27,7 +27,7 @@
   <tbody>
     <% @resources.each do |resource| %>
       <tr>
-        <td><b><%= resource.name %></b></td>
+        <td><b><%= icon 'fas', "tint", class: "mr-2" %> <%= resource.name %></b></td>
         <td class="text-center"><%= resource.shortname %></td>
         <td><%= resource.category.name %></td>
         <td><%= resource.choices.join(", ") %></td>

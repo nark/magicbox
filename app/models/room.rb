@@ -9,8 +9,10 @@ class Room < ApplicationRecord
 
 	has_many :samples, through: :devices
 	
-	has_one :room_scenario, dependent: :destroy
-	has_one :scenario, through: :room_scenario
+	has_many :room_scenarios, dependent: :destroy
+	has_many :scenarios, through: :room_scenarios
+
+	validates :name, presence: true
 
 	enum room_type: {
 		box: 				0,
@@ -43,18 +45,21 @@ class Room < ApplicationRecord
 	def kwh_day
 		kwh = 0
 
-		if scenario.enabled?
-			scenario.condition_groups.each do |group|
-				group.operations.each do |operation|
-					if operation.command == "start"
-						running_time = 24
+		scenarios.each do |scenario|
+			if scenario.enabled?
+				scenario.condition_groups.each do |group|
+					group.operations.each do |operation|
+						if operation.command == "start"
+							running_time = 24
 
-						group.conditions.where(condition_type: :date).each do |condition|
-							running_time = (condition.end_time - condition.start_time).abs / 3600
-						end
+							group.conditions.where(condition_type: :date).each do |condition|
+								running_time = (condition.end_time - condition.start_time).abs / 3600
+							end
 
-						if running_time > 0
-							kwh += running_time * operation.device.watts / 1000
+							if running_time > 0
+								device = devices.where(device_type: operation.device_type).first
+								kwh += running_time * device.watts / 1000 if device
+							end
 						end
 					end
 				end

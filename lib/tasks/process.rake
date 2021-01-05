@@ -1,3 +1,5 @@
+require 'mb_logger'
+
 namespace :process do
 	desc "Process all"
   task :run => :environment do
@@ -7,6 +9,12 @@ namespace :process do
   			sleep 6
   		end
   	end
+
+    Alert.trigger
+
+    Scenario.run2
+
+    Todo.notify
 
   	cpu_temp = 0
   	if OS.mac?
@@ -85,12 +93,12 @@ namespace :process do
     require "openweather2"
 
     Openweather2.configure do |config|
-      config.endpoint = 'http://api.openweathermap.org/data/2.5/weather'
-      config.apikey = "73854014820b3c26dc88ab5d14580654"
+      config.endpoint = Setting.openweather_endpoint
+      config.apikey = ENV['OPENWEATHER2_API_KEY']
     end
 
     begin
-      info = Openweather2.get_weather(city: 'lagrasse', units: 'metric')
+      info = Openweather2.get_weather(city: Setting.openweather_city, units: 'metric')
 
       puts info.inspect
 
@@ -146,14 +154,6 @@ namespace :process do
       end
     rescue Exception => e
       return nil
-    end
-
-
-
-  	Scenario.run2
-
-    Alert.all.each do |alert|
-      alert.trigger
     end
   end
 end

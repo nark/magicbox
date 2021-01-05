@@ -29,6 +29,8 @@ class Grow < ApplicationRecord
   has_many :weeks, dependent: :delete_all
   has_many :observations, dependent: :delete_all
 
+  validates :description, presence: true
+
   def name
     "##{id} - #{description}"
   end
@@ -111,7 +113,7 @@ class Grow < ApplicationRecord
   end
 
   def end_date
-    return self.weeks.last.end_date if self.weeks.last
+    return self.weeks.first.end_date if self.weeks.first
     return self.start_date
   end
 

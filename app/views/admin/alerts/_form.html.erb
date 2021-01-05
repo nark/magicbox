@@ -7,8 +7,8 @@
   </h1>
 
   <% if alert.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(alert.errors.count, "error") %> prohibited this alert from being saved:</h4>
 
       <ul>
       <% alert.errors.full_messages.each do |message| %>
@@ -18,17 +18,29 @@
     </div>
   <% end %>
 
+  <hr>
+
   <div class="form-group">
-    <%= form.label :alert_type %>
-    <%= form.select :alert_type, options_for_select(Alert.alert_types.keys.map { |e| [e.titleize, e] }, form.object.alert_type), {}, class: "form-control" %>
+    <%= form.check_box :enabled, data: {toggle: "toggle", size: "sm"} %> Enabled
   </div>
 
   <div class="form-group">
+    <%= form.check_box :push_enabled, data: {toggle: "toggle", size: "sm"} %> Web Push Enabled
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <%= form.label :alert_type %>
+    <%= form.select :alert_type, options_for_select(Alert.alert_types.keys.map { |e| [e.titleize, e] }, form.object.alert_type), {}, class: "form-control alert_types" %>
+  </div>
+
+  <div id="data_type_alert" class="form-group alert_type_from_group">
     <%= form.label :data_type_id %>
     <%= form.select :data_type_id, options_from_collection_for_select(DataType.all, "id", "name", form.object.data_type_id), {}, class: "form-control" %>
   </div>
 
-  <div class="form-group">
+  <div id="resource_alert" class="form-group alert_type_from_group">
     <%= form.label :resource_id %>
     <%= form.select :resource_id, options_from_collection_for_select(Resource.all, "id", "name", form.object.resource_id), {}, class: "form-control" %>
   </div>
@@ -48,15 +60,56 @@
     <%= form.text_area :message, class: "form-control" %>
   </div>
 
+  <br>
 
-  <hr>
+  <h4>Notified users</h4>
 
   <div class="form-group">
-    <%= form.label "Users" %><br>
+    <table class="table">
     <%= form.collection_check_boxes :user_ids, User.all, "id", "email", class: "form-control" do |ff| %>
-      <%= ff.check_box %>
-      <%= ff.object.username %>  (<%= ff.object.email %>)
-      <br>
+      <tr>
+        <td>
+          <%= ff.check_box %>
+        </td>
+        <td>
+          <%= ff.object.username %>
+        </td>
+        <td>
+           <%= ff.object.email %>
+        </td>
+        <td>
+           <%= ff.object.push_devices.count %> push device(s)
+        </td>
+      </tr>
+      
     <% end %>
+    </table>
   </div>
 <% end %>
+
+<script type="text/javascript">
+
+function toggle_alert_types() {
+  $(".alert_types").change(function() {
+    $(".alert_type_from_group").hide();
+    $("#" + $(this).val()).toggle()
+  });
+}
+
+function init() {
+  toggle_alert_types();
+  $(".alert_types").change()
+}
+
+$(document).on("ready", function() {
+  init()
+});
+
+$(document).on("turbolinks:load", function() {
+  init()
+});
+
+$(document).on('nested:fieldAdded', function(event){
+  init()
+});
+</script>

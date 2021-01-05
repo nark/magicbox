@@ -90,7 +90,7 @@ class Api::V1::DevicesController < ApiController
       # @device.device_state = :on
       # @device.save
       render json: @device
-    elsif @device.foo?
+    elsif @device.idle?
       render :json => { :errors => "Device is not managable" }
     else
       render :json => { :errors => "Device already started" }
@@ -108,7 +108,7 @@ class Api::V1::DevicesController < ApiController
       # @device.save
       render json: @device
 
-    elsif @device.foo?
+    elsif @device.idle?
       render :json => { :errors => "Device is not managable" }
     else
       render :json => { :errors => "Device already stopped" }

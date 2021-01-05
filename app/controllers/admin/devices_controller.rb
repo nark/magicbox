@@ -1,6 +1,6 @@
 class Admin::DevicesController < Admin::AdminController
 	before_action :authenticate_user!
-  before_action :set_room, only: [:index, :new, :show, :edit, :update, :destroy, :start, :stop, :samples, :query]
+  before_action :set_room, only: [:index, :new, :show, :edit, :create, :update, :destroy, :start, :stop, :samples, :query]
   before_action :set_device, only: [:show, :edit, :update, :destroy, :start, :stop, :query]
 
 	def index

@@ -1,12 +1,12 @@
 class UserMailer < ApplicationMailer 
-	default from: 'no-reply@magicbox.read-write.fr'
+	add_template_helper(ApplicationHelper)
+
+	default from: Setting.app_email
 	
   def notification_email
     @user = params[:user]
     @notification = params[:notification]
 
-    @url  = "#{Rails.application.config.action_mailer.default_url_options[:protocol]}://#{Rails.application.config.action_mailer.default_url_options[:host]}"
-
-    mail(to: @user.email, subject: @notification.alert.title)
+    mail(to: @user.email, subject: @notification.notifiable.email_subject)
   end
 end
