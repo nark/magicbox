@@ -1,6 +1,9 @@
 # MAGICBOX
 
-The MagicBox project is a set of hardware and software tools organized together that provides an open indoor growing platform. The system aims to assist indoor home growers in monitoring, scheduling and fine tuning of their growing environments.
+The MagicBox project is a set of hardware and software tools organized together that provides an open indoor growing platform. The system aims to assist home growers in monitoring, scheduling and fine tuning of their growing environments.
+
+![dashboard](md/dashboard.png)
+*Magicbox dashboard page*
 
 ## How it works?
 
@@ -10,9 +13,14 @@ While ago when I started growing plants indoor, I realized that one important pa
 
 At the beginning like many growers, I bought all the usual equiments separatelly and managed them through a mess of cables, socket multipliers and schedulers. It worked well but was irritating the software engineer inside me, by the lack of centralized control and monitoring.
 
-So I recycled an old power inverter enclosure with 8 female 220V integrated plugs and I put every components I needed in it. Power plugs are managed by 5v relays through GPIO pins of a Raspberry Pi 4 computer board. I also connected DHT11 temperature and humidity sensors with home-made USB cables and connectors to monitor the environmental parameters. All the 5V components are powered by an embedded Meanwell power supply.
+So I recycled an old power inverter enclosure with 8 female 220V integrated plugs and I put every components I needed in it. Power plugs are managed by 5v relays through GPIO pins of a Raspberry Pi 4 computer board. I also connected DHT11 temperature and humidity sensors with home-made USB cables and connectors to monitor the environmental parameters. All the 5V components are powered by a Meanwell power supply also embedded in the case.
 
-On the software side, it uses a Ruby on Rails backend app that manages the whole system. From rooms, devices and sensors, to minimal grow management, the web interface provides all the tools needed to manage an indoor garden. 
+![case](md/case.png)
+*Recycled power inverter enclosure*
+
+On the software side, it uses a Ruby on Rails backend app that manages the whole system. From rooms, devices and sensors, to minimal grow management and scenario-driven orchestration, the web interface provides all the tools needed to manage an indoor garden. 
+
+That said, Magicbox is currently not a seed-to-sale software designed to handle an instrustrial indoor growing operation. It does not provide any tools to manage tracability, retail stocks and client files. It perfectly fits with small home growing installation and for nerdy growers who like DIY.
 
 ### Features
 
@@ -26,8 +34,15 @@ On the software side, it uses a Ruby on Rails backend app that manages the whole
 
 ### Limitations
 
-* Ruby on Rails framework can be resource-intensive, do not expect too much performance from it
-* Rooms/scenarios only support 1 device 
+* Rooms/scenarios only support 1 device per device type
+* Magicbox is not a seed-to-sale software : no stocks, retail, client, etc. management included
+* 3 minutes minimum scheduling: each process cycle is triggered by a cron task running every 3 minutes
+* Ruby on Rails framework can be resource-intensive, do not expect too much performance from it on a Raspberry Pi
+
+### Feature goals
+
+* More collaborative feature (journal replies thread, notifications, sharing)
+* Use AI to fine tune the environmental parameters and device orchestration
 
 ## Requirements
 
@@ -56,7 +71,7 @@ On the software side, it uses a Ruby on Rails backend app that manages the whole
 ### Dependencies
 
 	sudo apt-get update -q
-	sudo apt-get install -qy procps curl ca-certificates gnupg2 build-essential postgresql postgresql-contrib libpq-dev git nodejs apt-utils libmagickcore-dev libmagickwand-dev  --no-install-recommends
+	sudo apt-get install -qy procps curl ca-certificates gnupg2 build-essential postgresql postgresql-contrib libpq-dev git nodejs apt-utils libmagickcore-dev libmagickwand-dev libxml2 libxslt ruby-dev zlib1g-dev liblzma-dev --no-install-recommends 
 
 ### Install Yarn
 
@@ -72,24 +87,38 @@ On the software side, it uses a Ruby on Rails backend app that manages the whole
 
 	sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 	sudo curl -sSL https://get.rvm.io | sudo bash -s stable
+	echo "source /usr/local/rvm/scripts/rvm" | sudo tee -a /home/magicbox/.bashrc
 	sudo usermod -a -G rvm magicbox
 
+### Install Ruby
+
+	source /usr/local/rvm/scripts/rvm
+	rvm install ruby-2.7.2
+
 ### Setup PostgreSQL
+
+This will create a dedicated Postgres user named `magicbox`. It is recommended to change the password, do not forget to use the same in the `.env` file we will create later (`DATABASE_PASSWORD` env var).
 
 	sudo -u postgres psql -c "CREATE ROLE magicbox WITH LOGIN PASSWORD 'magicbox';"
 	sudo -u postgres psql -c "ALTER ROLE magicbox SUPERUSER CREATEROLE CREATEDB REPLICATION;"
 
-### Install Ruby
+### Setup Ruby
+
+Log as `magicbox` user:
 
 	sudo su magicbox
-	source /usr/local/rvm/scripts/rvm
-	(rvmsudo) source /usr/local/rvm/scripts/rvm
-	(rvmsudo) rvm install ruby-2.7.2
-	(rvmsudo) rvm use ruby-2.7.2 --default
+
+Select the ruby version to use as default:
+
+	rvm use ruby-2.7.2 --default
 
 ### Get sources
 
+Clone source from GitHub:
+
 	git clone https://github.com/nark/magicbox.git
+
+Jump into the project directory
 
 	cd magicbox/
 
@@ -97,9 +126,13 @@ All the following commands will be executed inside the `magicbox/` directory.
 
 ### Setup environment variables
 
+Create a `.env` file to setup some environment variables:
+
 	nano .env
 
-	DATABASE_HOST=magicbox.domain.org
+Fill it with the following:
+
+	DATABASE_HOST=127.0.0.1
 	DATABASE_NAME=magicbox_production
 	DATABASE_USER=magicbox
 	DATABASE_PASSWORD=magicbox
@@ -108,13 +141,20 @@ All the following commands will be executed inside the `magicbox/` directory.
 	ONESIGNAL_API_KEY=************************************************
 	ONESIGNAL_SAFARI_WEB_ID=web.onesignal.auto.********-****-****-****-************
 
+Change `DATABASE_PASSWORD` according to the password you chose while creating the Postgres user.
+
 ### Install Gems 
 
+Install Ruby dependencies:
+
+	gem install sassc -v '2.4.0'
+	gem install rmagick -v '4.1.2'
+	gem install nokogiri -v '1.11.0'
 	bundle install --without development test
 
-### Install yarn packages
+### Precompile assets
 
-	yarn install --check-files
+	RAILS_ENV=production bundle exec rake assets:precompile
 
 ### Setup database
 
@@ -122,11 +162,17 @@ All the following commands will be executed inside the `magicbox/` directory.
 	RAILS_ENV=production bundle exec rake db:migrate
 	RAILS_ENV=production bundle exec rake db:seed
 
+### Setup crontab
+
+	EDITOR=nano crontab -e
+
+	*/3 * * * * /bin/bash -l -c 'cd /home/magicbox/magicbox && RAILS_ENV=production bundle exec rake process:run'
+
 ### Run once
 
 To verify that the whole setup works properly, you can run the app within its embedded web server :
 
-	RAILS_ENV=production bundle exec rails s
+	RAILS_ENV=production bundle exec foreman start
 
 Then connect to `http://localhost:3000` to login to your Magicbox.
 
@@ -185,17 +231,27 @@ With the following content, or alike:
 
 With the `rake db:seed` command executed earlier, some presets has been populated into the database already. 
 
-### GPIO setup
-
-The GPIO setup can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
-
-Magicbox provides a deatiled view of your GPIO pins and attached devices at [http://localhost:3000/admin/dashboard/gpio](http://localhost:3000/admin/dashboard/gpio) to help you fix potential issues.
-
 ### Rooms
 
+Rooms represent your growing space. You can create and manage several rooms, and for each one define a set of devices and associated scenarios to orchetrate them. 
 
+The room also host your grow subjects (e.i. plants). You can move your subjects from room to room without effort.
 
 ### Devices
+
+#### Device Types
+
+Magicbox supports a known range of device types, as `light`, `extractor`, `fan`, `sensor`, etc. to help you identifying them and organizing your scenarios.
+
+A device is attached to a room, identified with a `Name` in the database and by its GPIO pin number at the hardware level.
+
+#### GPIO setup
+
+The GPIO setup of devices can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
+
+Also it can be different 
+
+Magicbox provides a deatiled view of your GPIO pins and attached devices at [http://localhost:3000/admin/dashboard/gpio](http://localhost:3000/admin/dashboard/gpio) to help you fix potential issues.
 
 ### Grows
 
