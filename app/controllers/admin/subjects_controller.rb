@@ -89,6 +89,12 @@ class Admin::SubjectsController < Admin::AdminController
     end
 
     def subject_params
-      params.require(:subject).permit(:name, :room_id, :grow_id)
+      params.require(:subject).permit(
+        :name, 
+        :room_id, 
+        :grow_id,
+        :birth_type,
+        :mother_id,
+        :strain_id)
     end
 end

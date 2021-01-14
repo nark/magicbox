@@ -1,0 +1,67 @@
+<%= form_with(model: strain, local: true) do |form| %>
+  <% if strain.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(strain.errors.count, "error") %> prohibited this strain from being saved:</h2>
+
+      <ul>
+      <% strain.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :strain_type %>
+    <%= form.number_field :strain_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :crosses %>
+    <%= form.number_field :crosses %>
+  </div>
+
+  <div class="field">
+    <%= form.label :breeder %>
+    <%= form.text_field :breeder %>
+  </div>
+
+  <div class="field">
+    <%= form.label :effects %>
+    <%= form.text_field :effects %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ailments %>
+    <%= form.text_field :ailments %>
+  </div>
+
+  <div class="field">
+    <%= form.label :flavors %>
+    <%= form.text_field :flavors %>
+  </div>
+
+  <div class="field">
+    <%= form.label :location %>
+    <%= form.text_field :location %>
+  </div>
+
+  <div class="field">
+    <%= form.label :terpenes %>
+    <%= form.text_field :terpenes %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

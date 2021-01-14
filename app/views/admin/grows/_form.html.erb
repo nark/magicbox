@@ -51,17 +51,37 @@
   </div>
 
   <hr>
-
   <div class="form-group">
-    <div class="row">
-      <div class="col-md-4">
-        <%= form.label "Create subjects" %>
-        <%= form.number_field :number_of_subjects, class: "form-control", disabled: !grow.new_record? %>
+    <% if grow.new_record? %>
+      <div class="row">
+        <div class="col-md-4">
+          <%= form.label "Create subjects" %>
+          <%= form.number_field :number_of_subjects, class: "form-control", disabled: !grow.new_record? %>
+        </div>
+
+        <div class="col-md-4">
+          <%= form.label "Put them in room" %>
+          <%= select_tag :room, options_from_collection_for_select(Room.all, "id", "name"), class: "form-control", disabled: !grow.new_record? %>
+        </div>
+      </div>
+      <div class="row mt-2  ">
+        <div class="col-md-4">
+          <%= form.label "Strain" %>
+          <%= select_tag :strain_id, options_from_collection_for_select(Strain.all, "id", "name"), class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10 }, disabled: !grow.new_record? %>
+        </div>
       </div>
 
-      <div class="col-md-4">
-        <%= form.label "Put them in room" %>
-        <%= select_tag :room, options_from_collection_for_select(Room.all, "id", "name"), class: "form-control", disabled: !grow.new_record? %>
+      <hr>
+    <% end %>
+
+    <div class="row">
+      <div class="col-md-4 mt-2">
+        <%= form.label :birth_type %>
+        <%= form.select :birth_type, options_for_select(Grow.birth_types.keys.to_a.map{ |t| [t(t), t] }, form.object.birth_type), {}, {:class => "form-control" } %>
+      </div>
+      <div class="col-md-4 mt-2">
+        <%= form.label :mother_id %>
+        <%= form.select :mother_id, options_from_collection_for_select(Subject.all, "id", "name_with_grow", form.object.mother_id), {}, class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10 } %>
       </div>
     </div>
   </div>

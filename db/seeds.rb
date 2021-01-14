@@ -1,3 +1,5 @@
+require 'csv'
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -5,11 +7,21 @@
 # create default user
 User.create(username: "Admin", email: "admin@example.com", password: "changeme", password_confirmation: "changeme", is_admin: true)
 
-# create default categories
-# TBD : call rake task
-
-# create default
-# TBD : call rake task
+# parse strains
+strains_csv = Rails.root.join('db', 'samples', 'strains-kushy_api.2017-11-14.csv')
+CSV.parse(File.new(strains_csv), col_sep: ",", headers: false) do |row|
+  Strain.create!(
+    name:row[3],
+    description:row[6], 
+    strain_type:row[7], 
+    crosses:row[8], 
+    breeder:row[9], 
+    effects:row[10], 
+    ailments:row[11], 
+    flavors:row[12], 
+    location:row[13],
+    terpenes:row[14])
+end
 
 # create default room
 r = Room.create(name: "Room 1", room_type: 0, length: 60, width: 60, height: 140)

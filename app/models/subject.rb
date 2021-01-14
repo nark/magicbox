@@ -1,4 +1,6 @@
 class Subject < ApplicationRecord
+	include BirthTypeEnum
+
 	belongs_to :grow
 	belongs_to :room
 
@@ -8,8 +10,10 @@ class Subject < ApplicationRecord
 	has_many :issues, through: :observations
 	has_many :scenarios
 
+	has_one :strain
+
 	def name_with_grow
-		"#{self.name} [Grow##{self.grow_id}]"
+		"#{self.fullname} [Grow##{self.grow_id}]"
 	end
 
 	def generate_qr(size)

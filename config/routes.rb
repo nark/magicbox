@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :strains
   # Devise setup  
   devise_scope :user do
     authenticated :user do

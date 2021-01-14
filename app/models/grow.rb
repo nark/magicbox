@@ -1,4 +1,8 @@
 class Grow < ApplicationRecord
+  include BirthTypeEnum
+
+  attr_accessor :strain_id
+
   default_scope { order(start_date: :desc) }
 
   enum grow_status: {

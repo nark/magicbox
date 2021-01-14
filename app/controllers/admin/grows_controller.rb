@@ -79,6 +79,8 @@ class Admin::GrowsController < Admin::AdminController
     def grow_params
       params.require(:grow).permit(
         :grow_status, 
+        :birth_type,
+        :mother_id,
         :description, 
         :start_date, 
         :seedling_weeks,

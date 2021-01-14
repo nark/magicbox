@@ -1,0 +1,2 @@
+class Strain < ApplicationRecord
+end

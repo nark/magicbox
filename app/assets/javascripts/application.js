@@ -23,6 +23,7 @@
 //= require highcharts/highcharts-more
 //= require chartkick
 //= require jquery_nested_form
+//= require bootstrap-select
 //= require_tree .
 
 

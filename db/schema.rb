@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_31_133407) do
+ActiveRecord::Schema.define(version: 2021_01_08_143403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -153,6 +153,8 @@ ActiveRecord::Schema.define(version: 2020_12_31_133407) do
     t.integer "flushing_weeks", default: 1
     t.integer "drying_weeks", default: 1
     t.integer "curing_weeks", default: 3
+    t.integer "birth_type", default: 0
+    t.integer "mother_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -286,12 +288,30 @@ ActiveRecord::Schema.define(version: 2020_12_31_133407) do
     t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
+  create_table "strains", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "strain_type"
+    t.integer "crosses"
+    t.string "breeder"
+    t.string "effects"
+    t.string "ailments"
+    t.string "flavors"
+    t.string "location"
+    t.string "terpenes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "subjects", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "room_id"
     t.integer "grow_id"
+    t.integer "birth_type", default: 0
+    t.integer "mother_id"
+    t.integer "strain_id"
   end
 
   create_table "todos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

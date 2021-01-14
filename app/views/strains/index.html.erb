@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Strains</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Strain type</th>
+      <th>Crosses</th>
+      <th>Breeder</th>
+      <th>Effects</th>
+      <th>Ailments</th>
+      <th>Flavors</th>
+      <th>Location</th>
+      <th>Terpenes</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @strains.each do |strain| %>
+      <tr>
+        <td><%= strain.name %></td>
+        <td><%= strain.description %></td>
+        <td><%= strain.strain_type %></td>
+        <td><%= strain.crosses %></td>
+        <td><%= strain.breeder %></td>
+        <td><%= strain.effects %></td>
+        <td><%= strain.ailments %></td>
+        <td><%= strain.flavors %></td>
+        <td><%= strain.location %></td>
+        <td><%= strain.terpenes %></td>
+        <td><%= link_to 'Show', strain %></td>
+        <td><%= link_to 'Edit', edit_strain_path(strain) %></td>
+        <td><%= link_to 'Destroy', strain, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Strain', new_strain_path %>
