@@ -387,6 +387,8 @@ The API is currently under development and **not ready for production** yet.
 
 TBD
 
+## iOS App
 
+I'm also in the making of an iOS app that connects to the Magicbox API. I'm currently using it for myself, mostly for monitoring purpose and with some more work it could make a pretty nice addition to the whole system.
 
 *99 Bott… Blunts!*
