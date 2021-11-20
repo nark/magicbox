@@ -1,0 +1,64 @@
+<h3>Weight report
+  <div class="float-right">
+    <%= link_to edit_admin_grow_harvest_path(@grow, @harvest), class: "btn btn-success" do %>
+      <%= icon "fas", "edit" %> Edit
+    <% end %>
+
+    <%= link_to new_admin_grow_harvest_batch_path(@grow, @harvest), class: "btn btn-primary" do %>
+      <%= icon "fas", "plus" %> New Batch
+    <% end %>
+  </div>
+</h3>
+
+<div class="card">
+  <table class="table table-striped">
+    <thead>
+      <th width="150px"></th>
+      <th class="text-center">Wet Total</th>
+      <th class="text-center">Dry Total</th>
+      <th class="text-center">Batched</th>
+      <th class="text-center">Remaining</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td class=" text-muted"><b>Trim weight</b></td>
+        <td class="text-center text-monospace"><%= weight_with_unit @harvest.harvested_trim_weight %></td>
+        <td class="text-center text-monospace"><%= weight_with_unit @harvest.dry_trim_weight %></td>
+        <td class="text-center text-monospace text-primary"><b><%= @harvest.trim_batched %> / <%= weight_with_unit @harvest.dry_trim_weight %></b></td>
+        <td class="text-center text-monospace text-success"><b><%= weight_with_unit @harvest.dry_trim_weight - @harvest.trim_batched %></b></td>
+      </tr>
+      <tr>
+        <td class=" text-muted"><b>Waste weight</b></td>
+        <td class="text-center text-monospace"><%= weight_with_unit @harvest.harvested_waste_weight %></td>
+        <td class="text-center text-monospace">-</td>
+        <td class="text-center text-monospace">-</td>
+        <td class="text-center text-monospace">-</td>
+      </tr>
+      <tr>
+        <td class=" text-muted"><b>Bud weight</b></td>
+        <td class="text-center text-monospace"><%= weight_with_unit @harvest.harvested_bud_weight %></td>
+        <td class="text-center text-monospace"><%= weight_with_unit @harvest.dry_bud_weight %></td>
+        <td class="text-center text-monospace text-primary"><b><%= @harvest.bud_batched %> / <%= weight_with_unit @harvest.dry_bud_weight %></b></td>
+        <td class="text-center text-monospace text-success"><b><%= weight_with_unit @harvest.dry_bud_weight - @harvest.bud_batched %></b></td>
+      </tr>
+      <tr>
+        <td class=" text-muted"><b>Total</b></td>
+        <td class="text-center text-monospace">
+          <b><%= weight_with_unit @harvest.total_wet %></b>
+        </td>
+        <td class="text-center text-monospace">
+          <b><%= weight_with_unit @harvest.total_dry %></b>
+        </td>
+        <td class="text-center text-monospace"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<h3>Batches</h3>
+
+<div class="card">
+  <%= render partial: 'batches/batches', locals: {batches: @harvest.batches} %>
+</div>

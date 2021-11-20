@@ -1,0 +1,58 @@
+<%= form_with(model: [:admin, room], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= room.new_record? ? "New Room" : "Editing Room" %>
+    <div class="float-right">
+      <% if !room.new_record?  %>
+        <%= link_to "Delete", [:admin, room], method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+      <% end %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if room.errors.any? %>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h4>
+
+      <ul>
+      <% room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control col-3" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :room_type %>
+    <%= form.select :room_type, options_for_select(Room.room_types.keys.map { |e| [e.titleize, e] }, form.object.room_type), {}, class: "form-control col-3" %>
+  </div>
+
+  <hr> 
+
+  <div class="form-group form-inline">
+    <%= form.label :length, class: "mr-2" %>
+    <%= form.number_field :length, class: "form-control mr-2" %>
+
+    <%= form.label :width, class: "mr-2" %>
+    <%= form.number_field :width, class: "form-control mr-2" %>
+
+    <%= form.label :height, class: "mr-2" %>
+    <%= form.number_field :height, class: "form-control mr-2" %>
+  </div>
+
+  <hr> 
+
+  <div class="form-group">
+    <%= form.label "Scenarios" %><br>
+    <%= form.collection_check_boxes :scenario_ids, Scenario.where(enabled: true), "id", "name", class: "form-control" do |ff| %>
+      <%= ff.check_box %> <%= ff.object.name %><br>
+    <% end %>
+    <%#= form.select :scenario_id, options_from_collection_for_select(Scenario.all, "id", "name", @room.scenario ? room.scenario.id : nil), {include_blank: "None"}, class: "form-control col-3" %>
+  </div>
+<% end %>

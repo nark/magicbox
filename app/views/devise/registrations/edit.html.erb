@@ -1,0 +1,42 @@
+<%= form_for(resource, as: resource_name, html: { method: :put, class: "col-lg-8 mx-auto" }) do |f| %>
+  <h1>
+    <%= t('.title', resource: resource_name.to_s.humanize) %>
+    <div class="float-right">
+      <%= link_to t('.back'), :back, class: "btn btn-light border" %>
+      <%= link_to t('.cancel_my_account'), resource, data: { confirm: t('.are_you_sure') }, method: :delete , class: "btn btn-danger" %>
+      <%= f.submit t('.update'), class: 'btn btn-primary' %>
+    </div>
+  </h1>
+
+  <hr>
+  <%= bootstrap_devise_error_messages! %>
+
+  <div class="form-group">
+    <%= f.label :username %>
+    <%= f.text_field :username, autofocus: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, autocomplete: 'email', class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: 'new-password', class: 'form-control' %>
+
+    <small class="form-text text-muted"><%= t('.leave_blank_if_you_don_t_want_to_change_it') %></small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'  %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :current_password %>
+    <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-control' %>
+
+    <small class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes') %></small>
+  </div>
+<% end %>

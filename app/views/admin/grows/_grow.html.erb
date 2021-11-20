@@ -1,0 +1,29 @@
+<div class="col-12 mb-3">
+	<div class="card ">
+	  <h5 class="card-header "><%= link_to icon("fas", "seedling") + " #{grow.description}", grow %>
+	  	<div class="float-right">
+	  		<span class="badge <%= grow.status_badge_class %> ml-2"><%= grow.grow_status %></span>
+		    <span class="badge badge-pill badge-info"><%= grow.substrate %></span>
+		    <span class="badge badge-pill badge-secondary"><%= grow.flowering %></span>
+	  	</div>
+	  </h5>
+	  <div class="card-body">
+	  	From <b><%= fdate(grow.start_date) %></b> to <b><%= fdate(grow.end_date) %></b>
+	    <div class="progress my-2">
+	      <div class="progress-bar bg-<%= grow.progress_color %>" role="progressbar" style="width: <%= grow.progress_percents %>%" aria-valuenow="<%= grow.progress_percents %>" aria-valuemin="0" aria-valuemax="100"><%= grow.progress_percents %>%</div>
+	    </div>
+
+	    <h5 class="d-inline-flex"><span class="badge badge-success"><%= grow.subjects.count %> subjects</span></h5>
+	    
+	    <% if grow.current_week %>
+	    	<h5 class="d-inline-flex"><span class="badge badge-primary">W<%= grow.current_week.week_number %></span></h5>
+	    <% end %>
+
+	    <div class="float-right">
+	    	<%= link_to new_grow_observation_path(grow), class: "btn btn-outline-primary" do %>
+		      <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
+		    <% end %>
+	    </div>
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  grow_id: 1
+  room_id: 1
+  subject_id: 1
+  body: MyText
+  water: 1.5
+  nutrients: 1.5
+
+two:
+  user_id: 1
+  grow_id: 1
+  room_id: 1
+  subject_id: 1
+  body: MyText
+  water: 1.5
+  nutrients: 1.5

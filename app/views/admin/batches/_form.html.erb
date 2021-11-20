@@ -1,0 +1,114 @@
+<%= form_with(model: [:admin, @grow, @harvest, batch], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= batch.new_record? ? "New Batch" : "Editing Batch" %>
+    <div class="float-right">
+      <% if !batch.new_record?  %>
+        <%= link_to "Delete", [:admin, @grow, @harvest, batch], method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+      <% end %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if batch.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(batch.errors.count, "error") %> prohibited this batch from being saved:</h4>
+
+      <ul>
+      <% batch.errors.messages.each do |message| %>
+        <li><b><%= message.first.to_s.titleize %></b>: <%= message.last.join(", ") %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :grow_id, value: @grow.id %>
+  <%= form.hidden_field :harvest_id, value: @harvest.id %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control col-12 col-md-6" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :batch_type %>
+    <%= form.select :batch_type, options_for_select(Batch.batch_types.keys, form.object.batch_type), {}, class: "form-control col-12 col-md-3" %>
+  </div>
+
+
+  <hr>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <%= form.label :total_weight %>
+        <%= form.number_field :total_weight, class: "form-control col-md-8 col-12" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :batch_weight %>
+        <%= form.number_field :batch_weight, class: "form-control col-md-8 col-12" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :batch_count %>
+        <%= form.number_field :batch_count, class: "form-control col-md-8 col-12" %>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <%= form.label :batch_price %>
+        <%= form.number_field :batch_price, step: :any, class: "form-control col-md-8 col-12" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :price_per_weight %>
+        <%= form.number_field :price_per_weight, step: :any, class: "form-control col-md-8 col-12" %>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
+
+<script type="text/javascript">
+  $("#batch_batch_price").change(function() {
+    batch_price  = $("#batch_batch_price").val()
+    batch_weight = $("#batch_batch_weight").val()
+
+    if(batch_price && batch_weight) {
+      $("#batch_price_per_weight").val(batch_price / batch_weight)
+    }
+  });
+
+  $("#batch_price_per_weight").change(function() {
+    batch_weight = $("#batch_batch_weight").val()
+    weight_price = $("#batch_price_per_weight").val()
+
+    if(batch_weight && weight_price) {
+      $("#batch_batch_price").val(batch_weight * weight_price)
+    }
+  });
+
+
+  $("#batch_total_weight").change(function() {
+    total  = $("#batch_total_weight").val()
+    weight = $("#batch_batch_weight").val()
+    count  = $("#batch_batch_count").val()
+
+    if(total && weight) {
+      $("#batch_batch_count").val(total / weight)
+    }
+  });
+
+  $("#batch_batch_weight").change(function() {
+    total  = $("#batch_total_weight").val()
+    weight = $("#batch_batch_weight").val()
+    count  = $("#batch_batch_count").val()
+
+    if(total && weight) {
+      $("#batch_batch_count").val(total / weight)
+    }
+  });
+</script>

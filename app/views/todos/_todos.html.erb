@@ -1,0 +1,31 @@
+<ul class="list-group">
+  <% todos.each do |todo| %>
+    <li class="list-group-item">
+      <div class="d-flex justify-content-between">
+        <span class="mb-1">
+          <%= icon 'fas', "bell", class: "#{(status != :done) ? 'text-success' : 'text-muted'} mr-2" %>
+          <%= todo.body %> 
+        </span>
+        
+        <div class="d-flex">
+          <% if status == :todo %>
+            <%= link_to done_todo_path(todo), method: :post, class: "btn btn-sm py-0 text-success ml-3" do %>
+              <%= icon 'fas', "check" %>
+            <% end %>
+          <% else %>
+            <%= link_to undone_todo_path(todo), method: :post, class: "btn btn-sm py-0 text-danger ml-3" do %>
+              <%= icon 'fas', "undo" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <small class="text-<%= todo.is_late? and status == :todo ? 'danger' : 'muted' %>">Scheduled to <b><%= fdatetime todo.date %></b>
+        <div class="float-right">
+          <%= link_to edit_todo_path(todo), class: "btn btn-sm py-0 text-success ml-3" do %>
+            <%= icon 'fas', "edit" %>
+          <% end %>
+        </div>
+      </small>
+    </li>
+  <% end %>
+</ul>

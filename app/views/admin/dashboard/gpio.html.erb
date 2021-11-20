@@ -1,0 +1,37 @@
+<h1>GPIO</h1>
+
+<table class="table table-sm table-striped table-bordered">
+	<thead>
+		<th class="text-center" width="285px">Device</th>
+		<th class="text-center" width="285px">Plug</th>
+		<th class="text-center" width="85px">Name</th>
+		<th class="text-center" width="85px">GPIO</th>
+		<th class="text-center" width="85px">Pin L</th>
+		<th class="text-center" width="85px">Pin R</th>
+		<th class="text-center" width="85px">GPIO</th>
+		<th class="text-center" width="85px">Name</th>
+		<th class="text-center" width="285px">Plug</th>
+		<th class="text-center" width="285px">Device</th>
+	</thead>
+	<tbody>
+
+		<% @gpio_left.each do |i, array| %>
+  		<tr>
+  			<% device_left = Device.where(pin_number: array[:gpio]).first %>
+  			<td class="text-center <%= device_left ? 'font-weight-bold' : '' %> text-<%= device_left ? device_left.state_color : '' %>"><%= device_left ? link_to(device_left.name, [:admin, device_left.room, device_left], class: "text-link") : "" %></td>
+	  		<td class="text-center <%= device_left ? 'font-weight-bold' : '' %> text-<%= device_left ? device_left.state_color : '' %>"><%= array[:plug] %></td>
+	  		<td class="text-center <%= device_left ? 'font-weight-bold' : '' %>"><%= array[:name] %></td>
+				<td class="text-center <%= device_left ? 'font-weight-bold' : '' %>"><%= array[:gpio] %></td>
+				<td class="text-center <%= device_left ? 'font-weight-bold' : '' %>"><%= i %></td>
+
+				<% device_right = Device.where(pin_number: @gpio_right["#{i.to_s.to_i+1}".to_sym][:gpio]).first %>
+				<td class="text-center <%= device_right ? 'font-weight-bold' : '' %>"><%= i.to_s.to_i+1 %></td>
+				<td class="text-center <%= device_right ? 'font-weight-bold' : '' %>"><%= @gpio_right["#{i.to_s.to_i+1}".to_sym][:gpio] %></td>	
+				<td class="text-center <%= device_right ? 'font-weight-bold' : '' %>"><%= @gpio_right["#{i.to_s.to_i+1}".to_sym][:name] %></td>
+				<td class="text-center <%= device_right ? 'font-weight-bold' : '' %> text-<%= device_right ? device_right.state_color : '' %>"><%= @gpio_right["#{i.to_s.to_i+1}".to_sym][:plug] %></td>
+				<td class="text-center <%= device_right ? 'font-weight-bold' : '' %> text-<%= device_right ? device_right.state_color : '' %>"><%= device_right ? link_to(device_right.name, [:admin, device_right.room, device_right], class: "text-link") : "" %></td>
+			</tr>
+  	<% end %>
+	</tbody>
+</table>
+

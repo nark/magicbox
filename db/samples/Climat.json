@@ -1,0 +1,173 @@
+{
+  "name": "Climat",
+  "description": "Climat-centered scenario",
+  "enabled": true,
+  "condition_groups_attributes": [
+    {
+      "name": "Heater ON (day)",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 09:00:00 UTC",
+          "end_time": "2000-01-01 21:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        },
+        {
+          "data_type_id": 1,
+          "predicate": 1,
+          "target_value": 23,
+          "start_time": null,
+          "end_time": null,
+          "condition_type": "data_type",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": null,
+          "device_type": "heater"
+        }
+      ]
+    },
+    {
+      "name": "Heater OFF (day)",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 09:00:00 UTC",
+          "end_time": "2000-01-01 21:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        },
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": 24,
+          "start_time": null,
+          "end_time": null,
+          "condition_type": "data_type",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "stop",
+          "description": null,
+          "duration": null,
+          "device_type": "heater"
+        }
+      ]
+    },
+    {
+      "name": "Heater ON (night)",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 1,
+          "target_value": 17,
+          "start_time": "2000-01-01 15:40:00 UTC",
+          "end_time": null,
+          "condition_type": "data_type",
+          "logic": "and_operator",
+          "duration": null
+        },
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 21:00:00 UTC",
+          "end_time": "2000-01-01 09:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": null,
+          "device_type": "heater"
+        }
+      ]
+    },
+    {
+      "name": "Heater OFF (night)",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": 19,
+          "start_time": null,
+          "end_time": null,
+          "condition_type": "data_type",
+          "logic": "and_operator",
+          "duration": null
+        },
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 21:00:00 UTC",
+          "end_time": "2000-01-01 09:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "stop",
+          "description": null,
+          "duration": null,
+          "device_type": "heater"
+        }
+      ]
+    },
+    {
+      "name": "Extractor ON",
+      "enabled": true,
+      "conditions_attributes": [
+
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": null,
+          "device_type": "extractor"
+        }
+      ]
+    },
+    {
+      "name": "Fan ON",
+      "enabled": true,
+      "conditions_attributes": [
+
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": null,
+          "device_type": "fan"
+        }
+      ]
+    }
+  ]
+}

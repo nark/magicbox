@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  resource_id: 1
+  value: 1.5
+  unit: MyString
+
+two:
+  resource_id: 1
+  value: 1.5
+  unit: MyString

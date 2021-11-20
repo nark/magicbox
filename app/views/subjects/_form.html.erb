@@ -1,0 +1,53 @@
+<%= form_with(model: [:admin, grow, subject], local: true) do |form| %>
+  <h1>
+    <% if subject.new_record? %>
+      New subject
+    <% else %>
+      Edit subject
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless subject.new_record? %>
+        <%= link_to 'Destroy', admin_grow_subject_path(subject.grow, subject), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if subject.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(subject.errors.count, "error") %> prohibited this subject from being saved:</h2>
+
+      <ul>
+      <% subject.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :grow_id, value: grow.id %>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label "Room" %>
+        <%= form.select :room_id, options_from_collection_for_select(Room.all, "id", "name", subject.room_id), {}, :class => "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+<% end %>

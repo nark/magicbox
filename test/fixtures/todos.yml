@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  todo_status: 1
+  user_id: 1
+  date: 2020-11-23 11:04:23
+  body: MyText
+  notify: 
+
+two:
+  todo_status: 1
+  user_id: 1
+  date: 2020-11-23 11:04:23
+  body: MyText
+  notify: 

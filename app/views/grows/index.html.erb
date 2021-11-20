@@ -1,0 +1,13 @@
+<h1>
+  Grows
+  <div class="float-right">
+    <%= link_to new_admin_grow_path, class: "btn btn-primary" do %>
+    	<%= icon "fas", "plus" %> Grow
+    <% end %>
+  </div>
+</h1>
+
+<h4>Running Grows</h4>
+<%= render partial: "grows/grows", locals: {grows: @grows.where.not(grow_status: [:aborted, :done]) } %>
+<h4>Terminated Grows</h4>
+<%= render partial: "grows/grows", locals: {grows: @grows.where(grow_status: [:aborted, :done]) } %>

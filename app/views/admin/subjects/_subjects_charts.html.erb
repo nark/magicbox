@@ -1,0 +1,38 @@
+<div class="row mb-4">
+  <div class="col-12">
+    <h6>Resources</h6>    
+    <% data = Resource.where("choices = '{}'").map { |resource| 
+        {
+          name: resource.name, 
+          data: ResourceData.joins(:subject, :resource).where(subject_id: subjects).where("resources.id = #{resource.id}").group("resource_datas.id").group_by_day(:created_at).map { |e|  
+              [e.created_at, e.value]
+          } 
+        }
+      }.compact %>
+
+    <%= line_chart data,
+      adapter: "highcharts",
+      color: "lightblue",
+      library: {
+        chart: {
+          type: "spline",
+          zoomType: 'x', 
+          panning: true, 
+          panKey: 'shift'
+        },
+        yAxis: {
+          visible: false
+        },
+        xAxis: {
+          visible: true
+        },
+        plotOptions: {
+          spline: {
+            marker: {
+              enabled: false
+            }
+          }
+        } 
+      } %>
+  </div>
+</div>

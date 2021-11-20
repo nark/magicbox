@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  grow_id: 1
+  harvest_id: 1
+  name: MyString
+  total_weight: 1.5
+  batch_weight: 1.5
+  batch_count: 
+
+two:
+  grow_id: 1
+  harvest_id: 1
+  name: MyString
+  total_weight: 1.5
+  batch_weight: 1.5
+  batch_count: 

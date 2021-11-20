@@ -1,0 +1,103 @@
+<h1>
+  <%= @room.name %> <span class="text-muted" style="font-size: 14px">
+    [<%= @room.room_type.titleize %>] (<%= @room.length %> x <%= @room.width %> x <%= @room.height %>)
+  </span>
+  <div class="float-right">
+    <%= link_to new_admin_room_device_path(@room), class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %> Device
+    <% end %>
+    <%= link_to edit_admin_room_path(@room), class: "btn btn-success" do %>
+      <%= icon "fas", "edit" %> Edit
+    <% end %>
+  </div>
+</h1>
+
+<hr>
+
+<% if @camera %>
+  <img src="<%= @camera.custom_identifier %>" width="100%" class="img-fluid mb-4 rounded" />
+<% end %>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-success mb-3">
+      <div class="card-body text-success">
+        <h5 class="card-title mb-0"><b><%= @room.total_watts %></b> Watts</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-info mb-3">
+      <div class="card-body text-info">
+        <h5 class="card-title mb-0"><b><%= @room.kwh_day %></b> kWh / day</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-primary mb-3">
+      <div class="card-body text-primary">
+        <h5 class="card-title mb-0"><b><%= @room.kwh_month %></b> kWh / month</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-danger mb-3">
+      <div class="card-body text-danger">
+        <h5 class="card-title mb-0"><b><%= kwh_cost_estimation @room.kwh_month %></b> € / month</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<h4>
+  Devices
+  <div class="float-right">
+    <%= link_to admin_room_devices_path(@room), class: "text-muted mr-2", style: "font-size: 11px;" do %>
+      <%= icon "fas", "eye" %> All devices
+    <% end %>
+    <%= link_to events_path(room_id: @room.id), class: "text-muted", style: "font-size: 11px;" do %>
+      <%= icon "fas", "eye" %> All events
+    <% end %>
+  </div>
+</h4>
+
+<div class="row">
+  <div class="col-sm-12 col-lg-6">
+    <%= render partial: "rooms/room_devices", locals: {room: @room} %>
+  </div>
+
+  <div class="col-sm-12 col-md-8 col-lg-3">
+    <%= render partial: "events/events", locals: {room: @room} %>
+  </div>
+
+  <div class="col-sm-12 col-lg-3">
+    <%= render partial: "rooms/camshot", locals: {room: @room}  %>
+  </div>
+</div>
+
+<br> 
+
+<h4>
+  Subjects
+</h4>
+
+<%#= render partial: "admin/subjects/subjects_charts", locals: { subjects: @room.active_subjects } %>
+
+<div class="row">
+  <%= render partial: "admin/subjects/subjects", locals: { subjects: @room.active_subjects } %>
+</div>
+
+<% unless @room.scenarios.empty? %>
+  <br> 
+  
+  <% @room.scenarios.each do |scenario| %>
+    <h4><%= scenario.name %></h4>
+
+    <%= render partial: "admin/scenarios/scenario", locals: {scenario: scenario} %>
+
+    <br>
+  <% end %>
+<% end %>
+

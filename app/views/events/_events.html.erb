@@ -1,0 +1,20 @@
+<div class="card">
+    <% if room.events.count > 0 %>
+        <ul class="list-group list-group-flush">
+            <% room.events.limit(8).each do |event| %>
+            	<li class="list-group-item">
+            		<span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
+            		&nbsp;
+            		<small><%= event.message %></small>
+            		<div class="float-right">
+            			<small class="text-muted"><%= fdatetime event.created_at %></small>
+            		</div>
+            	</li>
+            <% end %>
+        </ul>
+    <% else %>
+        <div class="card-body text-center">
+            <p>No event yet.</p>
+        </div>
+    <% end %>
+</div>

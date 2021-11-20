@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @strain.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @strain.description %>
+</p>
+
+<p>
+  <strong>Strain type:</strong>
+  <%= @strain.strain_type %>
+</p>
+
+<p>
+  <strong>Crosses:</strong>
+  <%= @strain.crosses %>
+</p>
+
+<p>
+  <strong>Breeder:</strong>
+  <%= @strain.breeder %>
+</p>
+
+<p>
+  <strong>Effects:</strong>
+  <%= @strain.effects %>
+</p>
+
+<p>
+  <strong>Ailments:</strong>
+  <%= @strain.ailments %>
+</p>
+
+<p>
+  <strong>Flavors:</strong>
+  <%= @strain.flavors %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @strain.location %>
+</p>
+
+<p>
+  <strong>Terpenes:</strong>
+  <%= @strain.terpenes %>
+</p>
+
+<%= link_to 'Edit', edit_admin_strain_path(@strain) %> |
+<%= link_to 'Back', admin_strains_path %>

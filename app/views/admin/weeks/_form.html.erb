@@ -1,0 +1,59 @@
+<%= form_with(model: [:admin, grow, week], local: true) do |form| %>
+  <h1>
+    <% if week.new_record? %>
+      New week
+    <% else %>
+      Edit week
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless week.new_record? %>
+        <%= link_to 'Destroy', admin_grow_week_path(week.grow, week), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if week.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(week.errors.count, "error") %> prohibited this week from being saved:</h2>
+
+      <ul>
+      <% week.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :grow_id, value: grow.id %>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label "Type" %>
+        <%= form.select :week_type, options_for_select(Week.week_types.keys.map { |e| [e.titleize, e]  }, form.object.week_type), {}, :class => "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label "Start day" %>
+        <%= form.hidden_field :start_date, value: fdate(form.object.start_date), class: "form-control col-3 weekpicker", id: "weekpicker-#{form.object.id}-start_date", data: { toggle: "datetimepicker", target: "#weekpicker-#{form.object.id}-start_date" } %>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label "End day" %>
+        <%= form.hidden_field :end_date, value: fdate(form.object.end_date), class: "form-control col-3 weekpicker", id: "weekpicker-#{form.object.id}-end_date", data: { toggle: "datetimepicker", target: "#weekpicker-#{form.object.id}-end_date" } %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,245 @@
+<h1>Dashboard</h1>
+
+<br>
+
+<div class="row">
+	<div class="col-12 col-lg-6">
+		<h2>Grows</h2>
+		<div class="row">
+			<% if @grows.count > 0 %>
+			<% @grows.each do |grow| %>
+				<%= render partial: 'grows/grow', locals: { grow: grow } %>
+			<% end %>
+			<% else %>
+				<div class="col-12 mb-3">
+					<div class="card ">
+						<div class="card-body text-center">
+							<p>No grow yet, let's create a new one!</p>
+							<%= link_to new_admin_grow_path, class: "btn btn-outline-primary" do %>
+								<%= icon "fas", "seedling" %> New Grow
+							<% end %>
+						</div>
+					</div>
+				</div>
+			<% end %>
+		</div> 
+	</div>
+
+	<div class="col-12 col-lg-6">
+		<h2>To do's</h2>
+    <% if @todos.count > 0 %>
+    	<%= render partial: "todos/todos", locals: { todos: @todos, status: :todo } %>
+    <% else %>
+    	<div class="card ">
+				<div class="card-body text-center">
+					<p>Nothing to do yet.</p>
+					<%= link_to new_todo_path, class: "btn btn-outline-primary" do %>
+						<%= icon "fas", "clock" %> New Todo
+					<% end %>
+				</div>
+			</div>
+    <% end %>
+	</div>
+</div>
+<br>
+
+<% Room.all.each do |room| %>
+	<h2><%= room.name %></h2>
+	<div class="row">
+		<div class="col-sm-12 col-lg-6">
+			<%= render partial: "rooms/room_devices", locals: {room: room} %>
+		</div>
+
+		<div class="col-sm-12 col-md-8 col-lg-3 mb-4">
+			<%= render partial: "events/events", locals: {room: room} %>
+		</div>
+
+		<div class="col-sm-12 col-lg-3">
+	    <%= render partial: "rooms/camshot", locals: {room: room}  %>
+	  </div>
+	</div>
+<% end %>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-success mb-3">
+      <div class="card-body text-success">
+        <h5 class="card-title mb-0"><b><%= total_watts %></b> Watts</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-info mb-3">
+      <div class="card-body text-info">
+        <h5 class="card-title mb-0"><b><%= total_kwh_day %></b> kWh / day</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-primary mb-3">
+      <div class="card-body text-primary">
+        <h5 class="card-title mb-0"><b><%= total_kwh_month %></b> kWh / month</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <div class="card border-danger mb-3">
+      <div class="card-body text-danger">
+        <h5 class="card-title mb-0"><b><%= kwh_cost_estimation total_kwh_month %></b> € / month</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+		  <div class="card-header">
+		    Weather
+	  		<div class="float-right">
+	  			<small class="text-muted">City: <%= Setting.openweather_city %></small>
+	  		</div>
+		  </div>
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<%= icon "fas", "sun", class: "fa-2x text-warning" %>
+		    	<div class="float-right">
+		    		<h3 class="font-weight-light text-warning">
+		    			<%= weather_temp %>
+		    		</h3>
+		    	</div>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<%= icon "fas", "cloud-rain", class: "fa-2x text-info" %>
+		    	<div class="float-right">
+		    		<h3 class="font-weight-light text-info ">
+		    			<%= weather_humidity %>
+		    		</h3>
+		    	</div>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+			<div class="card-header">
+		    CPU
+		  </div>
+
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Usage
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= cpu_usage %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Temp
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= cpu_temp %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Voltage
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= voltage %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+
+
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+			<div class="card-header">
+		    Memory
+		  </div>
+
+		  <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Used
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= used_memory %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Free 
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<%= free_memory %>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+
+	<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+		<div class="card">
+			<div class="card-header">
+		    System
+		  </div>
+
+		  <ul class="list-group list-group-flush">
+		  	<li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Hardware
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<small><small><%= hard_info %></small></small>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Version
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<small><small><%= system_info %></small></small>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+
+		    <li class="list-group-item">
+		    	<h5 class="card-title align-middle m-0">
+			    	Uptime 
+			    	<div class="float-right">
+			    		<h5 class="font-weight-light text-info m-0">
+			    			<small><small><%= uptime_info %></small></small>
+			    		</h5>
+			    	</div>
+			    </h5>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+</div>

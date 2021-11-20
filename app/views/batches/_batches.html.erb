@@ -1,0 +1,47 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Grow</th>
+      <th>Harvest</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th class="text-right">Total weight</th>
+      <th class="text-right">Batch weight</th>
+      <th class="text-center">Batch count</th>
+      <th class="text-right">Batch price</th>
+      <th class="text-right"><%= Setting.units_weight %>/<%= Setting.units_currency %></th>
+      <th class="text-right">Total Price</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% batches.each do |batch| %>
+      <tr>
+        <td><%= link_to batch.grow.name, batch.grow %></td>
+        <td><%= link_to batch.harvest_id, [batch.grow, batch.harvest] %></td>
+        <td><b><%= batch.name %></b></td>
+        <td><%= batch.batch_type %></td>
+        <td class="text-monospace text-right"><%= weight_with_unit batch.total_weight %></td>
+        <td class="text-monospace text-right"><%= weight_with_unit batch.batch_weight %></td>
+        <td class="text-center"><%= batch.batch_count %></td>
+        <td class="text-monospace text-right"><%= currency_with_unit batch.batch_price %></td>
+        <td class="text-monospace text-right"><%= currency_with_unit batch.price_per_weight %></td>
+        <td class="text-monospace text-right"><%= currency_with_unit batch.total_price %></td>
+        <td>
+        	<%= link_to edit_admin_grow_harvest_batch_path(batch.grow, batch.harvest, batch), class: "btn btn-sm btn-success" do %>
+        		<%= icon "fas", "edit" %>
+        	<% end %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+    	<td><b>Total</b></td>
+    	<td colspan="5"></td>
+    	<td class="text-center"><b><%= batches.sum(:batch_count) %></b></td>
+    	<td colspan="2"></td>
+    	<td class="text-monospace text-right"><b><%= currency_with_unit batches.sum(&:total_price) %></b></td>
+    	<td></td>
+    </tr>
+  </tbody>
+</table>

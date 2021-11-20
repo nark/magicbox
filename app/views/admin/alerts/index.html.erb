@@ -1,0 +1,55 @@
+<h1>
+  Alerts
+  <div class="float-right">
+    <%= link_to new_admin_alert_path, class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %>  
+      New
+    <% end %>  
+  </div>
+</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th class="text-center">Parameter</th>
+      <th>Operator</th>
+      <th class="text-center">Value</th>
+      <th>Message</th>
+      <th class="text-center" width="80px">Enabled</th>
+      <th>Push</th>
+      <th width="200px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @alerts.each do |alert| %>
+      <tr>        
+        <td>
+          <span class="badge badge-pill badge-<%= alert.data_type_alert? ? 'primary' : 'success' %>">
+            <%= alert.alert_type.titleize %>    
+          </span>
+        </td>
+        <td class="text-center">
+          <span class="badge badge-dark">
+            <% if alert.data_type_alert? %>
+              <%= alert.data_type.name.titleize %>
+            <% else %>
+              <%= alert.resource.name %>
+            <% end %>
+          </span>
+        </td>
+        <td><%= alert.operator %></td>
+        <td class="text-center"><%= alert.value %></td>
+        <td class="text-monospace"><%= alert.message %></td>
+        <td><%= alert.enabled ? icon("fas", "check", class: "text-success") : icon("fas", "close") %></td>
+        <td><%= alert.push_enabled ? icon("fas", "check", class: "text-success") : icon("fas", "close") %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_alert_path(alert), class: "btn btn-sm btn-outline-success" %>
+          <%= link_to 'Test', test_admin_alert_path(alert), method: :post, class: "btn btn-sm btn-outline-warning" %>
+          <%= link_to 'Destroy', [:admin, alert], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

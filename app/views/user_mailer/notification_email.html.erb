@@ -1,0 +1,17 @@
+<p>Hello <%= @user.username %>,</p>
+
+<% if @notification.notifiable.class.to_s == "Todo" %>
+ <p>You have been notified of a todo scheduled at <i><%= fdatetime @notification.notifiable.date %></i>
+<% elsif @notification.notifiable.class.to_s == "Alert" %>
+	<p>An alert has been triggered: <%= @notification.notifiable.title %></p>
+<% end %>
+
+<p>
+	<%= @notification.notifiable.message %>
+</p>
+
+<br>
+
+<a href="<%= @notification.notifiable.notifiable_url %>">
+	<%= @notification.notifiable.notifiable_url %>
+</a>

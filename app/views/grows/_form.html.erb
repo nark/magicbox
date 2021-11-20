@@ -1,0 +1,108 @@
+<%= form_with(model: grow, local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= grow.new_record? ? "New Grow" : "Editing Grow" %>
+    <div class="float-right">
+      <% unless grow.new_record? %>
+        <%= link_to 'Destroy', grow, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-outline-danger" %></td>
+      <% end %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
+
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if grow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(grow.errors.count, "error") %> prohibited this grow from being saved:</h2>
+
+      <ul>
+      <% grow.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_field :description, class: "form-control col-8" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :grow_status %>
+    <%= form.select :grow_status, options_for_select(Grow.grow_statuses.keys.to_a.map{ |t| [t(t), t] }, form.object.grow_status), {}, {:class => "form-control col-4" } %>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-4">
+        <%= form.label :substrate %>
+        <%= form.select :substrate, options_for_select(Grow.substrates.keys.to_a.map{ |t| [t(t), t] }, form.object.substrate), {}, {:class => "form-control" } %>
+      </div>
+      <div class="col-md-4">
+        <%= form.label :flowering %>
+        <%= form.select :flowering, options_for_select(Grow.flowerings.keys.to_a.map{ |t| [t(t), t] }, form.object.flowering), {}, {:class => "form-control" } %>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-4">
+        <%= form.label "Create subjects" %>
+        <%= form.number_field :number_of_subjects, class: "form-control", disabled: !grow.new_record? %>
+      </div>
+
+      <div class="col-md-4">
+        <%= form.label "Put them in room" %>
+        <%= select_tag :room, options_from_collection_for_select(Room.all, "id", "name"), class: "form-control", disabled: !grow.new_record? %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <hr>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <%= form.label "Start Date" %>
+        <%= form.hidden_field :start_date, value: fdate(form.object.start_date), class: "form-control col-3 weekpicker", id: "weekpicker-#{form.object.id}-start_date", data: { toggle: "datetimepicker", target: "#weekpicker-#{form.object.id}-start_date" } %>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <%= form.label :seedling_weeks %>
+          <%= form.number_field :seedling_weeks, value: form.object.seedling_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :vegging_weeks %>
+          <%= form.number_field :vegging_weeks, value: form.object.vegging_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :flowering_weeks %>
+          <%= form.number_field :flowering_weeks, value: form.object.flowering_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :flushing_weeks %>
+          <%= form.number_field :flushing_weeks, value: form.object.flushing_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :drying_weeks %>
+          <%= form.number_field :drying_weeks, value: form.object.drying_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :curing_weeks %>
+          <%= form.number_field :curing_weeks, value: form.object.curing_weeks, min: 0, max: 52, class: "form-control" %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+<% end %>

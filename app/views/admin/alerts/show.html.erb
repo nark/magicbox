@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Alert type:</strong>
+  <%= @alert.alert_type %>
+</p>
+
+<p>
+  <strong>Data type:</strong>
+  <%= @alert.data_type_id %>
+</p>
+
+<p>
+  <strong>Resource:</strong>
+  <%= @alert.resource_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @alert.user_id %>
+</p>
+
+<p>
+  <strong>Operator:</strong>
+  <%= @alert.operator %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @alert.value %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @alert.message %>
+</p>
+
+<%= link_to 'Edit', edit_admin_alert_path(@alert) %> |
+<%= link_to 'Back', admin_alerts_path %>

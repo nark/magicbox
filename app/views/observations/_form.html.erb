@@ -1,0 +1,324 @@
+<% form_path = subject ? [grow, subject, observation] : [grow, observation] %>
+<%= nested_form_for form_path, html: {class: "col-md-12 col-lg-8 mx-auto"} do |form| %>
+  <h1>
+    <%= observation.new_record? ? "New Observation" : "Editing Observation" %>
+    <div class="float-right">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if observation.errors.any? %>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(observation.errors.count, "error") %> prohibited this observation from being saved:</h4>
+
+      <ul>
+      <% observation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :user_id, value: current_user.id %>
+
+  <div class="form-group row">
+    <%= form.label "Grow: ", class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= form.select :grow_id, options_from_collection_for_select(Grow.where.not(grow_status: [:done, :aborted]), "id", "name", params[:grow_id]), { prompt: "None" }, class: "form-control grows_select" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label "Room: ", class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= form.select :room_id, options_from_collection_for_select(Room.all, "id", "name", params[:room_id]), { prompt: "None" }, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label "Subject: ", class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= form.select :subject_ids, options_from_collection_for_select(Subject.joins(:grow).where.not('grows.grow_status': [:done, :aborted]), "id", "fullname", observation.subjects.count > 0 ? observation.subjects.map { |e| e.id } : @subject ? @subject.id : params[:subject_ids]), {},  multiple: true, class: "form-control subjects_select", style: "height: 200px" %>
+    </div>
+  </div>
+
+  <% if subject %>
+    <%#= form.hidden_field :room_id, value: subject.room.id %>
+    <%= form.hidden_field :subject_id, value: subject.id, class: "form-control" %>
+  <% end %>
+
+  <hr>
+
+  <div class="form-group">
+    <%= icon "fas", "thumbs-up", class: "fa-1x mr-1", style: "color: lightgray;" %>
+    <%= icon "fas", "heart", class: "fa-1x mr-1", style: "color: lightgray;" %>
+    <%= icon "fas", "surprise", class: "fa-1x mr-1", style: "color: lightgray;" %>
+    <%= icon "fas", "frown", class: "fa-1x mr-1", style: "color: lightgray;" %>
+    <%= icon "fas", "thumbs-down", class: "fa-1x mr-1", style: "color: lightgray;" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.text_area :body, class: "form-control", rows: 6, placeholder: "Add a comment here…" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.file_field :pictures, multiple: true, accept: "image/*", capture: "camera", data: {role: :none} %>
+
+    <% observation.pictures.each do |p| %>
+      <%= image_tag url_for(p), class: "img-thumbnail" %><br>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <%= form.fields_for :resource_datas, @resource_datas do |ff| %>
+      <%= ff.hidden_field :observation_id, value: observation.id %>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-12 col-lg-2">
+            <%= ff.label "Category" %>
+            <%= ff.select :category_id, options_from_collection_for_select(Category.all, "id", "name", ff.object.new_record? ? ff.object.category_id : ff.object.resource.category_id), {}, class: "select_category form-control mb-2" %>
+          </div>
+          <div class="col-12 col-lg-3">
+            <%= ff.label "Resource" %>
+            <%= ff.select :resource_id, options_for_select(Resource.all.map {|p| [p.name, p.id, {'data-units' => p.units.to_json, 'data-choices' => p.choices.to_json }]}, ff.object.resource_id), {}, class: "select_resource form-control mb-2" %> 
+          </div>
+          <div class="col-12 col-lg-3">
+            <%= ff.label "Value" %>
+            <% if ff.object.resource and !ff.object.resource.choices.empty? %>
+              <%= ff.select :value, options_for_select(ff.object.resource.choices, ff.object.value), {}, class: "form-control" %>
+            <% else %>
+              <%= ff.text_field :value, value: ff.object.value, class: "form-control" %>
+            <% end %>
+          </div>
+          <div class="col-12 col-lg-3">
+            <%= ff.label "Unit" %>
+            <%= ff.select :unit, options_for_select([ff.object.unit], ff.object.unit), {}, class: "form-control", style: "display: none;" %>  
+          </div>
+          <div class="col-2 col-lg-1">
+            <%= ff.label " " %>
+            <%= ff.link_to_remove icon("fas", "trash"), class: "btn btn-sm btn-block btn-danger mt-2" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <%= form.link_to_add 'Add resource', :resource_datas, class: "btn btn-sm btn-success" %>
+
+  <hr>
+
+  <div class="form-group">
+    <%= form.fields_for :issues, @issues do |ff| %>
+      <%= ff.hidden_field :observation_id, value: observation.id %>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-12 col-lg-2">
+            <%= ff.label "Status" %>
+            <%= ff.select :issue_status, options_for_select(Issue.issue_statuses.keys.map { |e| [e.titleize, e]  }, ff.object.issue_status), {}, class: "form-control mb-2" %> 
+          </div>
+
+          <div class="col-12 col-lg-3">
+            <%= ff.label "Resource" %>
+            <%= ff.select :resource_id, options_for_select(Resource.all.map {|p| [p.name, p.id, {'data-units' => p.units.to_json, 'data-choices' => p.choices.to_json }]}, ff.object.resource_id), {}, class: "select_resource form-control mb-2" %> 
+          </div>
+          <div class="col-12 col-lg-2">
+            <%= ff.label "Severity" %>
+            <%= ff.select :severity, options_for_select(Issue.severities.keys.map { |e| [e.titleize, e]  }, ff.object.severity), {}, class: "form-control mb-2" %> 
+          </div>
+          <div class="col-12 col-lg-2">
+            <%= ff.label "Type" %>
+            <%= ff.select :issue_type, options_for_select(Issue.issue_types.keys.map { |e| [e.titleize, e]  }, ff.object.issue_type), {}, class: "form-control mb-2" %> 
+          </div>
+          <div class="col-2 col-lg-1">
+            <%= ff.label " " %>
+            <%= ff.link_to_remove icon("fas", "trash"), class: "btn btn-sm btn-block btn-danger" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <%= form.link_to_add 'Add issue', :issues, class: "btn btn-sm btn-success" %>
+<% end %>
+
+
+<script type="text/javascript">
+
+function reload_category() {
+  $(".select_category").change(function() {
+
+    var comps = $(this).closest("select").prop("id").split("_");
+    var category_id = $(this).val();
+    var resource_id = comps[comps.length-3];
+
+    Rails.ajax({
+      url: "/admin/resources.json?category_id=" + category_id,
+      type: "get",
+      data: "",
+      success: function(data) {
+        // set resources
+        var val = $("#observation_resource_datas_attributes_"+resource_id+"_resource_id").val();
+        $("#observation_resource_datas_attributes_"+resource_id+"_resource_id").empty()
+        $.each(data, function(index, resource) {
+          $option = $("<option></option>")
+            .attr("value", resource.id)
+            .data("units", resource.units)
+            .data("choices", resource.choices)
+            .text(resource.name);
+
+          $("#observation_resource_datas_attributes_"+resource_id+"_resource_id").append($option);
+        });
+
+        if (val != null) {
+          $("#observation_resource_datas_attributes_"+resource_id+"_resource_id").val(val);
+        }
+
+        reload_resource();
+
+      },
+      error: function(data) {
+        console.log(data);
+      }
+    });
+  });
+}
+
+
+function reload_resource() {
+  $(".select_resource").change(function() {
+    var comps = $(this).prop("id").split("_");
+    var resource_id = comps[comps.length-3];
+    var units = $(this).find(':selected').data('units');
+    var choices = $(this).find(':selected').data('choices');
+
+    if (units.length > 0) { 
+      var val = $("#observation_resource_datas_attributes_"+resource_id+"_unit").val();
+      $("#observation_resource_datas_attributes_"+resource_id+"_unit").empty()
+
+      console.log(val)
+
+      $.each(units, function(index, unit) {
+        $option = $("<option></option>")
+          .attr("value", unit)
+          .text(unit);
+        $("#observation_resource_datas_attributes_"+resource_id+"_unit").append($option);
+      });
+
+      if (val != null) {
+        $("#observation_resource_datas_attributes_"+resource_id+"_unit").val(val);
+      }
+
+      $("#observation_resource_datas_attributes_"+resource_id+"_unit").show()
+    } else {
+      $("#observation_resource_datas_attributes_"+resource_id+"_unit").hide()
+    }
+
+    console.log("choices : ")
+    console.log(choices)
+
+    if (choices.length > 0) {
+      $("#observation_resource_datas_attributes_"+resource_id+"_value").replaceWith(function(){
+        var $select = $('<select/>', {
+          'type': "text",
+          'id': this.id,
+          'name': this.name,
+          'class': this.className,
+           text: this.value
+        })
+
+        $.each(choices, function(index, choice) {
+          $option = $("<option></option>")
+          .attr("value", choice)
+          .text(choice);
+
+          $select.append($option);
+        });
+
+        return $select
+      })
+    } else {
+      if ($("#observation_resource_datas_attributes_"+resource_id+"_value").is("select")) {
+        $("#observation_resource_datas_attributes_"+resource_id+"_value").replaceWith(function(){
+          return $('<input/>', {
+            'type': "text",
+            'id': this.id,
+            'name': this.name,
+            'class': this.className,
+            'value': this.value
+          })
+        })
+      }
+    }
+  });
+}
+
+
+function reload_subjects() {
+  $(".grows_select").change(function() {
+    if($(this).val().length > 0) {
+      $.ajax({
+        url: '/admin/grows/' + $(this).val(),
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(room){ 
+          console.log(room);
+
+          var selected = $(".subjects_select").val()
+          $(".subjects_select").empty();
+
+          $.each(room.subjects, function(index, subject) {
+            $option = $("<option></option>")
+                .attr("value", subject.id)
+                .text("#" + subject.id + " - " + subject.name);
+
+            if(subject.id == selected) {
+              $option.attr("selected", "selected")
+            }
+
+            $(".subjects_select").append($option);
+          })
+
+          
+        },
+        error: function(xhr, status, response) {/* your error callback */}
+      });
+    } else {
+      $(".subjects_select").empty();
+    }
+  })
+}
+
+
+$(document).on("turbolinks:load", function() {
+  reload_subjects();
+  reload_category();
+  reload_resource();
+
+  $(".select_category").change()
+  $(".select_resource").change()
+  $(".grows_select").change()
+});
+
+$(document).on('nested:fieldAdded', function(event){
+  reload_subjects();
+  reload_category();
+  reload_resource();
+
+  event.field.find(".select_category").change()
+  event.field.find(".select_resource").change()
+  event.field.find(".grows_select").change()
+});
+
+</script>
+
+
+
+
+

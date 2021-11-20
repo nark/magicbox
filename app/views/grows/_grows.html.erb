@@ -1,0 +1,38 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th width="340px">Name</th>
+      <th>Progress</th>
+      <th>End date</th>
+      <th>Status</th>
+      <th>Substrate</th>
+      <th>Flowering</th>
+      <th>Subjects</th>
+      <th width="160px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% grows.each do |grow| %>
+      <tr>
+        <td class="text-primary"><b><%= link_to "#{grow.name}", grow %></b></td>
+        <td>
+          <div class="progress">
+            <div class="progress-bar bg-<%= grow.progress_color %>" role="progressbar" style="width: <%= grow.progress_percents %>%" aria-valuenow="<%= grow.progress_percents %>" aria-valuemin="0" aria-valuemax="100"><%= grow.progress_percents %>%</div>
+          </div>
+        </td>
+        <td class="text-<%= grow.progress_color %>"><small><%= fdate grow.end_date %></small></td>
+        <td><span class="badge <%= grow.status_badge_class %>"><%= grow.grow_status %></span></td>
+        <td><span class="badge badge-pill badge-info"><%= grow.substrate %></span></td>
+        <td><span class="badge badge-pill badge-secondary"><%= grow.flowering %></span></td>
+        <td><%= grow.subjects.count %></td>
+        <td>
+          <%= link_to icon("fas", "eye"), grow, class: "btn btn-sm btn-outline-secondary" %>
+          <%= link_to 'Edit', edit_admin_grow_path(grow), class: "btn btn-sm btn-outline-success" %>
+          <%= link_to new_grow_observation_path(grow), class: "btn btn-sm btn-outline-primary" do %>
+            <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
+          <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

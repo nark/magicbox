@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  resource_id: 1
+  subject_id: 1
+  observation_id: 1
+  severity: 1
+  issue_type: 1
+  issue_status: 1
+
+two:
+  resource_id: 1
+  subject_id: 1
+  observation_id: 1
+  severity: 1
+  issue_type: 1
+  issue_status: 1

@@ -1,0 +1,55 @@
+{
+  "name": "Growing",
+  "description": "Growing 18/24h scenario",
+  "enabled": true,
+  "condition_groups_attributes": [
+    {
+      "name": "LIGHT ON",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 05:00:00 UTC",
+          "end_time": "2000-01-01 23:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": null,
+          "device_type": "light"
+        }
+      ]
+    },
+    {
+      "name": "LIGHT OFF",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": "2000-01-01 23:00:00 UTC",
+          "end_time": "2000-01-01 05:00:00 UTC",
+          "condition_type": "date",
+          "logic": "and_operator",
+          "duration": null
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "stop",
+          "description": null,
+          "duration": null,
+          "device_type": "light"
+        }
+      ]
+    }
+  ]
+}

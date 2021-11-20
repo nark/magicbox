@@ -1,0 +1,59 @@
+<%= form_with(model: [:admin, user], local: true, class: "col-lg-8 mx-auto") do |form| %>
+	<h1>
+    <% if user.new_record? %>
+      New user
+    <% else %>
+      Edit user
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless user.new_record? %>
+        <%= link_to 'Destroy', [:admin, user], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :username %>
+    <%= form.text_field :username, autofocus: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email %>
+    <%= form.email_field :email, autocomplete: 'email', class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.check_box :is_admin, data: {toggle: "toggle", size: "sm"} %> is Admin
+  </div>
+
+  <% if user.new_record? %>
+	  <div class="form-group">
+	    <%= form.label :password %>
+	    <%= form.password_field :password, class: 'form-control' %>
+
+	    <small class="form-text text-muted"><%= t('.leave_blank_if_you_don_t_want_to_change_it') %></small>
+	  </div>
+
+	  <div class="form-group">
+	    <%= form.label :password_confirmation %>
+	    <%= form.password_field :password_confirmation, class: 'form-control'  %>
+	  </div>
+  <% end %>
+<% end %>

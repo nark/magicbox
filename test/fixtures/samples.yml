@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product_reference: MyString
+  data_type_id: 1
+  value: MyText
+  unit: MyString
+
+two:
+  product_reference: MyString
+  data_type_id: 1
+  value: MyText
+  unit: MyString

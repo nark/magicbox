@@ -1,0 +1,7 @@
+<hr>
+<div class="form-inline pb-2">
+	<%= f.select :device_type, options_for_select(Device.device_types.keys.map { |e| [e.titleize, e]  }, f.object.device_type), {}, class: "form-control mr-2" %>
+	<%= f.select :command, options_for_select(["start", "stop"], f.object.command), {}, class: "form-control mr-2" %>
+	<%= f.number_field :duration, value: f.object.duration, placeholder: "Duration (sec)", class: "form-control mr-2" %>
+	<%= f.link_to_remove "Remove",  class: "btn btn-sm btn-danger" %>
+</div>

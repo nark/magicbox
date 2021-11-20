@@ -1,0 +1,129 @@
+<%= form_for(Setting.new, url: admin_settings_path) do |f| %>
+	<h1>Settings
+		<div class="float-right">
+			<%= f.submit 'Save', class: "btn btn-primary" %>
+		</div>
+	</h1>
+
+	<br>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+	    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <a class="nav-link " id="calendar-tab" data-toggle="tab" href="#calendar" role="tab" aria-controls="calendar" aria-selected="true">Calendar</a>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <a class="nav-link" id="datetime-tab" data-toggle="tab" href="#datetime" role="tab" aria-controls="datetime" aria-selected="true">Date and Time</a>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <a class="nav-link" id="units-tab" data-toggle="tab" href="#units" role="tab" aria-controls="units" aria-selected="true">Units</a>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#open_weather" role="tab" aria-controls="open_weather" aria-selected="false">OpenWeather</a>
+	  </li>
+	</ul>
+
+
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+			<br>
+			<div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>App email</code></label>
+		    <%= f.text_field :app_email, value: Setting.app_email, class: "form-control col-lg-8 col-12 ml-3"  %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Public URL</code></label>
+		    <%= f.text_field :app_hostname, value: Setting.app_hostname, class: "form-control col-lg-8 col-12 ml-3"  %>
+		  </div>
+		</div>
+
+		<div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
+	  	<br>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Default View</code></label>
+		    <%= select_tag 'setting[calendar_default_view]', options_for_select(["day", "week", "month"], Setting.calendar_default_view), class: "form-control col-lg-8 col-12 ml-3" %>
+		  </div>
+
+		  <hr>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Weeks enabled</code></label>
+		    <%= f.check_box :calendar_weeks_enabled, checked: Setting.calendar_weeks_enabled?, class: "ml-3" %>
+		  </div>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Todos enabled</code></label>
+		    <%= f.check_box :calendar_todos_enabled, checked: Setting.calendar_todos_enabled?, class: "ml-3" %>
+		  </div>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Issues enabled</code></label>
+		    <%= f.check_box :calendar_issues_enabled, checked: Setting.calendar_issues_enabled?, class: "ml-3" %>
+		  </div>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Observations enabled</code></label>
+		    <%= f.check_box :calendar_observations_enabled, checked: Setting.calendar_observations_enabled?, class: "ml-3" %>
+		  </div>
+	  </div>
+
+
+
+	  <div class="tab-pane fade" id="datetime" role="tabpanel" aria-labelledby="datetime-tab">
+	  	<br>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Time Zone</code></label>
+		    <%= select_tag 'setting[time_zone]', options_for_select(time_zones.map { |e| e.first  }, Setting.time_zone), class: "form-control col-lg-8 col-12 ml-3", placeholder: "Europe/Paris" %>
+		  </div>
+
+		  <hr>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Tempodominus date format</code></label>
+		    <%= f.text_field :tempodominus_date_format, value: Setting.tempodominus_date_format, class: "form-control col-lg-8 col-12 ml-3", placeholder: "YYYY-MM-DD"  %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Tempodominus time format</code></label>
+		    <%= f.text_field :tempodominus_time_format, value: Setting.tempodominus_time_format, class: "form-control col-lg-8 col-12 ml-3", placeholder: "hh:mm"  %>
+		  </div>
+
+		  <hr>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Rails date format</code></label>
+		    <%= f.text_field :rails_date_format, value: Setting.rails_date_format, class: "form-control col-lg-8 col-12 ml-3", placeholder: "%Y-%m-%d"  %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Rails time format</code></label>
+		    <%= f.text_field :rails_time_format, value: Setting.rails_time_format, class: "form-control col-lg-8 col-12 ml-3", placeholder: "%H:%M"  %>
+		  </div>
+	  </div>
+
+	  <div class="tab-pane fade" id="units" role="tabpanel" aria-labelledby="units-tab">
+	  	<br>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Weight Unit</code></label>
+		    <%= f.text_field :units_weight, value: Setting.units_weight, class: "form-control col-lg-8 col-12 ml-3", placeholder: "g" %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Currency Unit</code></label>
+		    <%= f.text_field :units_currency, value: Setting.units_currency, class: "form-control col-lg-8 col-12 ml-3", placeholder: "g" %>
+		  </div>
+	  </div>
+
+	  <div class="tab-pane fade" id="open_weather" role="tabpanel" aria-labelledby="open_weather-tab">
+	  	<br>
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Openweather City</code></label>
+		    <%= f.text_field :openweather_city, value: Setting.openweather_city, class: "form-control col-lg-8 col-12 ml-3", placeholder: "Paris"  %>
+		  </div>
+
+		  <div class="form-group row mr-3">
+		    <label class="col-lg-2 col-12 font-weight-bold my-2 text-lg-right"><code>Openweather Endpoint</code></label>
+		    <%= f.text_field :openweather_endpoint, value: Setting.openweather_endpoint, class: "form-control col-lg-8 col-12 ml-3", placeholder: "http://api.openweathermap.org/data/2.5/weather"  %>
+		  </div>
+	  </div>
+	</div>
+<% end %>

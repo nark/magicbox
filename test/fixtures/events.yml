@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_type: 1
+  message: MyText
+  data: 
+
+two:
+  event_type: 1
+  message: MyText
+  data: 

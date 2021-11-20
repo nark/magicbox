@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @condition.name %>
+</p>
+
+<p>
+  <strong>Data type:</strong>
+  <%= @condition.data_type_id %>
+</p>
+
+<p>
+  <strong>Predicate:</strong>
+  <%= @condition.predicate %>
+</p>
+
+<p>
+  <strong>Target value:</strong>
+  <%= @condition.target_value %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @condition.start_time %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @condition.end_time %>
+</p>
+
+<%= link_to 'Edit', edit_condition_path(@condition) %> |
+<%= link_to 'Back', conditions_path %>

@@ -1,0 +1,17 @@
+<h1>
+	<%= @scenario.name %> 
+	<div class="float-right">
+		<%= link_to 'Back', admin_scenarios_path, class: "btn btn-light border" %>
+    <%= link_to "Edit", edit_admin_scenario_path(@scenario), class: "btn btn-success" %>
+    <%= link_to "Export", export_admin_scenario_path(@scenario), method: :get, class: "btn btn-secondary" %>
+    <%= link_to "Run", run_admin_scenario_path(@scenario), method: :get, class: "btn btn-primary" %>
+  </div>
+</h1>
+
+<hr>
+
+<p><%= @scenario.description %></p>
+
+<hr>
+
+<%= render partial: "admin/scenarios/scenario", locals: {scenario: @scenario} %>

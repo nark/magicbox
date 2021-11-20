@@ -1,0 +1,31 @@
+{
+  "name": "Watering",
+  "description": "Auto-watering scenario",
+  "enabled": true,
+  "condition_groups_attributes": [
+    {
+      "name": "WATER ON",
+      "enabled": true,
+      "conditions_attributes": [
+        {
+          "data_type_id": 1,
+          "predicate": 0,
+          "target_value": null,
+          "start_time": null,
+          "end_time": null,
+          "condition_type": "time_duration",
+          "logic": "and_operator",
+          "duration": 720
+        }
+      ],
+      "operations_attributes": [
+        {
+          "command": "start",
+          "description": null,
+          "duration": 300,
+          "device_type": "water_pump"
+        }
+      ]
+    }
+  ]
+}

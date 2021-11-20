@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Harvests</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th class="bg-info" style="opacity: 0.7" colspan="3">Wet</th>
+      <th class="bg-warning" style="opacity: 0.7" colspan="2">Dry</th>
+      <th class="bg-success" style="opacity: 0.7" colspan="2">Batched</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Grow</th>
+      <th class="bg-info">Trim weight</th>
+      <th class="bg-info">Waste weight</th>
+      <th class="bg-info">Bud weight</th>
+      <th class="bg-warning">Trim weight</th>
+      <th class="bg-warning">Bud weight</th>
+      <th class="bg-success">Trim</th>
+      <th class="bg-success">Bud</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @harvests.each do |harvest| %>
+      <tr>
+        <td><%= link_to harvest.grow.name, harvest.grow %></td>
+        <td class="text-info text-monospace"><%= harvest.harvested_trim_weight %></td>
+        <td class="text-info text-monospace"><%= harvest.harvested_waste_weight %></td>
+        <td class="text-info text-monospace"><%= harvest.harvested_bud_weight %></td>
+        <td class="text-warning text-monospace"><%= harvest.dry_trim_weight %></td>
+        <td class="text-warning text-monospace"><%= harvest.dry_bud_weight %></td>
+        <td class="text-success text-monospace"><%= harvest.trim_batched %> / <%= weight_with_unit harvest.dry_trim_weight %></td>
+        <td class="text-success text-monospace"><%= harvest.bud_batched %> / <%= weight_with_unit harvest.dry_bud_weight %></td>
+        <td><small><%= fdatetime harvest.created_at %></small></td>
+        <td><%= link_to 'Show', [harvest.grow, harvest] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

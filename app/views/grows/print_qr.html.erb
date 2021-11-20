@@ -1,0 +1,22 @@
+<h1>
+	Subjects QR
+	<div class="float-right">
+		<%= link_to 'Back', [:admin, @grow], class: "btn btn-ligth border" %>
+		<%= link_to 'your_link_here', :onclick => 'window.print();return false;', class: "btn btn-outline-primary" do %>
+			<%= icon "fas", "print" %> Print
+		<% end %>
+	</div>
+</h1>
+
+<hr>
+
+<div class="row">
+	<% @grow.subjects.each do |subject| %>
+		<div class="col-4">
+			<%= image_tag subject.generate_qr(5), class: "qr-code d-block mx-auto" %>
+			<p class="text-center">
+				<%= link_to subject.name, [:admin, subject.grow, subject] %>
+			</p>
+		</div>
+	<% end %>
+</div>

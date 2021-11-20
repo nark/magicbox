@@ -1,0 +1,35 @@
+<h1>
+	<%= @user.email %>
+		
+	<div class="float-right">
+		<%= link_to edit_user_registration_path(@user), class: "btn btn-success"  do %>
+			<%= icon "fas", "edit" %> Edit
+		<% end %>
+	</div>
+</h1>
+
+<hr>
+
+<div class="row">
+	<div class="col-12 col-lg-6">
+		<h3>Push Devices</h3>
+
+		<ul class="list-group">
+			<% current_user.push_devices.each do |pd| %>
+				<li class="list-group-item">
+					<span class="text-monospace"><%= pd.device_id %></span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+
+	<div class="col-12 col-lg-6">
+		<h3>Auth QR Code</h3>
+
+		<%= image_tag current_user.generate_auth_qr(current_user, 5), class: "img-fluid" %>
+
+		<br>
+
+		<small class="text-muted">Use this QR code to authenticate with your mobile app</small>
+	</div>
+</div>

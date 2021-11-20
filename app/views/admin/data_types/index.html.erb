@@ -1,0 +1,35 @@
+
+<h1>
+  Data types
+  <div class="float-right">
+    <%= link_to new_admin_data_type_path, class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %>  
+      New
+    <% end %> 
+  </div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-center">Nb samples</th>
+      <th width="140px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @data_types.each do |data_type| %>
+      <tr>
+        <td><b><%= icon 'fas', "database", class: "mr-2" %> <%= data_type.name %></b></td>
+        <td class="text-center"><%= data_type.samples.count %></td>
+        <td>
+        	<%= link_to 'Edit', edit_admin_data_type_path(data_type), class: "btn btn-sm btn-outline-success" %>
+        	<%= link_to 'Destroy', [:admin, data_type], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-outline-danger" %>		
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

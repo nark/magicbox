@@ -1,0 +1,141 @@
+<h1>
+	<%= @device.name %>
+		
+	<div class="float-right">
+		<% unless @device.sensor? %>
+			<%= link_to "Stop", stop_admin_room_device_path(@device.room, @device), method: :post, class: "btn btn-danger" %>
+			<%= link_to "Start", start_admin_room_device_path(@device.room, @device), method: :post, class: "btn btn-info" %>
+		<% else %>
+			<%= link_to "Query", query_room_device_path(@device.room, @device), method: :post, class: "btn btn-info" %>
+		<% end %>
+
+		<%= link_to "Edit", edit_admin_room_device_path(@device.room, @device), class: "btn btn btn-success" %>
+		<%= link_to "Delete", admin_room_device_path(@device.room, @device), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn btn-danger" %>
+	</div>
+</h1>
+
+<br>
+
+<div class="row">
+	<div class="col-6">
+		<table class="table table-bordered">
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Room</td>
+				<td><%= @device.room.name %></td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-6">
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-6">
+		<table class="table table-bordered">
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Name</td>
+				<td><%= @device.name %></td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-6">
+		<table class="table table-bordered">
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Description</td>
+				<td><%= @device.description %></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-6">
+		<table class="table table-bordered">
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Device type</td>
+				<td><%= @device.device_type.titleize %></td>
+			</tr>
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Device state</td>
+				<td><% if !@device.idle? %><span class="badge badge-pill badge-<%= @device.state_color %>"><%= @device.device_state.titleize %></span><% end %></td>
+			</tr>
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">PIN type</td>
+				<td><span class="badge badge-pill badge-<%= @device.pin_color %>"><%= @device.pin_type.titleize %></span></td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-6">
+		<table class="table table-bordered">
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Product ref.</td>
+				<td><i><%= @device.product_reference %></i></td>
+			</tr>
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">Data types</td>
+				<td><%= @device.data_types_string %></td>
+			</tr>
+			<tr>
+				<td width="200px" class="bg-light font-weight-bold">GPIO </td>
+				<td><%= @device.pin_number %></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<% if @device.idle? %>
+	<hr>
+
+	<% data = @device.data_types.map { |data_type| {
+			name: data_type.name, 
+	    data: @samples.where(data_type: data_type).order(created_at: :desc).map { |e| [e.created_at, e.value]  }, 
+	    color: @samples.where(data_type: data_type).order(created_at: :desc).first.html_color
+		} if @samples.where(data_type: data_type).order(created_at: :desc).first
+	} %>
+
+		<div class="col-lg-12 mb-3">
+			<% if !@samples.empty? %>
+	      <%= line_chart data, 
+	        adapter: "highcharts",
+	        height: "250px",
+	        name: @device.name, 
+	        library: {
+	          chart: {
+	            type: "spline",
+	            zoomType: 'x', 
+	            panning: true, 
+	            panKey: 'shift'
+	          },
+	          xAxis: {
+	            visible: true
+	          },
+	          yAxis: {
+	            visible: true
+	          }
+	        }
+	      %>
+      <% end %>
+	  </div>
+
+	  <br>
+
+	<table class="table table-sm">
+		<thead>
+			<th>#</th>
+			<th>Type</th>
+			<th width="80px">Value</th>
+			<th>Unit</th>
+			<th>Date</th>
+		</thead>
+		<% @samples.each do |s| %>
+			<tr>
+				<td><%= s.id %></td>
+				<td><%= s.data_type.name %></td>
+				<td><%= s.value %></td>
+				<td><%= s.unit %></td>
+				<td><%= s.created_at %></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>

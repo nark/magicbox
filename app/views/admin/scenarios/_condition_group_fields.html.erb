@@ -1,0 +1,30 @@
+<div class="card p-4 mb-3">
+	<div class="form-inline">
+		<%= f.check_box :enabled, data: {toggle: "toggle", size: "sm"} %>
+		<%= f.text_field :name, placeholder: "Condition name...", class: "form-control mx-2" %>
+
+		<%= f.link_to_remove "Remove", class: "btn btn-sm btn-danger" %><br>
+	</div>
+
+	<div class="mt-3">
+		<h5>Conditions</h5>
+
+		<%= f.fields_for :conditions do |ff| %>
+			<%= render "condition_fields", :f => ff %>
+		<% end %>
+
+		<%= f.link_to_add 'Add condition', :conditions, class: "btn btn-sm btn-success mt-2" %>
+	</div>
+
+	<hr>
+
+	<div class="mt-3">
+		<h5>Operations</h5>
+
+		<%= f.fields_for :operations do |ff| %>
+			<%= render "operation_fields", :f => ff %>
+		<% end %>
+
+		<%= f.link_to_add 'Add operation', :operations, class: "btn btn-sm btn-success mt-2" %>
+	</div>
+</div>

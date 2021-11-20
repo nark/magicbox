@@ -1,0 +1,10 @@
+<h1>
+	Devices
+	<div class="float-right">
+		<%= link_to 'GPIO', admin_dashboard_gpio_path, class: "btn btn-primary" %>
+	</div>
+</h1>
+
+<br>
+
+<%= render partial: "admin/devices/devices", locals: {devices: @devices} %>

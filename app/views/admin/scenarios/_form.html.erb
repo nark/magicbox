@@ -1,0 +1,61 @@
+<%= nested_form_for [:admin, scenario], class: "col-md-12 col-lg-8 mx-auto" do |form| %>
+  <h1>
+    <% if scenario.new_record? %>
+      New scenario
+    <% else %>
+      Edit scenario
+    <% end %>
+
+    <div class="actions float-right">
+      <%= link_to 'Cancel', :back, class: "btn btn-light border" %>
+      <% unless scenario.new_record? %>
+        <%= link_to 'Delete', admin_scenario_path(scenario), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
+      <%= form.submit "Save", :class => "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <br>
+
+  <% if scenario.errors.any? %>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(scenario.errors.count, "error") %> prohibited this scenario from being saved:</h4>
+
+      <ul>
+      <% scenario.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-2">
+      <div class="form-group">
+        <%= form.label :enabled %><br>
+        <%= form.check_box :enabled, data: {toggle: "toggle", size: "sm"} %>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control col-6" %>
+  </div>
+
+  <hr>
+
+   <h3>Condition groups</h3>
+  <div class="form-group">
+    <%= form.fields_for :condition_groups do |ff| %>
+      <%= render "condition_group_fields", :f => ff %>
+    <% end %>
+    <%= form.link_to_add 'Add group of conditions', :condition_groups, class: "btn btn-sm btn-success" %>
+  </div>
+<% end %>

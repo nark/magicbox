@@ -1,0 +1,48 @@
+<%= form_with(model: todo, local: true) do |form| %>
+  <% if todo.errors.any? %>
+    <div class="alert alert-danger" id="error_explanation">
+      <h4><%= pluralize(todo.errors.count, "error") %> prohibited this todo from being saved:</h4>
+
+      <ul>
+      <% todo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= form.hidden_field :user_id, value: current_user.id, class: "form-control" %>
+  <%= form.hidden_field :todo_status, value: :todo, class: "form-control" %>
+
+  <div class="form-group">
+    <%= form.text_area :body, autofocus: true, placeholder: "What to do here...", class: "form-control" %>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <%= form.hidden_field :date, value: fdatetime(form.object.date), class: "form-control mr-2", id: "datetimepicker-todo-date" %>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <%= form.check_box :notify_email, data: {toggle: "toggle", size: "sm"} %> <span class="mr-3">Notify by email</span>
+    <%= form.check_box :notify_push, data: {toggle: "toggle", size: "sm"} %> Notify by web push
+  </div>
+
+  <div class="form-group">
+    <label>Renotify every:</label>
+    <%= form.select :renotify_every_minute, options_for_select([["15 minutes", 15], ["30 minutes", 30], ["60 minutes", 60], ["12 hours", 720], ["24 hours", 1440], ["2 days", 2880], ["3 days", 4320]], form.object.renotify_every_minute), {}, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save", class: "btn btn-block btn-primary" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#datetimepicker-todo-date').datetimepicker({format: 'YYYY-MM-DD HH:mm', inline: true, sideBySide: true, stepping: 5});
+</script>

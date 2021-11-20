@@ -1,0 +1,43 @@
+
+<h1>
+  Resources
+  <div class="float-right">
+    <%= link_to new_admin_resource_path, class: "btn btn-info" do %>
+      <%= icon "fas", "plus" %>  
+      New
+    <% end %> 
+  </div>
+</h1>
+
+<br>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-center">Shortname</th>
+      <th>Category</th>
+      <th>Choices</th>
+      <th>Units</th>
+      <th class="text-center">Nb data</th>
+      <th width="150px"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @resources.each do |resource| %>
+      <tr>
+        <td><b><%= icon 'fas', "tint", class: "mr-2" %> <%= resource.name %></b></td>
+        <td class="text-center"><%= resource.shortname %></td>
+        <td><%= resource.category.name %></td>
+        <td><%= resource.choices.join(", ") %></td>
+        <td><%= resource.units.join(", ") %></td>
+        <td class="text-center"><%= resource.resource_datas.count %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_resource_path(resource), class: "btn btn-sm btn-outline-success" %>
+          <%= link_to 'Destroy', [:admin, resource], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

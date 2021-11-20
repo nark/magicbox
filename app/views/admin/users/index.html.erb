@@ -1,0 +1,37 @@
+<h1>
+	Users
+		
+	<div class="float-right">
+		<%= link_to new_admin_user_path, class: "btn btn-success"  do %>
+			<%= icon "fas", "plus" %> New
+		<% end %>
+	</div>
+</h1>
+
+<table class="table">
+	<thead>
+		<th>#</th>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Auth token</th>
+		<th width="95px"></th>
+	</thead>
+	<tbody>
+		<% User.all.each do |user| %>
+			<tr>
+				<td>#<%= user.id %></td>
+				<td><%= user.username %></td>
+				<td><%= user.email %></td>
+				<td><%= user.authentication_token %></td>
+				<td>
+					<%= link_to update_password_admin_user_path(user), class: "btn btn-sm btn-outline-black border-dark" do %>
+						<%= icon "fas", "lock" %>
+					<% end %>
+					<%= link_to edit_admin_user_path(user), class: "btn btn-sm btn-outline-success" do %>
+						<%= icon "fas", "edit" %>
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>	
+</table>

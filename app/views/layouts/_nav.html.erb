@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light mb-4">
+  <div class="container-fluid">
+    <button type="button" id="sidebarCollapse" class="btn text-black mr-4">
+        <i class="fas fa-align-left"></i>
+    </button>
+
+    <% if user_signed_in? %>
+      <ol class="breadcrumb p-0 m-0 bg-transparent">
+        <%= render_breadcrumbs tag: :li, separator: "<span class='mx-2'>#{icon( "fas","angle-right")}</span>" %>
+      </ol>
+    <% end %>
+
+    <button class="btn btn-light d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <%= icon "fas", "list" %>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to new_observation_path, class: "nav-link " do %>
+              <%= icon( "fas", "plus") %> <%= icon( "fas", "comment-dots") %>
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to 'javascript:;', class: "nav-link", data: { toggle: "popover", title: "New Todo", content: render('todos/form', todo: Todo.new), placement: "bottom", html: true } do %>
+              <%= icon "fas", "plus" %>
+              Todo
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to new_admin_grow_path, class: "nav-link" do %>
+              <%= icon "fas", "plus" %>
+              Grow
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to new_admin_room_path, class: "nav-link" do %>
+              <%= icon "fas", "plus" %>
+              Room
+            <% end %>
+          </li>
+        <% end %>
+
+        <li class="nav-item">
+          <%= link_to "/apidoc", class: "nav-link" do %>
+            <%= icon "fas", "database" %>
+            API
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

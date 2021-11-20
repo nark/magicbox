@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  grow: 
+  havested_trim_weight: 1.5
+  havested_waste_weight: 1.5
+  havested_bud_weight: 1.5
+  dry_trim_weight: 1.5
+  dry_bud_weight: 1.5
+
+two:
+  grow: 
+  havested_trim_weight: 1.5
+  havested_waste_weight: 1.5
+  havested_bud_weight: 1.5
+  dry_trim_weight: 1.5
+  dry_bud_weight: 1.5

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  week_number: 1
+  week_type: 1
+  start_date: 2019-11-27
+  end_date: 2019-11-27
+  grow_id: 1
+
+two:
+  week_number: 1
+  week_type: 1
+  start_date: 2019-11-27
+  end_date: 2019-11-27
+  grow_id: 1

@@ -1,0 +1,2 @@
+module ScenariosHelper
+end

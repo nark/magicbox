@@ -1,0 +1,62 @@
+<%= form_with(model: [:admin, @grow, harvest], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <%= harvest.new_record? ? "New Harvest" : "Editing Harvest" %>
+    <div class="float-right">
+      <% if !harvest.new_record?  %>
+        <%= link_to "Delete", [:admin, @grow, harvest], method: :delete, class: "btn btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+      <% end %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </h1>
+
+  <hr>
+
+  <% if harvest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(harvest.errors.count, "error") %> prohibited this harvest from being saved:</h2>
+
+      <ul>
+      <% harvest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :grow_id, value: @grow.id %>
+
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <h4>Harvested weights</h4>
+      <div class="form-group">
+        <%= form.label "Havested trim weight (#{Setting.units_weight})" %>
+        <%= form.number_field :harvested_trim_weight, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :harvested_waste_weight %>
+        <%= form.number_field :harvested_waste_weight, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :harvested_bud_weight %>
+        <%= form.number_field :harvested_bud_weight, class: "form-control" %>
+      </div>  
+    </div>
+    <div class="col-12 col-lg-6">
+      <h4>Dry weights</h4>
+      <div class="form-group">
+        <%= form.label :dry_trim_weight %>
+        <%= form.number_field :dry_trim_weight, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :dry_bud_weight %>
+        <%= form.number_field :dry_bud_weight, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+<% end %>

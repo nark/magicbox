@@ -1,0 +1,35 @@
+<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:800px;'>
+    <div class="dhx_cal_navline">
+        <div class="dhx_cal_prev_button">&nbsp;</div>
+        <div class="dhx_cal_next_button">&nbsp;</div>
+        <div class="dhx_cal_today_button"></div>
+        <div class="dhx_cal_date"></div>
+        <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+        <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+        <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+    </div>
+    <div class="dhx_cal_header">
+    </div>
+    <div class="dhx_cal_data">
+    </div>
+</div>
+
+<script>
+  console.log(<%= @grow.weeks.to_json.html_safe %>)
+  scheduler.init("scheduler_here", new Date(), "month");
+  scheduler.parse(<%= @weeks_json.html_safe %>, "json")
+  scheduler.parse(<%= @observations_json.html_safe %>, "json")
+
+  // scheduler.attachEvent("onClick", function (id, e){
+  //      console.log("onClick")
+  //      return true;
+  // });
+
+  scheduler.attachEvent("onDblClick", function (id, e){
+    console.log(e)
+    var event = scheduler.getEvent(id);
+    window.location.replace(event.url);
+    return false;
+})
+</script>
+

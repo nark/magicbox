@@ -1,0 +1,82 @@
+<%= form_with(model: [:admin, strain], local: true, class: "col-md-12 col-lg-8 mx-auto") do |form| %>
+  <h1>
+    <% if strain.new_record? %>
+      New Strain
+
+    <% else %>
+      Editing Strain
+
+      <div class="float-right">
+        <%= link_to 'Destroy', [:admin, strain], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      </div>
+    <% end %>
+  </h1>
+
+  <hr>
+
+  <% if strain.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(strain.errors.count, "error") %> prohibited this strain from being saved:</h2>
+
+      <ul>
+      <% strain.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :strain_type %>
+    <%= form.select :strain_type, options_for_select(Strain.strain_types.keys), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :crosses %>
+    <%= form.number_field :crosses, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :breeder %>
+    <%= form.text_field :breeder, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :effects %>
+    <%= form.text_field :effects, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :ailments %>
+    <%= form.text_field :ailments, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :flavors %>
+    <%= form.text_field :flavors, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :location %>
+    <%= form.text_field :location, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :terpenes %>
+    <%= form.text_field :terpenes, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit %>
+  </div>
+<% end %>

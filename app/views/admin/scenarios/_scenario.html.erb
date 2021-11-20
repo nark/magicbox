@@ -1,0 +1,36 @@
+<% scenario.condition_groups.each do |condition_group| %>
+<div class="row">
+	<% condition_group.operations.each do |operation| %>
+		<div class="col-sm-12 col-md-12 col-lg-6">
+			<div class="card mb-4">
+				<div class="card-header">
+			    <b><%= condition_group.name %></b>
+			  </div>
+			  <ul class="list-group list-group-flush">
+
+							<li class="list-group-item">
+								The device of type <b><%= operation.device_type %></b> should <b><%= operation.command %> </b>
+								<% if operation.duration %>
+									for <b><%= operation.duration %> sec. </b>
+								<% end %>
+
+								<% if operation.condition_group and operation.condition_group.conditions.empty? %>
+								 	at <b>any conditions</b>.
+								<% else %>
+									if
+								<% end %>
+								<br>
+
+								<% if operation.condition_group %>
+									<% operation.condition_group.conditions.each_with_index do |condition, i| %>
+										&rarr; <%= "<b>#{Condition.logic_text(condition.logic.to_sym)}</b>".html_safe if i != 0 %> <%= condition.condition_text.html_safe %><br>
+									<% end %>
+								<% end %>
+							</li>
+
+  			</ul>
+			</div>
+		</div>
+	<% end %>
+</div>
+<% end %>
