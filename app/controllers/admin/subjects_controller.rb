@@ -71,9 +71,15 @@ class Admin::SubjectsController < Admin::AdminController
     if params[:room_id].present?
       @subject.update(room_id: params[:room_id])
 
+      room = Room.find(params[:room_id])
+      Event.create!(event_type: :action, message: "Subject '#{@subject.name}' moved to room '#{room.name}'", device_id: nil, room_id: room.id)
+
       redirect_to room_path(@subject.room), notice: "Subject was successfully moved to #{@subject.room.name}."
     elsif params[:grow_id].present?
       @subject.update(grow_id: params[:grow_id])
+
+      grow = Grow.find(params[:grow_id])
+      Event.create!(event_type: :action, message: "Subject '#{@subject.name}' moved to grow '#{grow.name}'", device_id: nil, room_id: @subject.room.id)
 
       redirect_to room_path(@subject.room), notice: "Subject was successfully moved to #{@subject.grow.name}."
     end

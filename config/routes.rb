@@ -32,7 +32,11 @@ Rails.application.routes.draw do
     delete :clear_all, on: :collection
   end
 
-  resources :samples, only: :index
+  resources :samples, only: [:index, :general, :rooms, :harvest] do 
+    get :general, on: :collection
+    get :rooms, on: :collection
+    get :harvest, on: :collection
+  end
   resources :observations
 
   resources :batches, only: [:index, :show]

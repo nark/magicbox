@@ -20,6 +20,8 @@ So I recycled an old power inverter enclosure with 8 female 220V integrated plug
 ![case](md/case.png)
 *Recycled power inverter enclosure*
 
+_NB: Using an inverter case as I do is absolutely not required to run Magicbox, I just find it convenient. The concept of using RPi GPIO to control high voltage plugs through 5V relay is applicable to many other similar setups._
+
 On the software side, it uses a Ruby on Rails backend app that manages the whole system. From rooms, devices and sensors, to minimal grow management and scenario-driven orchestration, the web interface provides all the tools needed to manage an indoor garden. 
 
 That said, Magicbox is currently not a seed-to-sale software designed to handle an instrustrial indoor growing operation. It does not provide any tools to manage tracability, retail stocks and client files. It perfectly fits with small home growing installation and for nerdy growers who like DIY.
@@ -341,7 +343,12 @@ Each subject is identified by a a QR code that you can print (grouped by grow) a
 
 ### Users managment
 
-TBD
+For now users managment is very minimal with two different roles:
+
+* **Admin**: the user has full power on the system
+* **User**: the user has read permissiononly on non-administrative features
+
+_NB : This will be extended in the future._
 
 ## Advanced configuration
 
@@ -375,7 +382,7 @@ TBD
 
 TBD
 
-### Notifications (One Signal)
+### Notifications (OneSignal)
 
 TBD
 

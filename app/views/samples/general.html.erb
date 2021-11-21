@@ -1,0 +1,50 @@
+<%= render 'nav' %>
+
+<% Sample.unscoped.distinct.where.not(product_reference: "dht11").pluck(:product_reference).each do |product_reference| %>
+	<div class="row mb-4">
+		<div class="col-12">
+			<h4><%= product_reference  %></h4>
+
+			<% data = @data_types_samples[product_reference] %>
+	
+			<% if !data.empty? %>
+				<div class="card mb-4">
+				  <div class="card-header">
+				    <%= product_reference  %>
+				    <div class="float-right">
+				    	<%= " " %>
+				    </div>
+				  </div>
+				  <div class="card-body">
+						<%= line_chart data, 
+					    adapter: "highcharts",
+					    height: "350px",
+			        library: {
+			          chart: {
+			            type: "spline",
+			            zoomType: 'x', 
+			            panning: true, 
+			            panKey: 'shift'
+			          },
+			          yAxis: {
+			            visible: false
+			          },
+			          xAxis: {
+			            visible: true
+			          },
+			          plotOptions: {
+			            area: {
+			              marker: {
+			                enabled: false
+			              }
+			            }
+			          } 
+			        }
+			        %>
+			    </div>
+			  </div>
+
+		<% end %>
+		</div>
+	</div>
+<% end %>

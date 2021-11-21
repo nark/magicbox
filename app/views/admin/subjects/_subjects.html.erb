@@ -3,7 +3,7 @@
     <div class="card border-success mb-4">
       <h4 class="card-header text-success">
         <%= icon("fas", "seedling") %> <%= link_to grow_subject_path(subject.grow, subject) do %>
-          <%= subject.name %> <small class="text-secondary" style="font-size: 0.8rem">(<%= subject.strain.name %>)</small> 
+          <%= subject.name %> <small class="text-secondary" style="font-size: 0.8rem">(<%= subject.strain_name %>)</small> 
         <% end %>        
         <div class="float-right">
           <div class="dropdown">

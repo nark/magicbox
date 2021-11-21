@@ -186,6 +186,8 @@ class Grow < ApplicationRecord
 
     active_grows.each do |grow|
       if grow.auto_update_status?
+        old_status = grow.grow_status
+
         if grow.current_week.seedling?
           grow.grow_status = :seedling
         elsif grow.current_week.vegging?
@@ -200,7 +202,11 @@ class Grow < ApplicationRecord
           grow.grow_status = :curing
         end
 
-        grow.save
+        if old_status != grow.grow_status
+          Event.create!(event_type: :cron, message: "Grow '#{grow.description}' status updated to '#{grow.grow_status}'", device_id: nil, room_id: nil)
+          
+          grow.save
+        end
       end
     end
   end

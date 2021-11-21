@@ -1,0 +1,50 @@
+<%= render 'nav' %>
+
+<% Room.all.each do |room| %>
+	<div class="row mb-4">
+		<div class="col-12">
+			<h4><%= room.name  %></h4>
+
+			<% data = @data_types_samples[room.name] %>
+	
+			<% if !data.empty? %>
+				<div class="card mb-4">
+				  <div class="card-header">
+				    <%= room.name  %>
+				    <div class="float-right">
+				    	<%= " " %>
+				    </div>
+				  </div>
+				  <div class="card-body">
+						<%= line_chart data, 
+					    adapter: "highcharts",
+					    height: "350px",
+			        library: {
+			          chart: {
+			            type: "spline",
+			            zoomType: 'x', 
+			            panning: true, 
+			            panKey: 'shift'
+			          },
+			          yAxis: {
+			            visible: false
+			          },
+			          xAxis: {
+			            visible: true
+			          },
+			          plotOptions: {
+			            area: {
+			              marker: {
+			                enabled: false
+			              }
+			            }
+			          } 
+			        }
+			        %>
+			    </div>
+			  </div>
+
+		<% end %>
+		</div>
+	</div>
+<% end %>
