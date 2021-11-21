@@ -23,7 +23,7 @@
           </li>
 
           <li class="nav-item">
-            <%= link_to 'javascript:;', class: "nav-link", data: { toggle: "popover", title: "New Todo", content: render('todos/form', todo: Todo.new), placement: "bottom", html: true } do %>
+            <%= link_to new_todo_path, class: "nav-link" do %>
               <%= icon "fas", "plus" %>
               Todo
             <% end %>

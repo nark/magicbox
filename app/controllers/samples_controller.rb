@@ -96,9 +96,5 @@ class SamplesController < ApplicationController
 		@data_types_samples = [:harvested_trim_weight, :harvested_waste_weight, :harvested_bud_weight, :dry_bud_weight, :dry_trim_weight].map { |k|
 		    {name: k.to_s.humanize, data: Harvest.joins(:grow).order("harvests.created_at DESC").group('harvests.created_at', 'grows.description').sum(k)}
 		}
-
-		#@data_types_samples = Harvest.joins(:grow).group('grows.description').sum(:dry_bud_weight)
-		#@data_types_samples = Harvest.joins(:grow).select('grows.description AS name', 'SUM(dry_bud_weight) AS data').group('grows.description').order("data DESC")
-		#@data_types_samples[:dry_trim_weight] = Harvest.joins(:grow).group('grows.description').sum(:dry_trim_weight)
 	end
 end
