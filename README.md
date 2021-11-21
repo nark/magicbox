@@ -47,7 +47,7 @@ That said, Magicbox is currently not a seed-to-sale software designed to handle 
 ### Feature goals
 
 * More collaborative features (journal replies thread, notifications, sharing)
-* Better devices management
+* Better devices management, including camera support
 * Use AI to fine tune the environmental parameters and device orchestration
 * Polish to API to make it secure and ready for production
 * Dockerize the project to ease deployment if possible (regarding GPIO and related stuff)
@@ -261,9 +261,9 @@ Devices of type `sensor` behave bifferently from other devices as they are not i
 
 Devices respond to 3 basic commands:
 
-* Start: power up the device
-* Stop: power off the device
-* Query: get device data (for `sensor` devices only)
+* **Start**: power up the device
+* **Stop**: power off the device
+* **Query**: get device data (for `sensor` devices only)
 
 A device is attached to a room, identified with a `Name` in the database and by its GPIO pin number at the hardware level.
 
@@ -329,6 +329,9 @@ When creating a new grow, all you have to do is to configure its attributes, cho
 * Drying
 * Curing
 
+![grows](md/grows.png)
+*List of grows*
+
 #### Subjects
 
 Here, a subject is a living being, generally a plant, that is part of a grow, and placed into a room.
@@ -353,6 +356,8 @@ _NB : This will be extended in the future._
 ## Advanced configuration
 
 ### Camera support
+
+(Experimental! Do not use!)
 
 uv4l on rpi
 
