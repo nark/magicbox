@@ -267,6 +267,9 @@ Devices respond to 3 basic commands:
 
 A device is attached to a room, identified with a `Name` in the database and by its GPIO pin number at the hardware level.
 
+![case](md/devices.png)
+*Devices list*
+
 #### GPIO setup
 
 The GPIO setup of devices can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
