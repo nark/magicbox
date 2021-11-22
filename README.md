@@ -270,6 +270,8 @@ A device is attached to a room, identified with a `Name` in the database and by 
 ![case](md/devices.png)
 *Devices list*
 
+Watts, volts and amperes of devices can be configured in order to estimate an electical consumption of a room, by relying on enabled scenarios.
+
 #### GPIO setup
 
 The GPIO setup of devices can be a little tricky because you have to carefully track what GPIO pin of the Raspberry Pi is used and for what device. 
