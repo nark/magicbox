@@ -32,10 +32,10 @@ That said, Magicbox is currently not a seed-to-sale software designed to handle 
 * **Condition-based growing scenarios:** you can build your own growing scenarios with user defined conditions to schedule and optimize your growing environment
 * **Multiple grows management:** follow multiple grows simultaneously, move subjects (usually plants) from grow to grow, room to room, track them with QR codes and post detailed observations about them
 * **Growing journal, calendar, todos, notifications and events** give you a global view of operations 
-* Support for **pictures from mobile devices and webcams** 
+* Support for **pictures from mobile devices and webcams (unstable)** 
 * **Data, charts and statictics** help you to fine tune your setup along the way
-* **Role-based users management:** organize your team, share and communicate to increase your productivity
-* **RESTful API with token-based auth (and iOS app coming with it)**
+* **TODO: Role-based users management:** organize your team, share and communicate to increase your productivity
+* **TODO: RESTful API with token-based auth (and iOS app coming with it)**
 
 ### Limitations
 
@@ -50,7 +50,7 @@ That said, Magicbox is currently not a seed-to-sale software designed to handle 
 * Better devices management, including camera support
 * Use AI to fine tune the environmental parameters and device orchestration
 * Polish to API to make it secure and ready for production
-* Dockerize the project to ease deployment if possible (regarding GPIO and related stuff)
+* Dockerize the project to ease deployment if possible (regarding GPIO and related stuff), or provide a ready-to-use image for Raspberry Pi architecture
 
 ## Disclamer
 
