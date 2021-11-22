@@ -335,6 +335,9 @@ When creating a new grow, all you have to do is to configure its attributes, cho
 ![grows](md/grows.png)
 *List of grows*
 
+![grows](md/grow.png)
+*Grow view*
+
 #### Subjects
 
 Here, a subject is a living being, generally a plant, that is part of a grow, and placed into a room.
@@ -346,6 +349,20 @@ You can move a subject from a room to another without loosing related observatio
 Each subject is identified by a a QR code that you can print (grouped by grow) and stick on your pots in order to keep track of your subjects alongside their lifecycle.
 
 *NB: With the iOS app coming, you can scan the subject QR code to directly post an observation on this scanned subject.*
+
+### Calendar
+
+As for individual grow, MagicBox provides a general calendar view that regroups all active grows, as well as todos, issues and observations.
+
+![grows](md/calendar.png)
+*Calendar view*
+
+### Statistics
+
+MagicBox provides a set of statistics about sensors data, system usage, OpenWeather if configured and harvest progress.
+
+![grows](md/stats.png)
+* Statistics view*
 
 ### Users managment
 

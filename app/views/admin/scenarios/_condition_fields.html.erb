@@ -6,10 +6,10 @@
 
 		<div class="condition_form condition_type_date">
 			<span>Between:&nbsp;</span>
-		  <%= f.text_field :start_time, value: ftime(f.object.start_time), placeholder: "8:00 am", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-start_time" } %>
+		  <%= f.text_field :start_time, value: ftime(f.object.start_time), placeholder: "8:00 am", class: "datetimepicker-input form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-start_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-start_time" } %>
 
 		  <span>And:&nbsp;</span>
-		  <%= f.text_field :end_time, value: ftime(f.object.end_time), placeholder: "8:00 pm", class: "form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-end_time" } %>
+		  <%= f.text_field :end_time, value: ftime(f.object.end_time), placeholder: "8:00 pm", class: "datetimepicker-input form-control mr-2 timepicker", id: "timepicker-#{f.object.id}-end_time", data: { toggle: "datetimepicker", target: "#timepicker-#{f.object.id}-end_time" } %>
 		</div>
 
 		<div class="condition_form condition_type_time_duration">
