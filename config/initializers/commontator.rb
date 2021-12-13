@@ -224,7 +224,7 @@ Commontator.configure do |config|
   #   :b (both <blockquote> the original comment and indent replies)
   # It might be a good idea to add some CSS to hide <blockquote>s when converting from :q to :i
   # Default: :n
-  config.comment_reply_style = :n
+  config.comment_reply_style = :i
 
   # comments_per_page
   # Type: Array
