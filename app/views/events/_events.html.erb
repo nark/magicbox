@@ -3,12 +3,17 @@
         <ul class="list-group list-group-flush">
             <% room.events.limit(8).each do |event| %>
             	<li class="list-group-item">
-            		<span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
-            		&nbsp;
-            		<small><%= event.message %></small>
-            		<div class="float-right">
-            			<small class="text-muted"><%= fdatetime event.created_at %></small>
-            		</div>
+            		<div class="row">
+                        <div class="col-8">
+                            <span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
+                            &nbsp;
+                            <small><%= event.message %></small>
+                            
+                        </div>   
+                        <div class="col-4 p-0 m-0 pr-2 text-right">
+                            <small class="text-muted"><%= fdatetime event.created_at %></small>
+                        </div>   
+                    </div>
             	</li>
             <% end %>
         </ul>
