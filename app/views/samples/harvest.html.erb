@@ -1,7 +1,7 @@
 <%= render 'nav' %>
 
 <h3>Weight per grow</h3>
-
+<br>
 <%= line_chart @data_types_samples, 
   adapter: "highcharts",
   height: "350px",
@@ -13,7 +13,7 @@
       panKey: 'shift'
     },
     yAxis: {
-      visible: false
+      visible: true
     },
     xAxis: {
       visible: true
@@ -32,8 +32,12 @@
 <hr>
 
 <h3>Harvest weights</h3>
-
-<% Harvest.joins(:grow).each do |h| %>
-	<h4><%= h.grow.description %></h4>
-	<%= pie_chart({dry_bud_weight: h.dry_bud_weight, dry_trim_weight: h.dry_trim_weight, harvested_trim_weight: h.harvested_trim_weight, harvested_waste_weight: h.harvested_waste_weight, harvested_bud_weight: h.harvested_bud_weight}) %>
-<% end %>
+<br>
+<div class="row">
+  <% Harvest.joins(:grow).each do |h| %>
+  <div class="col-3 mb-4">
+     <h4><%= h.grow.description %></h4>
+    <%= pie_chart({dry_bud_weight: h.dry_bud_weight, dry_trim_weight: h.dry_trim_weight, harvested_trim_weight: h.harvested_trim_weight, harvested_waste_weight: h.harvested_waste_weight, harvested_bud_weight: h.harvested_bud_weight}) %> 
+    </div>
+  <% end %>
+</div>

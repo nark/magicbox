@@ -94,7 +94,7 @@ class SamplesController < ApplicationController
 		@date_filter = params[:date_filter] if params[:date_filter]
 
 		@data_types_samples = [:harvested_trim_weight, :harvested_waste_weight, :harvested_bud_weight, :dry_bud_weight, :dry_trim_weight].map { |k|
-		    {name: k.to_s.humanize, data: Harvest.joins(:grow).order("harvests.created_at DESC").group('harvests.created_at', 'grows.description').sum(k)}
+		    {name: k.to_s.humanize, data: Harvest.joins(:grow).order("harvests.created_at ASC").group('harvests.created_at', 'grows.description').sum(k)}
 		}
 	end
 end

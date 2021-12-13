@@ -32,6 +32,37 @@
   <%= form.hidden_field :grow_id, value: grow.id %>
 
   <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <%= form.label :mother_id %>
+      <%= form.select :mother_id, options_from_collection_for_select(Subject.all, "id", "name_with_grow", form.object.mother_id), {}, class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10, title: "None" } %>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-md-4">
+      <%= form.label "Strain" %>
+      <%= form.select :strain_id, options_from_collection_for_select(Strain.all, "id", "name"), {}, class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10, title: "Unknow" } %>
+    </div>
+
+    <div class="col-md-4">
+      <%= form.label :birth_type %>
+      <%= form.select :birth_type, options_for_select(Grow.birth_types.keys.to_a.map{ |t| [t(t), t] }, form.object.birth_type), {}, {:class => "form-control" } %>
+    </div>
+  </div>
+
+
+  <hr>
+
+  <div class="row">
     <div class="col-4">
       <div class="form-group">
         <%= form.label "Room" %>
@@ -40,14 +71,4 @@
     </div>
   </div>
 
-  <hr>
-
-  <div class="row">
-    <div class="col-4">
-      <div class="form-group">
-        <%= form.label :name %>
-        <%= form.text_field :name, class: "form-control" %>
-      </div>
-    </div>
-  </div>
 <% end %>

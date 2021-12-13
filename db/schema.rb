@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_20_222036) do
+ActiveRecord::Schema.define(version: 2021_12_13_201116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -299,6 +299,8 @@ ActiveRecord::Schema.define(version: 2021_11_20_222036) do
     t.integer "device_id"
     t.string "html_color"
     t.string "category_name", default: "default"
+    t.index ["created_at"], name: "index_samples_on_created_at"
+    t.index ["data_type_id"], name: "index_samples_on_data_type_id"
   end
 
   create_table "scenarios", force: :cascade do |t|

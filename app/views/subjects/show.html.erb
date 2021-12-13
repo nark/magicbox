@@ -29,7 +29,7 @@
 		<h4>Infos</h4>
 		<div class="card">
 			<ul class="list-group list-group-flush">
-		    <li class="list-group-item"><b>Strain</b>: <span class="float-right"><%= link_to @subject.strain.name, [:admin, @subject.strain] %></span></li>
+		    <li class="list-group-item"><b>Strain</b>: <span class="float-right"><%= link_to @subject.strain.name, [:admin, :strains, search: @subject.strain.name] %></span></li>
 		    <li class="list-group-item"><b>Birth Type</b>: <span class="float-right"><%= @subject.birth_type.titleize %></span></li>
 		    <li class="list-group-item"><b>Mother</b>: <span class="float-right"><%= link_to @subject.mother.name, [@subject.grow, @subject.mother] if @subject.mother %></span></li>
 		  </ul>
@@ -52,7 +52,7 @@
 			</div>
 		</h4>
 		<div class="list-group">
-			<%= link_to [:admin, @subject.room], class: "list-group-item" do %>
+			<%= link_to @subject.room, class: "list-group-item" do %>
 				<%= icon "fas", "home" %> &nbsp;
 				<%= @subject.room.name %>
 			<% end %>
