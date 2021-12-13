@@ -24,6 +24,7 @@
 //= require chartkick
 //= require jquery_nested_form
 //= require bootstrap-select
+//= require commontator/application
 //= require_tree .
 
 

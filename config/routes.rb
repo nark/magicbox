@@ -152,6 +152,10 @@ Rails.application.routes.draw do
 	end
 
 
+  # Commontator
+  mount Commontator::Engine => '/commontator'
+
+
   # API doc
 	apipie
 end

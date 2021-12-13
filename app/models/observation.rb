@@ -1,4 +1,6 @@
 class Observation < ApplicationRecord
+	acts_as_commontable dependent: :destroy
+	
 	belongs_to :user
 	belongs_to :grow
 	belongs_to :room, optional: true

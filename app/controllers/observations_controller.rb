@@ -13,6 +13,7 @@ class ObservationsController < ApplicationController
   # GET /observations/1
   # GET /observations/1.json
   def show
+    commontator_thread_show @observation
   end
 
   # GET /observations/new

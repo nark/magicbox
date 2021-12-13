@@ -84,6 +84,9 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colours (0.5.46)
+    commontator (6.3.2)
+      rails (>= 5.2)
+      will_paginate
     concurrent-ruby (1.1.7)
     connection_pool (2.2.5)
     crass (1.0.6)
@@ -320,6 +323,7 @@ DEPENDENCIES
   charlcd
   chartkick
   coffee-rails (~> 4.2)
+  commontator
   devise
   devise-bootstrap-views (~> 1.0)
   devise-i18n
@@ -350,6 +354,7 @@ DEPENDENCIES
   rqrcode
   rubyserial
   sass-rails (~> 5.0)
+  sassc-rails
   seed_dump
   sidekiq (>= 6.2.1)
   simple_calendar (~> 2.0)

@@ -21,7 +21,8 @@ $container-max-widths: (
 @import "tempusdominus-bootstrap-4.css";
 @import "jquery.mCustomScrollbar.min.css";
 @import 'bootstrap-select';
-
+@import 'commontator/application';
+@import 'commontator/comments';
 
 /*
     popover

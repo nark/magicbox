@@ -76,6 +76,9 @@ gem 'onesignal-ruby'
 gem 'dotiw'
 gem 'active_model_serializers'
 gem 'seed_dump'
+gem 'commontator'
+gem 'jquery-rails'
+gem 'sassc-rails'
 
 install_if -> { RUBY_PLATFORM =~ /linux/ } do
   gem 'dht11'

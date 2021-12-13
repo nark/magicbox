@@ -65,8 +65,8 @@ Rails.application.configure do
     domain: "magicbox.read-write.fr",
     authentication: "login",
     enable_starttls_auto: true,
-    user_name: "rafael.warnault@read-write.fr",
-    password:  "2Ppyg5ok",
+    user_name: ENV["EMAIL_USERNAME"],
+    password: ENV["EMAIL_PASSWORD"],
     from: "no-reply@magicbox.read-write.fr"
   }
   config.action_mailer.default_options = {
