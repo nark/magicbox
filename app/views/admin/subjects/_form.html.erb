@@ -50,7 +50,7 @@
   <div class="row">
     <div class="col-md-4">
       <%= form.label "Strain" %>
-      <%= form.select :strain_id, options_from_collection_for_select(Strain.all, "id", "name"), {}, class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10, title: "Unknow" } %>
+      <%= form.select :strain_id, options_from_collection_for_select(Strain.all, "id", "name", form.object.strain_id), {}, class: "form-control selectpicker", data: { style: "btn-white", live_search: true, size: 10, title: "Unknow" } %>
     </div>
 
     <div class="col-md-4">

@@ -18,9 +18,17 @@
 
               <div class="dropdown-divider"></div>
 
-              <% Room.all.each do |room| %>
+              <% Room.all.where.not(id: subject.room.id).each do |room| %>
                 <%= link_to move_to_admin_grow_subject_path(subject.grow, subject, room_id: room.id), method: :post, class: "dropdown-item" do %>
                     Move to <%= room.name %>
+                <% end %>
+              <% end %>
+
+              <div class="dropdown-divider"></div>
+
+              <% Grow.active_grows.where.not(id: subject.grow.id).each do |grow| %>
+                <%= link_to move_to_admin_grow_subject_path(subject.grow, subject, grow_id: grow.id), method: :post, class: "dropdown-item" do %>
+                    Move to <%= grow.description %>
                 <% end %>
               <% end %>
             </div>
