@@ -3,7 +3,7 @@ class Room < ApplicationRecord
 
 	has_many :subjects
 	has_many :devices, dependent: :delete_all
-	has_many :events, dependent: :delete_all
+  has_many :events, :as => :eventable
 
 	has_many :observations, through: :subjects
 
@@ -22,6 +22,14 @@ class Room < ApplicationRecord
 	}
 
 	has_many_attached :camshots
+
+
+	def all_events 
+			Event.joins("JOIN devices ON (devices.id = events.eventable_id AND events.eventable_type = 'Device') OR (events.eventable_id = #{self.id} AND events.eventable_type = 'Room')")
+			
+
+		#Event.joins("JOIN devices ON devices.id = events.eventable_id AND events.eventable_type = 'Device'")
+	end
 
 	def active_subjects
 		subjects.joins(:grow).where.not("grows.grow_status": [:done, :aborted])

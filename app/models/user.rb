@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :todos
   has_many :push_devices
-
+  has_many :events
 
   def todos_count
     todos.where(todo_status: :todo).count

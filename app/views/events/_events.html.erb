@@ -1,13 +1,13 @@
 <div class="card">
-    <% if room.events.count > 0 %>
+    <% if room.all_events.count > 0 %>
         <ul class="list-group list-group-flush">
-            <% room.events.limit(8).each do |event| %>
+            <% room.all_events.limit(8).each do |event| %>
             	<li class="list-group-item">
             		<div class="row">
                         <div class="col-8">
                             <span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
                             &nbsp;
-                            <small><%= event.message %></small>
+                            <small><%= event.message.html_safe %></small>
                             
                         </div>   
                         <div class="col-4 p-0 m-0 pr-2 text-right">

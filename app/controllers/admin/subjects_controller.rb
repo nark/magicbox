@@ -69,19 +69,30 @@ class Admin::SubjectsController < Admin::AdminController
 
   def move_to
     if params[:room_id].present?
+      room = Room.find(params[:room_id])
+
+      old_room = @subject.room
+
       @subject.update(room_id: params[:room_id])
 
-      room = Room.find(params[:room_id])
-      Event.create!(event_type: :action, message: "Subject '#{@subject.name}' moved to room '#{room.name}'", device_id: nil, room_id: room.id)
+      message = "Subject <b>#{@subject.name}</b> moved from room <b>#{old_room.name}</b> to room <b>#{room.name}</b>"
 
-      redirect_to room_path(@subject.room), notice: "Subject was successfully moved to #{@subject.room.name}."
+      Event.create!(event_type: :action, message: message, eventable: @subject, user_id: current_user.id)
+
+      redirect_to room_path(@subject.room), notice: message
+
     elsif params[:grow_id].present?
+      grow = Grow.find(params[:grow_id])
+
+      old_grow = @subject.grow
+
       @subject.update(grow_id: params[:grow_id])
 
-      grow = Grow.find(params[:grow_id])
-      Event.create!(event_type: :action, message: "Subject '#{@subject.name}' moved to grow '#{grow.name}'", device_id: nil, room_id: @subject.room.id)
+      message = "Subject <b>#{@subject.name}</b> moved from grow <b>#{old_grow.name}</b> to grow <b>#{grow.name}</b>"
 
-      redirect_to room_path(@subject.room), notice: "Subject was successfully moved to #{@subject.grow.name}."
+      Event.create!(event_type: :action, message: message, eventable: @subject, user_id: current_user.id)
+
+      redirect_to room_path(@subject.room), notice: message
     end
   end
 

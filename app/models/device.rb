@@ -19,7 +19,7 @@ class Device < ApplicationRecord
   belongs_to :room
 
   has_many :samples
-  has_many :events
+  has_many :events, :as => :eventable
 
   has_many :devices_data_types
   has_many :data_types, through: :devices_data_types, source: :data_type
@@ -62,15 +62,15 @@ class Device < ApplicationRecord
       if self.use_duration 
         CommandJob.perform_in(self.default_duration.seconds, self.id, "stop", options[:event_type])
 
-        Event.create(event_type: options[:event_type], message: "#{self.name} started for #{self.default_duration} sec.", device_id: self.id, room_id: self.room.id)
+        Event.create!(event_type: options[:event_type], message: "<b>#{self.name}</b> started for <b>#{self.default_duration} sec</b>.", eventable: self)
       else 
         if options[:event_type] == :cron
           if state_changed
-            Event.create(event_type: :cron, message: "#{self.name} started", device_id: self.id, room_id: self.room.id)
+            Event.create!(event_type: :cron, message: "<b>#{self.name}</b> started", eventable: self)
           end  
         else 
           if options[:event]
-            Event.create(event_type: :action, message: "#{self.name} started", device_id: self.id, room_id: self.room.id)
+            Event.create!(event_type: :action, message: "<b>#{self.name}</b> started", eventable: self)
           end
         end
       end
@@ -109,11 +109,11 @@ class Device < ApplicationRecord
   
       if options[:event_type] == :cron
         if state_changed
-          Event.create(event_type: :cron, message: "#{self.name} stopped", device_id: self.id, room_id: self.room.id)
+          Event.create!(event_type: :cron, message: "<b>#{self.name}</b> stopped", eventable: self)
         end
       else
         if options[:event]
-          Event.create(event_type: :action, message: "#{self.name} stopped", device_id: self.id, room_id: self.room.id)
+          Event.create!(event_type: :action, message: "<b>#{self.name}</b> stopped", eventable: self)
         end
       end
       return true

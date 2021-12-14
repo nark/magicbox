@@ -11,28 +11,25 @@
   </div>
 <% end %> 
 
-<table class="table">
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Event type</th>
+      <th class="text-center">Event type</th>
       <th>Message</th>
-      <th>Data</th>
-      <th>Room</th>
-      <th>Device</th>
-      <th>Date</th>
-      <th></th>
+      <th class="text-center">Object type</th>
+      <th class="text-center">Ref</th>
+      <th class="text-center">Date</th>
     </tr>
   </thead>
 
   <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span></td>
-        <td><code><%= event.message %></code></td>
-        <td><%= event.data %></td>
-        <td><%= link_to event.room.name, event.room if event.room %></td>
-        <td><%= link_to event.device.name, [event.room, event.device] if event.device %></td>
-        <td><small><%= fdatetime event.created_at %></small></td>
+        <td class="text-center"><span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span></td>
+        <td class="text-monospace"><%= event.message.html_safe %></td>
+        <td class="text-center"><%= event.eventable_type %></td>
+        <td class="text-center text-primary"><%= event.eventable_link %></td>
+        <td class="text-center"><small><%= fdatetime event.created_at %></small></td>
       </tr>
     <% end %>
   </tbody>

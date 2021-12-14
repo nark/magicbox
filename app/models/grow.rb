@@ -32,7 +32,7 @@ class Grow < ApplicationRecord
   has_many :subjects, dependent: :delete_all
   has_many :weeks, dependent: :delete_all
   has_many :observations, dependent: :delete_all
-
+  has_many :events, :as => :eventable
   has_one :harvest
 
   validates :description, presence: true
@@ -209,7 +209,7 @@ class Grow < ApplicationRecord
         end
 
         if old_status != grow.grow_status
-          Event.create!(event_type: :cron, message: "Grow '#{grow.description}' status updated to '#{grow.grow_status}'", device_id: nil, room_id: nil)
+          Event.create!(event_type: :cron, message: "Grow <b>#{grow.description}</b> status updated to <b>#{grow.grow_status}</b>", eventable: grow)
           
           grow.save
         end

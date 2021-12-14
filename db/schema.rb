@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_13_221454) do
+ActiveRecord::Schema.define(version: 2021_12_14_192502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "batch_type", default: 0
     t.float "price_per_weight", default: 0.0
     t.float "batch_price", default: 0.0
+    t.index ["grow_id"], name: "index_batches_on_grow_id"
+    t.index ["harvest_id"], name: "index_batches_on_harvest_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -136,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.boolean "enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["scenario_id"], name: "index_condition_groups_on_scenario_id"
   end
 
   create_table "conditions", force: :cascade do |t|
@@ -151,6 +154,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "logic", default: 0
     t.integer "duration"
     t.datetime "last_duration_checked_at"
+    t.index ["condition_group_id"], name: "index_conditions_on_condition_group_id"
   end
 
   create_table "data_types", force: :cascade do |t|
@@ -177,6 +181,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.float "volts", default: 0.0
     t.float "amperes", default: 0.0
     t.string "custom_identifier"
+    t.index ["room_id"], name: "index_devices_on_room_id"
   end
 
   create_table "devices_data_types", force: :cascade do |t|
@@ -184,6 +189,8 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "data_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["data_type_id"], name: "index_devices_data_types_on_data_type_id"
+    t.index ["device_id"], name: "index_devices_data_types_on_device_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -194,6 +201,11 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.datetime "updated_at", null: false
     t.integer "room_id"
     t.integer "device_id"
+    t.string "eventable_type"
+    t.bigint "eventable_id"
+    t.integer "user_id"
+    t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "grows", force: :cascade do |t|
@@ -238,6 +250,9 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "issue_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["observation_id"], name: "index_issues_on_observation_id"
+    t.index ["resource_id"], name: "index_issues_on_resource_id"
+    t.index ["subject_id"], name: "index_issues_on_subject_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -252,6 +267,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.string "notified_type"
     t.bigint "notified_id"
     t.index ["notified_type", "notified_id"], name: "index_notifications_on_notified_type_and_notified_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "observations", force: :cascade do |t|
@@ -264,6 +280,10 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "room_id"
+    t.index ["grow_id"], name: "index_observations_on_grow_id"
+    t.index ["room_id"], name: "index_observations_on_room_id"
+    t.index ["subject_id"], name: "index_observations_on_subject_id"
+    t.index ["user_id"], name: "index_observations_on_user_id"
   end
 
   create_table "observations_subjects", force: :cascade do |t|
@@ -271,6 +291,8 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["observation_id"], name: "index_observations_subjects_on_observation_id"
+    t.index ["subject_id"], name: "index_observations_subjects_on_subject_id"
   end
 
   create_table "operations", force: :cascade do |t|
@@ -290,6 +312,8 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_push_devices_on_device_id"
+    t.index ["user_id"], name: "index_push_devices_on_user_id"
   end
 
   create_table "resource_datas", force: :cascade do |t|
@@ -300,6 +324,9 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["observation_id"], name: "index_resource_datas_on_observation_id"
+    t.index ["resource_id"], name: "index_resource_datas_on_resource_id"
+    t.index ["subject_id"], name: "index_resource_datas_on_subject_id"
   end
 
   create_table "resources", force: :cascade do |t|
@@ -387,6 +414,10 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "birth_type", default: 0
     t.integer "mother_id"
     t.integer "strain_id"
+    t.index ["grow_id"], name: "index_subjects_on_grow_id"
+    t.index ["mother_id"], name: "index_subjects_on_mother_id"
+    t.index ["room_id"], name: "index_subjects_on_room_id"
+    t.index ["strain_id"], name: "index_subjects_on_strain_id"
   end
 
   create_table "todos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -400,6 +431,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.boolean "notify_push", default: true
     t.datetime "notified_date"
     t.integer "renotify_every_minute", default: 15
+    t.index ["user_id"], name: "index_todos_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -426,6 +458,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_221454) do
     t.integer "grow_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["grow_id"], name: "index_weeks_on_grow_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

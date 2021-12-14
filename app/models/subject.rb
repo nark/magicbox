@@ -9,7 +9,8 @@ class Subject < ApplicationRecord
 	has_many :resource_datas, through: :observations
 	has_many :issues, through: :observations
 	has_many :scenarios
-
+	has_many :events, :as => :eventable
+	
 	belongs_to :strain, optional: true
 	
 	belongs_to :mother, optional: true, class_name: "Subject"
