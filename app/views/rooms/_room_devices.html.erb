@@ -2,11 +2,11 @@
   <% devices = room.devices.where.not(device_state: :idle) %>
   <div class="col-sm-12 col-md-6 col-lg-6">
     <% if devices.empty? %>
-      <div class="card">
+      <div class="card mb-4">
         <div class="card-body p-4">
           <p class="p-4 text-center">
             <i>No device registered yet</i>
-
+            <br>
             <%= link_to new_admin_room_device_path(room), class: "btn btn-outline-info mt-4" do %>
               <%= icon "fas", "plus" %> Device
             <% end %>
@@ -54,11 +54,11 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <% sensor_devices = room.devices.where(device_state: :idle) %>
     <% if sensor_devices.empty? %>
-      <div class="card">
+      <div class="card mb-4">
         <div class="card-body p-4">
           <p class="p-4 text-center">
             <i>No sensor data yet</i>
-
+            <br>
             <%= link_to new_admin_room_device_path(room), class: "btn btn-outline-info mt-4" do %>
               <%= icon "fas", "plus" %> Device
             <% end %>
