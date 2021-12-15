@@ -60,6 +60,9 @@ class Event < ApplicationRecord
     elsif eventable_type == "Observation"
       ActionController::Base.helpers.link_to(eventable.grow.name, [eventable.grow])
 
+    elsif eventable_type == "Alert"
+      #ActionController::Base.helpers.link_to(eventable.id, [:admin, eventable])
+
     end
   end
 

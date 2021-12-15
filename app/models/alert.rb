@@ -35,6 +35,7 @@ class Alert < ApplicationRecord
   has_many :push_users, through: :alert_push_users, source: :user
 
   has_many :notifications, as: :notifiable, dependent: :delete_all
+  has_many :events, :as => :eventable, dependent: :destroy
 
   validates :value, presence: true
   validates :message, presence: true
@@ -65,13 +66,14 @@ class Alert < ApplicationRecord
 
 
   def test_alert
-    self.users.each do |u|
-      Notification.create!(
-        user: u, 
-        notify_email: true, 
-        notify_push: push_enabled, 
-        notifiable: self).notify()
-    end
+    trigger
+    # self.users.each do |u|
+    #   Notification.create!(
+    #     user: u, 
+    #     notify_email: true, 
+    #     notify_push: push_enabled, 
+    #     notifiable: self).notify()
+    # end
   end
 
   def self.trigger
@@ -143,8 +145,12 @@ class Alert < ApplicationRecord
       context_object = last_data.observation
     end
 
+    Event.create!(event_type: :alert, message: self.message, eventable: self)
+
     if triggered
       MB_LOGGER.info("  -> Alert triggered: #{self.message} - #{self.users.count} users")
+
+      Event.create!(event_type: :alert, message: self.message, eventable: self)
 
       now = Time.zone.now
 

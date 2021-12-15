@@ -25,10 +25,9 @@ class Room < ApplicationRecord
 
 
 	def all_events 
-			Event.joins("JOIN devices ON (devices.id = events.eventable_id AND events.eventable_type = 'Device') OR (events.eventable_id = #{self.id} AND events.eventable_type = 'Room')")
-			
-
-		#Event.joins("JOIN devices ON devices.id = events.eventable_id AND events.eventable_type = 'Device'")
+		Event.joins("
+			JOIN devices ON (devices.id = events.eventable_id AND events.eventable_type = 'Device' AND devices.room_id = #{self.id}) 
+			OR (events.eventable_id = #{self.id} AND events.eventable_type = 'Room')")
 	end
 
 	def active_subjects
