@@ -3,7 +3,7 @@ class Room < ApplicationRecord
 
 	has_many :subjects
 	has_many :devices, dependent: :delete_all
-  has_many :events, :as => :eventable
+  has_many :events, :as => :eventable, dependent: :destroy
 
 	has_many :observations, through: :subjects
 

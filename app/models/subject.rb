@@ -9,7 +9,7 @@ class Subject < ApplicationRecord
 	has_many :resource_datas, through: :observations
 	has_many :issues, through: :observations
 	has_many :scenarios
-	has_many :events, :as => :eventable
+	has_many :events, :as => :eventable, dependent: :destroy
 	
 	belongs_to :strain, optional: true
 	

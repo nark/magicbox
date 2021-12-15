@@ -46,7 +46,17 @@ class ObservationsController < ApplicationController
 
     respond_to do |format|
       if @observation.save
-        format.html { redirect_to [@grow, @subject], notice: 'Observation was successfully created.' }
+        message = "New observation has been created by <b>#{current_user.username}</b>"
+
+        Event.create!(event_type: :action, message: message, eventable: @observation, user_id: current_user.id)
+
+        if @subject
+          format.html { redirect_to [@grow, @subject], notice: 'Observation was successfully created.' }
+        else
+          format.html { redirect_to @grow, notice: 'Observation was successfully created.' }
+        end
+
+        
         format.json { render :show, status: :created, location: @observation }
       else
         format.html { render :new }
@@ -83,6 +93,11 @@ class ObservationsController < ApplicationController
     def set_grow
       if params[:grow_id].present?
         @grow = Grow.find(params[:grow_id])
+
+        add_breadcrumb "Grow ##{@grow.id}", @grow
+
+      elsif params[:observation] and observation_params[:grow_id].present?
+        @grow = Grow.find(observation_params[:grow_id])
 
         add_breadcrumb "Grow ##{@grow.id}", @grow
       end

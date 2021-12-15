@@ -24,6 +24,19 @@ $container-max-widths: (
 @import 'commontator/application';
 @import 'commontator/comments';
 
+
+
+.timeline-dot {
+    width: 10px;
+    height: 10px;
+    float: right;
+    relative: inline;
+    position: absolute;
+    right: -5.5px;
+    top: 33px;
+    border-radius: 5px;
+}
+
 /*
     popover
 */

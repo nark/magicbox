@@ -56,6 +56,10 @@ class Event < ApplicationRecord
 
     elsif eventable_type == "Subject"
       ActionController::Base.helpers.link_to(eventable.name, [eventable.grow, eventable])
+
+    elsif eventable_type == "Observation"
+      ActionController::Base.helpers.link_to(eventable.grow.name, [eventable.grow])
+
     end
   end
 

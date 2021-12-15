@@ -5,6 +5,8 @@ class Observation < ApplicationRecord
 	belongs_to :grow
 	belongs_to :room, optional: true
 
+	has_many :events, :as => :eventable, dependent: :destroy
+
 	has_many :observations_subjects
 	has_many :subjects, through: :observations_subjects
 

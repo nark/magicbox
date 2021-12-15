@@ -1,0 +1,13 @@
+<li class="list-group-item">
+	<div class="row">
+          <div class="col-8">
+              <span class="badge badge-pill badge-<%= event.badge_class %>"><%= event.event_type.titleize %></span>
+              &nbsp;
+              <small><%= event.message.html_safe %></small>
+              
+          </div>   
+          <div class="col-4 p-0 m-0 pr-2 text-right">
+              <small class="text-muted"><%= fdatetime event.created_at %></small>
+          </div>   
+      </div>
+</li>

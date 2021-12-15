@@ -32,7 +32,7 @@ class Grow < ApplicationRecord
   has_many :subjects, dependent: :delete_all
   has_many :weeks, dependent: :delete_all
   has_many :observations, dependent: :delete_all
-  has_many :events, :as => :eventable
+  has_many :events, :as => :eventable, dependent: :destroy
   has_one :harvest
 
   validates :description, presence: true
