@@ -62,15 +62,15 @@ class Device < ApplicationRecord
       if self.use_duration 
         CommandJob.perform_in(self.default_duration.seconds, self.id, "stop", options[:event_type])
 
-        Event.create!(event_type: options[:event_type], message: "<b>#{self.name}</b> started for <b>#{self.default_duration} sec</b>.", eventable: self)
+        Event.create!(event_type: options[:event_type], message: "<b>#{self.name}</b> started for <b>#{self.default_duration} sec</b> in <b>#{self.room.name}</b>.", eventable: self)
       else 
         if options[:event_type] == :cron
           if state_changed
-            Event.create!(event_type: :cron, message: "<b>#{self.name}</b> started", eventable: self)
+            Event.create!(event_type: :cron, message: "<b>#{self.name}</b> started in <b>#{self.room.name}</b>", eventable: self)
           end  
         else 
           if options[:event]
-            Event.create!(event_type: :action, message: "<b>#{self.name}</b> started", eventable: self)
+            Event.create!(event_type: :action, message: "<b>#{self.name}</b> started in <b>#{self.room.name}</b>", eventable: self)
           end
         end
       end
@@ -109,11 +109,11 @@ class Device < ApplicationRecord
   
       if options[:event_type] == :cron
         if state_changed
-          Event.create!(event_type: :cron, message: "<b>#{self.name}</b> stopped", eventable: self)
+          Event.create!(event_type: :cron, message: "<b>#{self.name}</b> stopped in <b>#{self.room.name}</b>", eventable: self)
         end
       else
         if options[:event]
-          Event.create!(event_type: :action, message: "<b>#{self.name}</b> stopped", eventable: self)
+          Event.create!(event_type: :action, message: "<b>#{self.name}</b> stopped in <b>#{self.room.name}</b>", eventable: self)
         end
       end
       return true

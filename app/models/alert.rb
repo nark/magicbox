@@ -145,8 +145,6 @@ class Alert < ApplicationRecord
       context_object = last_data.observation
     end
 
-    Event.create!(event_type: :alert, message: self.message, eventable: self)
-
     if triggered
       MB_LOGGER.info("  -> Alert triggered: #{self.message} - #{self.users.count} users")
 

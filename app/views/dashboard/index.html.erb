@@ -51,7 +51,7 @@
 		</div>
 
 		<div class="col-sm-12 col-md-12 col-lg-6 mb-4">
-			<%= render partial: "events/events", locals: {room: room} %>
+			<%= render partial: "events/events", locals: {events: room.all_events} %>
 		</div>
 
 <!-- 		<div class="col-sm-12 col-lg-3">

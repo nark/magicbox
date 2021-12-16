@@ -261,7 +261,7 @@ function reload_subjects() {
   $(".grows_select").change(function() {
     if($(this).val().length > 0) {
       $.ajax({
-        url: '/admin/grows/' + $(this).val(),
+        url: '/grows/' + $(this).val(),
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr) {

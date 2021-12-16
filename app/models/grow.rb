@@ -185,6 +185,9 @@ class Grow < ApplicationRecord
     Grow.where.not('grows.grow_status': [:done, :aborted])
   end
 
+  def self.inactive_grows
+    Grow.where('grows.grow_status': [:done, :aborted])
+  end
 
 
   def self.update_status

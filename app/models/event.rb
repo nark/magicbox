@@ -79,11 +79,15 @@ class Event < ApplicationRecord
     end
 
     if params[:room_id].present?
-      events = events.where(room_id: params[:room_id])
+      events = events.where(eventable_id: params[:room_id], eventable_type: "Room")
+    end
+
+    if params[:grow_id].present?
+      events = events.where(eventable_id: params[:grow_id], eventable_type: "Grow")
     end
 
     if params[:device_id].present?
-      events = events.where(device_id: params[:device_id])
+      events = events.where(eventable_id: params[:device_id], eventable_type: "Device")
     end
 
     return events

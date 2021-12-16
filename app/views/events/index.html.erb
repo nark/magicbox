@@ -3,8 +3,16 @@
 <%= form_tag events_path, method: :get do %>
   <div class="form-inline mb-4">
     <%= text_field_tag :message, params[:message], value: params[:message], placeholder: "Search...", class: "form-control mr-2" %>
+
     <%= select_tag :event_type, options_for_select(Event.event_types.keys.map { |e| [e.titleize, e] }, params[:event_type]), include_blank: "Any event", class: "form-control mr-2" %>
+
     <%= select_tag :room_id, options_from_collection_for_select(Room.all, "id", "name", params[:room_id]), include_blank: "Any room", class: "form-control mr-2" %>
+
+    <%= select_tag :grow_id, grouped_options_for_select([
+                            ['Active', Grow.active_grows.collect {|v| [ v.name, v.id ] }],
+                            ['Terminated', Grow.inactive_grows.collect {|v| [ v.name, v.id ] }]]), 
+                            include_blank: "Any grow", class: "form-control mr-2" %>
+
     <%= select_tag :device_id, options_from_collection_for_select(Device.all, "id", "name", params[:device_id]), include_blank: "Any device", class: "form-control mr-2" %>
 
     <%= submit_tag "Search", class: "btn btn-sm btn-primary" %>

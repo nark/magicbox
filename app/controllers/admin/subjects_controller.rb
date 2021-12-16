@@ -68,12 +68,12 @@ class Admin::SubjectsController < Admin::AdminController
 
 
   def move_to
-    if params[:room_id].present?
-      room = Room.find(params[:room_id])
+    if params[:to_room_id].present?
+      room = Room.find(params[:to_room_id])
 
       old_room = @subject.room
 
-      @subject.update(room_id: params[:room_id])
+      @subject.update(room_id: params[:to_room_id])
 
       message = "Subject <b>#{@subject.name}</b> moved from room <b>#{old_room.name}</b> to room <b>#{room.name}</b>"
 
@@ -81,15 +81,15 @@ class Admin::SubjectsController < Admin::AdminController
 
       redirect_to room_path(@subject.room), notice: message
 
-    elsif params[:grow_id].present?
-      grow = Grow.find(params[:grow_id])
+    elsif params[:to_grow_id].present?
+      grow = Grow.find(params[:to_grow_id])
 
       old_grow = @subject.grow
 
-      @subject.update(grow_id: params[:grow_id])
+      @subject.update(grow_id: params[:to_grow_id])
 
       message = "Subject <b>#{@subject.name}</b> moved from grow <b>#{old_grow.name}</b> to grow <b>#{grow.name}</b>"
-
+ 
       Event.create!(event_type: :action, message: message, eventable: @subject, user_id: current_user.id)
 
       redirect_to room_path(@subject.room), notice: message

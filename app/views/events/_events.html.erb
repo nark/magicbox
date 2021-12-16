@@ -1,7 +1,7 @@
 <div class="card">
-    <% if room.all_events.count > 0 %>
+    <% if events.count > 0 %>
         <ul class="list-group list-group-flush">
-            <% room.all_events.limit(8).each do |event| %>
+            <% events.limit(8).each do |event| %>
             	<%= render partial: "events/event", locals: {event: event} %>
             <% end %>
         </ul>
